@@ -5,7 +5,7 @@ public class ServerResponseRepository {
 	public String[] getResponseChoices(String state) {
 		switch (state) {
 		case "RequestToJoin":
-			return getChoicesRequestToJoin();
+			return getChoicesRequestToJoin(); //DET HÄR CASET ÄR NOG ONÖDIGT
 
 		case "InPlayerQueue":
 			return getChoicesInPlayerQueue();
@@ -30,7 +30,7 @@ public class ServerResponseRepository {
 		return response;
 	}
 
-	private String[] getChoicesRequestToJoin() {
+	private String[] getChoicesRequestToJoin() { //KANSKE ONÖDIG
 		String[] response = new String[1];
 		response[0] = ("Join Game");
 		return response;
