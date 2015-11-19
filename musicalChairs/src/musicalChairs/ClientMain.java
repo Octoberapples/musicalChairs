@@ -39,7 +39,7 @@ public class ClientMain {
          */
         while (cont) {
             playGame(clientChoices, clientRequest, server, socket_port); //Hela rundan
-            cont = askContinue();
+            cont = askContinue("Exit game?: ");
         }
         /*
         Spelet klart
@@ -66,8 +66,11 @@ public class ClientMain {
         }
     }
 
-    private static boolean askContinue() {
-        System.out.println("Exit Game?: (y/n)");
+    /*
+    frågar om man vill avsluta spelet. Kan behövas fixas till för safe input
+    */
+    private static boolean askContinue(String phrase) {
+        System.out.println(phrase +"(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
             case 'y':
