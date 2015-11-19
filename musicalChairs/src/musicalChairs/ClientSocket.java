@@ -64,7 +64,6 @@ class ClientSocket extends ClientInterface {
             out.writeObject(timer);
 
             ans = (String[]) in.lines().toArray();
-            
 
         } catch (Exception e) {
         }
