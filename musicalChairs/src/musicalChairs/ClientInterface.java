@@ -17,7 +17,7 @@ public class ClientInterface {
             CheckIfInt(sc);
             tmp_req = sc.nextInt();
 
-        } while (validInt(tmp_req, choices.length));
+        } while (validNumber(tmp_req, choices.length));
 
         return choices[(tmp_req - 1)];
     }
@@ -33,8 +33,8 @@ public class ClientInterface {
         }
     }
 
-    private static boolean validInt(int tmp_req, int length) { //Bör fixas bättre
-        return (tmp_req <= 1 && tmp_req >= length);
+    private static boolean validNumber(int input, int length) { 
+        return (input <= 1 && input >= length);
     }
 
     /*
