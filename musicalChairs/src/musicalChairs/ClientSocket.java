@@ -15,18 +15,18 @@ class ClientSocket extends ClientInterface {
     
     /**
      * 
-     * @param input_lg
+     * @param clientAction
      * @param server
      * @param port
      * @return 
      */
 
-    public static String runCommand(String input_lg, String server, int port) {
+    public static String[] runCommand(String clientAction, String server, int port) {
         //String test_Request = "";
         //String test_server = "asa_Dahl@halsamorsan.com";
         //int test_port = 1337;
 
-        String ans = "";
+        String[] ans = null;
 
         try {
             Socket echoSocket = new Socket(server, port);
@@ -34,9 +34,9 @@ class ClientSocket extends ClientInterface {
                     = new ObjectOutputStream(echoSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-            out.writeObject(input_lg);
+            out.writeObject(clientAction);
 
-            ans = in.readLine();
+            ans = (String[]) in.lines().toArray();
 
         } catch (Exception e) {
         }
