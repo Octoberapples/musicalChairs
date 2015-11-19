@@ -33,7 +33,7 @@ public class ClientInterface {
         }
     }
 
-    private static boolean validNumber(int input, int length) { 
+    private static boolean validNumber(int input, int length) {
         return (input <= 1 && input >= length);
     }
 
