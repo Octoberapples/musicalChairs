@@ -19,7 +19,7 @@ public class ClientMain {
         //ClientInterface client = new ClientInterface();
         int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
         boolean cont = true;
-        Timer timer;
+        
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
             System.exit(0);
@@ -38,7 +38,7 @@ public class ClientMain {
         Loopar tills man inte vill spela mer
          */
         while (cont) {
-            playGame(clientChoices, clientRequest, server, socket_port, timer); //Hela rundan
+            playGame(clientChoices, clientRequest, server, socket_port); //Hela rundan
             cont = askContinue();
         }
         /*
@@ -49,14 +49,20 @@ public class ClientMain {
 
     }
 
-    private static void playGame(String[] clientChoices, String clientRequest, String server, int socket_port, Timer timer) {
-        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") { //Kollar om man har vunnit eller förlorat
+    private static void playGame(String[] clientChoices, String clientRequest, String server, int socket_port) {
+        boolean cont = true;
+        Timer timer;
+        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER" || cont!=true) { //Kollar om man har vunnit eller förlorat
             ClientInterface.printChoices(clientChoices);    // Printar clientens val
             timer.start(); //Start timer
             clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
+            if (clientRequest == "Leave Game") { //kollar om man vill leave game i rundan, kanske onödigt
+                timer.stop();
+                cont =false;
+            }else{
             timer.stop(); //stoppa timer
             clientChoices = ClientSocket.runCommand(timer, server, socket_port); // Skickar timer till servern.
-
+            }
         }
     }
 
