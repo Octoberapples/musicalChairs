@@ -29,14 +29,14 @@ public class ClientInterface {
 	 * @param length the length of the choice array
 	 */
 	
-    private static void CheckIfInt(Scanner Input, int length) {
+    private static void CheckIfInt(Scanner Input, int length) { // Bör fixas bättre
         while (!Input.hasNextInt()) {
             System.out.println("Plz a number between 1 and " + length + ": ");
             Input.next();
         }
     }
 	
-    private static boolean validInt(int tmp_req, int length) {
+    private static boolean validInt(int tmp_req, int length) { //Bör fixas bättre
     	return (tmp_req <= 1 && tmp_req >= length);
 	}
 

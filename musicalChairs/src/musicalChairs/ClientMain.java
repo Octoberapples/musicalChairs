@@ -27,16 +27,16 @@ public class ClientMain {
         } catch (NumberFormatException e) {
             System.out.println("Could not parse given port number. Using defaults.");
         }
-        
-        String[] clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //Vill ha en String array tillbaka
+
+        String[] clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //När man startar programmet så joinar man automatiskt.
 
         while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") {
-            ClientInterface.printChoices(clientChoices);
-            clientRequest = ClientInterface.getRequest(clientChoices);
-            clientChoices = ClientSocket.runCommand(clientRequest, server, socket_port);
+            ClientInterface.printChoices(clientChoices);    // Printar clientens val
+            clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
+            clientChoices = ClientSocket.runCommand(clientRequest, server, socket_port); // uppdaterar "state".
 
         }
 
     }
-    
+
 }
