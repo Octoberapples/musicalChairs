@@ -15,11 +15,11 @@ class ClientSocket extends ClientInterface {
     int port = Integer.parseInt(args[2]);
 
     /**
-     *
-     * @param clientAction
+     * Skickar iväg clientAction och väntar på serverResponse som den lägger i en array (Förhoppningsvis).
+     * @param clientAction what the client wants to do.
      * @param server
      * @param port
-     * @return
+     * @return String[] of the choices the client can do.
      */
     public static String[] runCommand(String clientAction, String server, int port) {
         //String test_Request = "";
@@ -44,7 +44,10 @@ class ClientSocket extends ClientInterface {
         return ans;
 
     }
-
+/*
+    Samma som funktionen över förutom att den tar in timer istället för clientAction.
+    Samt skicker iväg timer istället för clientAction.
+    */
     public static String[] runCommand(Timer timer, String server, int socket_port) {
 
         String[] ans = null;
