@@ -60,7 +60,7 @@ public class ClientMain {
                 cont = false;
             } else {
                 long stopTime = System.currentTimeMillis();     //stoppa timer
-                long clientResponseTime = startTime - stopTime;
+                long clientResponseTime = startTime - stopTime; //räknar ut response tiden för clienten
                 clientChoices = ClientSocket.runCommand(clientResponseTime, server, socket_port); // Skickar timer till servern. och uppdaterar ClientChoices
             }
         }
