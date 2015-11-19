@@ -13,11 +13,11 @@ public class ClientMain {
 
     public static void main(String[] args) {
         String server, clientRequest = "";
-        String[] clientChoices;
+        
         int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
         if (args.length <= 1) {
-            System.out.println("Usage: java TestmusicalChairs [server name] [socket port]");
+            System.out.println("Usage: java musicalChairs [server name] [socket port]");
             System.exit(0);
         }
 
@@ -27,7 +27,8 @@ public class ClientMain {
         } catch (NumberFormatException e) {
             System.out.println("Could not parse given port number. Using defaults.");
         }
-        clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //Vill ha en String array tillbaka
+        
+        String[] clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //Vill ha en String array tillbaka
 
         while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") {
             clientRequest = ClientInterface.getRequest(clientChoices);
@@ -36,4 +37,5 @@ public class ClientMain {
         }
 
     }
+    
 }
