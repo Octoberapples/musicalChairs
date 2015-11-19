@@ -12,30 +12,28 @@ package musicalChairs;
 public class ClientMain {
 
     public static void main(String[] args) {
-        String server = "";
+        String server, clientRequest = "";
+        String[] clientChoices;
         int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass
 
         if (args.length <= 1) {
             System.out.println("Usage: java Tester [server name] [socket port]");
             System.exit(0);
         }
-        
+
         server = args[0];
         try {
             socket_port = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
             System.out.println("Could not parse given port number. Using defaults.");
         }
-        String socket_lg = ClientSocket.runCommand("Join Game", server, socket_port);
-        while (socket_lg != "WINNER" || socket_lg !="LOSER"){
-            
-            
-            
-            
+        clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //Vill ha en String array tillbaka
+
+        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") {
+            clientRequest = ClientInterface.getRequest(clientChoices);
+            clientChoices = ClientSocket.runCommand(clientRequest, server, socket_port);
+
         }
-        
-        
-        
-        
+
     }
 }
