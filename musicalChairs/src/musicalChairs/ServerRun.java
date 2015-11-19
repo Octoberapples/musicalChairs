@@ -25,9 +25,7 @@ public class ServerRun extends Thread {
 
         try (
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(
-                        new InputStreamReader(
-                                socket.getInputStream()));) {
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             String inputLine, outputLine;
             GameProtocol gameProtocol = new GameProtocol();
             outputLine = gameProtocol.processInput(null);
@@ -36,7 +34,7 @@ public class ServerRun extends Thread {
             while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("Bye")) {
+                if (outputLine.equals("LOSER")) {
                     break;
                 }
             }
