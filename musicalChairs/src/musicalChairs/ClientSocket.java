@@ -20,10 +20,10 @@ class ClientSocket extends ClientInterface {
      *
      * @param clientAction what the client wants to do.
      * @param server
-     * @param port
+     * @param socket_port
      * @return String[] of the choices the client can do.
      */
-    public static String[] runCommand(String clientAction, String server, int port) {
+    public static String[] runCommand(String clientAction, String server, int socket_port) {
         //String test_Request = "";
         //String test_server = "asa_Dahl@halsamorsan.com";
         //int test_port = 1337;
@@ -31,7 +31,7 @@ class ClientSocket extends ClientInterface {
         String[] ans = null;
 
         try {
-            Socket echoSocket = new Socket(server, port);
+            Socket echoSocket = new Socket(server, socket_port);
             ObjectOutputStream out
                     = new ObjectOutputStream(echoSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
@@ -56,7 +56,7 @@ class ClientSocket extends ClientInterface {
         String[] ans = null;
 
         try {
-            Socket echoSocket = new Socket(server, port);
+            Socket echoSocket = new Socket(server, socket_port);
             ObjectOutputStream out
                     = new ObjectOutputStream(echoSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
