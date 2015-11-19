@@ -38,7 +38,7 @@ public class ClientMain {
         Loopar tills man inte vill spela mer
          */
         while (cont) {
-            playGame(clientChoices, clientRequest, server, socket_port, timer);
+            playGame(clientChoices, clientRequest, server, socket_port, timer); //Hela rundan
             cont = askContinue();
         }
         /*
