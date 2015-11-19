@@ -14,10 +14,10 @@ public class ClientMain {
     public static void main(String[] args) {
         String server, clientRequest = "";
         String[] clientChoices;
-        int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass
+        int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
         if (args.length <= 1) {
-            System.out.println("Usage: java Tester [server name] [socket port]");
+            System.out.println("Usage: java TestmusicalChairs [server name] [socket port]");
             System.exit(0);
         }
 

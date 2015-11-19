@@ -12,6 +12,14 @@ class ClientSocket extends ClientInterface {
     private String[] args;
     String server = args[1];
     int port = Integer.parseInt(args[2]);
+    
+    /**
+     * 
+     * @param input_lg
+     * @param server
+     * @param port
+     * @return 
+     */
 
     public static String runCommand(String input_lg, String server, int port) {
         //String test_Request = "";
