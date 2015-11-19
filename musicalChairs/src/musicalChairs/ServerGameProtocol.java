@@ -9,7 +9,7 @@ package musicalChairs;
  *
  * @author Nogna
  */
-class GameProtocol {
+class ServerGameProtocol {
 
     String processInput(Object object) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
