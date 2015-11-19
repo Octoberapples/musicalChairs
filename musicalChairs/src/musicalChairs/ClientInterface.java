@@ -11,7 +11,7 @@ public class ClientInterface {
 	 * @return the client request
 	 */
 
-	public String getRequest(String[] choices) {
+	public static String getRequest(String[] choices) {
 		int tmp_req;
 		Scanner sc = new Scanner(System.in);
 		do{
@@ -36,17 +36,18 @@ public class ClientInterface {
         }
     }
 	
-    private boolean validInt(int tmp_req, int length) {
+    private static boolean validInt(int tmp_req, int length) {
     	return (tmp_req <= 1 && tmp_req >= length);
 	}
+
 
 
     /*
     Printthe requests that are availiblefor the client.
     */
-	private void printRequest(String[] request) {
-	           for (int i = 0; i < request.length; i++) {
-                       System.out.println(request[i].toString()); //Kanske måste göra egen toString
+	public static void printChoices(String[] choices) {
+	           for (int i = 0; i < choices.length; i++) {
+                       System.out.println(choices[i].toString()); //Kanske måste göra egen toString
             }
 	}
 }
