@@ -2,7 +2,7 @@ package musicalChairs;
 
 import java.util.Scanner;
 
-public class InterfaceClient {
+public class ClientInterface {
 	
 	
 	/**
@@ -41,9 +41,12 @@ public class InterfaceClient {
 	}
 
 
-
+    /*
+    Printthe requests that are availiblefor the client.
+    */
 	private void printRequest(String[] request) {
-		// TODO Auto-generated method stub
-		
+	           for (int i = 0; i < request.length; i++) {
+                       System.out.println(request[i].toString()); //Kanske måste göra egen toString
+            }
 	}
 }

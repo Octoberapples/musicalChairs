@@ -1,12 +1,12 @@
 /*
  * Socket client skeleton
  */
-
+package musicalChairs;
 import java.net.*;
 import java.io.*;
 import java.io.OutputStream;
 
-class SocketClient extends InterfaceClient{
+class ClientSocket extends ClientInterface{
 
 	
 	private String[] args;
