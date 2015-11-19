@@ -6,7 +6,7 @@ public class ClientInterface {
 
     /**
      *
-     * @param choices what we get from the server
+     * @param choices  we get from the server
      * @return the client request
      */
     public static String getRequest(String[] choices) {
@@ -38,7 +38,7 @@ public class ClientInterface {
     }
 
     /*
-    Printthe requests that are availiblefor the client.
+    Print the requests that are availiblefor the client.
      */
     public static void printChoices(String[] choices) {
         for (int i = 0; i < choices.length; i++) {
