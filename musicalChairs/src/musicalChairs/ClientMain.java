@@ -51,17 +51,18 @@ public class ClientMain {
 
     private static void playGame(String[] clientChoices, String clientRequest, String server, int socket_port) {
         boolean cont = true;
-        Timer timer;
+
         while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER" || cont != true) { //Kollar om man har vunnit eller förlorat
             ClientInterface.printChoices(clientChoices);    // Printar clientens val
-            timer.start(); //Start timer
+            long startTime = System.currentTimeMillis(); //Start timer
             clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
             if (clientRequest == "Leave Game") { //kollar om man vill leave game i rundan, kanske onödigt
-                timer.stop();
+                long stopTime = System.currentTimeMillis();
                 cont = false;
             } else {
-                timer.stop(); //stoppa timer
-                clientChoices = ClientSocket.runCommand(timer, server, socket_port); // Skickar timer till servern. och uppdaterar ClientChoices
+                long stopTime = System.currentTimeMillis();     //stoppa timer
+                long clientResponseTime = startTime - stopTime;
+                clientChoices = ClientSocket.runCommand(clientResponseTime, server, socket_port); // Skickar timer till servern. och uppdaterar ClientChoices
             }
         }
     }

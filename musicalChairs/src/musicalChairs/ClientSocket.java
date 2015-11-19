@@ -51,7 +51,7 @@ class ClientSocket extends ClientInterface {
     Samma som funktionen över förutom att den tar in timer istället för clientAction.
     Samt skicker iväg timer istället för clientAction.
      */
-    public static String[] runCommand(Timer timer, String server, int socket_port) {
+    public static String[] runCommand(long timer, String server, int socket_port) {
 
         String[] ans = null;
 
