@@ -57,8 +57,7 @@ class ClientSocket extends ClientInterface {
 
         try {
             Socket echoSocket = new Socket(server, socket_port);
-            ObjectOutputStream out
-                    = new ObjectOutputStream(echoSocket.getOutputStream());
+            ObjectOutputStream out = new ObjectOutputStream(echoSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
             //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
             out.writeObject(timer);
