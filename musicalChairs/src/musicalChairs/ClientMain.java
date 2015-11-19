@@ -5,6 +5,9 @@
  */
 package musicalChairs;
 
+import com.sun.webkit.Timer;
+import java.util.Scanner;
+
 /**
  *
  * @author Nogna
@@ -15,7 +18,8 @@ public class ClientMain {
         String server, clientRequest = "";
         //ClientInterface client = new ClientInterface();
         int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
-
+        boolean cont = true;
+        Timer timer;
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
             System.exit(0);
@@ -30,13 +34,48 @@ public class ClientMain {
 
         String[] clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //När man startar programmet så joinar man automatiskt.
 
-        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") {
-            ClientInterface.printChoices(clientChoices);    // Printar clientens val
-            clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
-            clientChoices = ClientSocket.runCommand(clientRequest, server, socket_port); // uppdaterar "state".
-
+        /*
+        Loopar tills man inte vill spela mer
+         */
+        while (cont) {
+            playGame(clientChoices, clientRequest, server, socket_port, timer);
+            cont = askContinue();
         }
+        /*
+        Spelet klart
+         */
+        System.out.println("Thanks for playing!");
+        madeby();
 
     }
 
+    private static void playGame(String[] clientChoices, String clientRequest, String server, int socket_port, Timer timer) {
+        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER") { //Kollar om man har vunnit eller förlorat
+            ClientInterface.printChoices(clientChoices);    // Printar clientens val
+            timer.start(); //Start timer
+            clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
+            timer.stop(); //stoppa timer
+            clientChoices = ClientSocket.runCommand(timer, server, socket_port); // Skickar timer till servern.
+
+        }
+    }
+
+    private static boolean askContinue() {
+        System.out.println("Exit Game?: (y/n)");
+        Scanner sc = new Scanner(System.in);
+        switch (sc.nextLine().charAt(0)) {
+            case 'y':
+                return false;
+        }
+
+        return true;
+    }
+
+    private static void madeby() {
+        System.out.println("Made by:");
+        System.out.println("Albin Sundqvist");
+        System.out.println("Tim Kulich");
+        System.out.println("Linnea Dahl");
+        System.out.println("Markus Norström");
+    }
 }

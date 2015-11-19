@@ -3,6 +3,7 @@
  */
 package musicalChairs;
 
+import com.sun.webkit.Timer;
 import java.net.*;
 import java.io.*;
 import java.io.OutputStream;
@@ -12,15 +13,14 @@ class ClientSocket extends ClientInterface {
     private String[] args;
     String server = args[1];
     int port = Integer.parseInt(args[2]);
-    
+
     /**
-     * 
+     *
      * @param clientAction
      * @param server
      * @param port
-     * @return 
+     * @return
      */
-
     public static String[] runCommand(String clientAction, String server, int port) {
         //String test_Request = "";
         //String test_server = "asa_Dahl@halsamorsan.com";
@@ -43,6 +43,26 @@ class ClientSocket extends ClientInterface {
 
         return ans;
 
+    }
+
+    public static String[] runCommand(Timer timer, String server, int socket_port) {
+
+        String[] ans = null;
+
+        try {
+            Socket echoSocket = new Socket(server, port);
+            ObjectOutputStream out
+                    = new ObjectOutputStream(echoSocket.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+            //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
+            out.writeObject(timer);
+
+            ans = (String[]) in.lines().toArray();
+
+        } catch (Exception e) {
+        }
+
+        return ans;
     }
 
 }
