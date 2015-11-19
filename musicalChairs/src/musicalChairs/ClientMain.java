@@ -55,6 +55,7 @@ public class ClientMain {
         while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER" || cont != true) { //Kollar om man har vunnit eller förlorat
             ClientInterface.printChoices(clientChoices);    // Printar clientens val
             long startTime = System.currentTimeMillis(); //Start timer
+            
             clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
             if (clientRequest == "Leave Game") { //kollar om man vill leave game i rundan, kanske onödigt
                 long stopTime = System.currentTimeMillis();
