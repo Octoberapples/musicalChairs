@@ -1,5 +1,6 @@
 /*
  * Socket client skeleton
+ * wow w fixa lite fats e
  */
 package musicalChairs;
 
