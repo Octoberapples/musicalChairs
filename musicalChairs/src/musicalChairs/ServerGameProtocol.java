@@ -6,8 +6,9 @@
 package musicalChairs;
 
 /**
- *
- * @author Nogna
+ * Själva protokollet för spelet. Jämför resultat och skapar semaphorer osv.. 
+ * 
+ * @author Nognaaaaaaa
  */
 class ServerGameProtocol {
 

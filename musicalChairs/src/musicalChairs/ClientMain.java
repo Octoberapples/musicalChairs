@@ -5,8 +5,9 @@
  */
 package musicalChairs;
 
-import com.sun.webkit.Timer;
 import java.util.Scanner;
+
+
 
 /**
  *
@@ -15,11 +16,15 @@ import java.util.Scanner;
 public class ClientMain {
 
     public static void main(String[] args) {
-        String server, clientRequest = "";
-        //ClientInterface client = new ClientInterface();
+    	
+        String server = "joshua.it.uu.se";
+        int  clientRequest= 0;
         int socket_port = 4242; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
         boolean cont = true;
-
+        
+        
+        
+        /*
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
             System.exit(0);
@@ -30,14 +35,17 @@ public class ClientMain {
             socket_port = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
             System.out.println("Could not parse given port number. Using defaults.");
-        }
+        }*/
 
-        String[] clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //När man startar programmet så joinar man automatiskt.
-
+        String clientChoices = ClientSocket.runCommand("Join Game", server, socket_port); //När man startar programmet så joinar man automatiskt.
+     
+        System.out.println(cont);
+        
         /*
         Loopar tills man inte vill spela mer
          */
         while (cont) {
+        	  
             playGame(clientChoices, clientRequest, server, socket_port); //Hela rundan
             cont = askContinue("Exit game?: ");
         }
@@ -48,37 +56,55 @@ public class ClientMain {
         madeby();
 
     }
+    
+    
+    /**
+     * 
+     * 
+     * @param clientChoices What the server told the client to do
+     * @param clientRequest what the client want to do
+     * @param server the server we are going to use
+     * @param socket_port which port we are using
+     */
 
-    private static void playGame(String[] clientChoices, String clientRequest, String server, int socket_port) {
+    private static void playGame(String clientChoices, int clientRequest, String server, int socket_port) {
         boolean cont = true;
+        
         ClientInterface.printChoices(clientChoices);    // Printar clientens val
-        while (clientChoices[0] != "WINNER" || clientChoices[0] != "LOSER" || cont != true) { //Kollar om man har vunnit eller förlorat
+        while (clientChoices != "WINNER" || clientChoices != "LOSER" || cont != true) { //Kollar om man har vunnit eller förlorat
             long startTime = System.currentTimeMillis(); //Start timer
-            clientRequest = ClientInterface.getRequest(clientChoices);  //Kollar vad clienten vill göra
-            if (clientRequest == "Leave Game") { //kollar om man vill leave game i rundan, kanske onödigt
-                long stopTime = System.currentTimeMillis(); //Kanske onödig
+            clientRequest = ClientInterface.getRequest();  //Kollar vad clienten vill göra
+            if (clientRequest == 2) { //kollar om man vill leave game i rundan, kanske onödigt
                 cont = false;
-            } else {
+               
+            } else{
                 long stopTime = System.currentTimeMillis();     //stoppa timer
-                long clientResponseTime = startTime - stopTime; //räknar ut response tiden för clienten
+                long clientResponseTime = stopTime - startTime; //räknar ut response tiden för clienten
                 clientChoices = ClientSocket.runCommand(clientResponseTime, server, socket_port); // Skickar timer till servern. och uppdaterar ClientChoices
             }
         }
+        //TODO Fixa if satser för både vinnare och förlorare
+        
+        
+        
+        
     }
 
-    /*
-    frågar om man vill avsluta spelet. Kan behövas fixas till för safe input
-     */
+    //TODO Fix safe input
+    
+   
     private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
             case 'y':
+            	sc.close();
                 return false;
         }
-
+        sc.close();
         return true;
     }
+    
 
     private static void madeby() {
         System.out.println("Made by:");
