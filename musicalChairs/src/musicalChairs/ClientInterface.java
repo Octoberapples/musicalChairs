@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class ClientInterface {
 
     /**
+     * eyeyeyeyye  ändrarrrr
      *
      * @param choices we get from the server
      * @return the client request
