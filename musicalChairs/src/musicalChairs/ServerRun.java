@@ -17,7 +17,7 @@ public class ServerRun extends Thread {
     private Socket socket = null;
 
     public ServerRun(Socket socket) {
-        super();
+        super("ServerRun");
         this.socket = socket;
     }
 
