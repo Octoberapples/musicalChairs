@@ -34,9 +34,7 @@ public class ServerRun extends Thread {
             while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("LOSER")) {
-                    break;
-                }
+
             }
             socket.close();
         } catch (IOException e) {
