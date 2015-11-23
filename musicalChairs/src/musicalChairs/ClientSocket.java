@@ -3,7 +3,6 @@
  */
 package musicalChairs;
 
-
 import java.net.*;
 import java.io.*;
 
@@ -12,7 +11,7 @@ class ClientSocket extends ClientInterface {
     private String[] args;
     String server = args[1];
     int port = Integer.parseInt(args[2]);
-	private static Socket echoSocket;
+    private static Socket echoSocket;
 
     /**
      * Skickar iväg clientAction och väntar på serverResponse som den lägger i
@@ -24,7 +23,6 @@ class ClientSocket extends ClientInterface {
      * @return String of the choices the client can do.
      */
     public static String runCommand(String clientAction, String server, int socket_port) {
- 
 
         String ans = null;
 
@@ -37,7 +35,6 @@ class ClientSocket extends ClientInterface {
             out.writeObject(clientAction);
 
             ans = in.readLine();
-            		
 
         } catch (Exception e) {
         }
@@ -59,11 +56,9 @@ class ClientSocket extends ClientInterface {
             ObjectOutputStream out = new ObjectOutputStream(echoSocket.getOutputStream());
             BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
             //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
-            out.writeObject(timer);         
+            out.writeObject(timer);
             echoSocket.close();
-            System.out.print("hellooo");
             ans = in.readLine();
-            System.out.print("tjaaaa");
 
         } catch (Exception e) {
         }
