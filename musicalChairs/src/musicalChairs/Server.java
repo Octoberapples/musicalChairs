@@ -25,8 +25,9 @@ public class Server {
         }
         while (listeningSocket) {
             Socket clientSocket = serverSocket.accept();
-            ServerRun game = new ServerRun(clientSocket);
-            game.start();
+            ServerRun client = new ServerRun(clientSocket);
+            client.start();
+
         }
         serverSocket.close();
     }
