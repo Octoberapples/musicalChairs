@@ -6,14 +6,14 @@
 package musicalChairs;
 
 /**
- * Själva protokollet för spelet. Jämför resultat och skapar semaphorer osv.. 
- * 
+ * Själva protokollet för spelet. Jämför resultat och skapar semaphorer osv..
+ *
  * @author Nognaaaaaaa
  */
 class ServerGameProtocol {
 
     String processInput(Object object) {
-    return (String) object;
+        return (String) object;
     }
 
 }

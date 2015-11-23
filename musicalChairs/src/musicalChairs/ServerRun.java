@@ -28,9 +28,6 @@ public class ServerRun extends Thread {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             String inputLine, outputLine;
             ServerGameProtocol gameProtocol = new ServerGameProtocol();
-            outputLine = gameProtocol.processInput(null);
-            out.println(outputLine);
-
             while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
                 out.println(outputLine);

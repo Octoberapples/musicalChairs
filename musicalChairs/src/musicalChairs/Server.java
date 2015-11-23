@@ -19,7 +19,7 @@ public class Server {
         ServerSocket serverSocket = null;
         boolean listeningSocket = true;
         try {
-            serverSocket = new ServerSocket(4242);
+            serverSocket = new ServerSocket(5000);
         } catch (IOException e) {
             System.err.println("Could not listen on port: 4242");
         }
