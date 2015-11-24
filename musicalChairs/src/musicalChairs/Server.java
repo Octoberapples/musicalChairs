@@ -21,7 +21,7 @@ public class Server {
         try {
             serverSocket = new ServerSocket(8080);
         } catch (IOException e) {
-            System.err.println("Could not listen on port: 4848");
+            System.err.println("Could not listen on port: 8080");
         }
         while (listeningSocket) {
             Socket clientSocket = serverSocket.accept();
