@@ -28,11 +28,12 @@ public class ServerRun extends Thread {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             String inputLine, outputLine;
             ServerGameProtocol gameProtocol = new ServerGameProtocol();
-            while ((inputLine = in.readLine()) != null) {
+            inputLine = in.readLine();
+            //while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
                 out.println(outputLine);
 
-            }
+            //}
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
