@@ -22,7 +22,7 @@ public class Client {
 
         String server = "localhost";
         int clientRequest = 0;
-        int socket_port = 5000; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
+        int socket_port = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
         boolean cont = true;
         /*
         if (args.length <= 1) {
