@@ -9,14 +9,14 @@ public class ClientInterface {
      * @param choices we get from the server
      * @return the client request
      */
-    public static int getRequest( ) {
+    public static int getRequest() {
         int tmp_req;
-        		Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         do {
             CheckIfInt(sc);
             tmp_req = sc.nextInt();
 
-        } while ( tmp_req == 1|| tmp_req == 2);
+        } while (tmp_req == 1 || tmp_req == 2);
 
         return tmp_req;
     }
@@ -32,13 +32,11 @@ public class ClientInterface {
         }
     }
 
- 
     /*
     Print the requests that are available for the client.
      */
     public static String printChoices(String choices) {
-    	return  "1: " + choices + " \n"
-    			+ "2: Leave Game";
-        }
+        return "1: " + choices + " \n"
+                + "2: Leave Game";
     }
-
+}

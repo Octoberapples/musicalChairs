@@ -17,7 +17,7 @@ public class ServerRun extends Thread {
     private Socket socket = null;
 
     public ServerRun(Socket socket) {
-        super();
+        super("ServerRun");
         this.socket = socket;
     }
 
@@ -28,16 +28,12 @@ public class ServerRun extends Thread {
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
             String inputLine, outputLine;
             ServerGameProtocol gameProtocol = new ServerGameProtocol();
-            outputLine = gameProtocol.processInput(null);
-            out.println(outputLine);
-
-            while ((inputLine = in.readLine()) != null) {
+            inputLine = in.readLine();
+            //while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("LOSER")) {
-                    break;
-                }
-            }
+
+            //}
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
