@@ -14,7 +14,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Nogna
+ * @author Nognaaaa
  */
 public class Client {
 
