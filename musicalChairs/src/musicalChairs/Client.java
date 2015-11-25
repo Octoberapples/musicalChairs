@@ -42,10 +42,10 @@ public class Client {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
 
             System.out.println("server says:" + br.readLine());
-
+            
             BufferedReader userInputBR = new BufferedReader(new InputStreamReader(System.in));
             String userInput = userInputBR.readLine();
-
+            
             out.println(userInput);
 
             System.out.println("server says:" + br.readLine());

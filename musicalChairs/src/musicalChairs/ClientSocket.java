@@ -11,7 +11,7 @@ class ClientSocket extends ClientInterface {
     private String[] args;
     String server = args[1];
     int port = Integer.parseInt(args[2]);
-    private static Socket echoSocket;
+    private static Socket socket;
 
     /**
      * Skickar iväg clientAction och väntar på serverResponse som den lägger i
@@ -27,10 +27,10 @@ class ClientSocket extends ClientInterface {
         String ans = null;
 
         try {
-            echoSocket = new Socket(server, socket_port);
+            socket = new Socket(server, socket_port);
             ObjectOutputStream out
-                    = new ObjectOutputStream(echoSocket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+                    = new ObjectOutputStream(socket.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
             out.writeObject(clientAction);
 
