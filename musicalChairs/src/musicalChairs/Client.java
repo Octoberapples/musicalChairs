@@ -18,15 +18,12 @@ public class Client {
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-
-    private static void messageToServer(Socket client) throws IOException {
+    private static void messageToServer(Socket client, String clientRequest) throws IOException {
         OutputStream outToServer = client.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
-        int tmpRequest = ClientInterface.getRequest();
-        String clientRequest = Integer.toString(tmpRequest);
         out.writeUTF(clientRequest);
     }
-    
+
     private static void messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
@@ -42,7 +39,7 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         Socket client;
-        int clientRequest = 0;
+
         /*
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
@@ -57,8 +54,9 @@ public class Client {
          */
         while (true) {
             try {
+                String clientRequest = Integer.toString(ClientInterface.getRequest());
                 client = connectToServer();
-                messageToServer(client);
+                messageToServer(client, clientRequest);
                 messageFromServer(client);
                 client.close();
                 break;
