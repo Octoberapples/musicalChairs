@@ -14,16 +14,19 @@ import java.util.Scanner;
  */
 public class Client {
 
-    private static void messageToServer(Socket client) throws IOException {
-        OutputStream outToServer = client.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF("Hejsan");
-    }
-
     ClientInterface CLIENTINTERFACE = new ClientInterface();
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
+
+    private static void messageToServer(Socket client) throws IOException {
+        OutputStream outToServer = client.getOutputStream();
+        DataOutputStream out = new DataOutputStream(outToServer);
+        int tmpRequest = ClientInterface.getRequest();
+        String clientRequest = Integer.toString(tmpRequest);
+        out.writeUTF(clientRequest);
+    }
+    
     private static void messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
