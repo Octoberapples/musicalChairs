@@ -32,8 +32,9 @@ public class ClientInterface {
         }
     }
 
-    /*
-    Print the requests that are available for the client.
+    
+    /**
+     * Print the requests that are available for the client.
      */
     public static String printChoices(String choices) {
         return "1: " + choices + " \n"
