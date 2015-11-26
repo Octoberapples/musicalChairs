@@ -20,7 +20,7 @@ public class Client {
     private static void messageToServer(Socket client, String clientRequest) throws IOException {
         OutputStream outToServer = client.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF("hej");
+        out.writeUTF(clientRequest);
     }
 
     private static void messageFromServer(Socket client) throws IOException {
@@ -51,12 +51,12 @@ public class Client {
             System.out.println("Could not parse given port number. Using defaults.");
         }
          */
-        ClientInterface.printChoices("Join Game");
-        String clientRequest = Integer.toString(ClientInterface.getRequest());
+        //ClientInterface.printChoices("Join Game");
+        //String clientRequest = Integer.toString(ClientInterface.getRequest());
         while (true) {
             try {
                 client = connectToServer();
-                messageToServer(client, clientRequest);
+                messageToServer(client, "hej");
                 messageFromServer(client);
                 client.close();
                 break;
