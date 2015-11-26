@@ -14,6 +14,7 @@ public class ServerRun extends Thread {
     public ServerRun(int port) throws IOException {
         super("ServerRun");
         this.SERVERSOCKET = new ServerSocket(port);
+        this.PORT = port;
     }
 
     public void run() {
@@ -22,7 +23,6 @@ public class ServerRun extends Thread {
                 System.out.println("Waiting for client on port "
                         + SERVERSOCKET.getLocalPort() + "...");
                 Socket server = SERVERSOCKET.accept();
-                System.out.println(server.getLocalSocketAddress());
                 System.out.println("Just connected to "
                         + server.getRemoteSocketAddress());
 

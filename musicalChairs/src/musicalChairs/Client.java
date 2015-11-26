@@ -10,15 +10,30 @@ import java.util.Scanner;
 
 /**
  *
- * @author Nognaaaa
+ * @author Albin
  */
 public class Client {
 
-    public static void main(String[] args) throws IOException {
+    ClientInterface CLIENTINTERFACE = new ClientInterface();
+    static final String SERVER = "localhost";
+    static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-        String SERVER = "localhost";
+    private static void messageFromServer(Socket client) throws IOException {
+        InputStream inFromServer = client.getInputStream();
+        DataInputStream in = new DataInputStream(inFromServer);
+        System.out.println("Server says " + in.readUTF());
+    }
+
+    private static Socket connectToServer() throws IOException {
+        System.out.println("Connecting to " + SERVER + " on port " + DEFAULT_SOCKET_PORT);
+        Socket newClientSocket = new Socket(SERVER, DEFAULT_SOCKET_PORT);
+        System.out.println("Just connected to " + newClientSocket.getRemoteSocketAddress());
+        return newClientSocket;
+    }
+
+    public static void main(String[] args) throws IOException {
+        Socket client;
         int clientRequest = 0;
-        int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
         /*
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
@@ -33,16 +48,8 @@ public class Client {
          */
         while (true) {
             try {
-                System.out.println("Connecting to " + SERVER + " on port " + DEFAULT_SOCKET_PORT);
-                Socket client = new Socket(SERVER, DEFAULT_SOCKET_PORT);
-                System.out.println("Just connected to " + client.getRemoteSocketAddress());
-                OutputStream clientRequestToServer = client.getOutputStream();
-                DataOutputStream out = new DataOutputStream(clientRequestToServer);
-                out.writeUTF("Test");
-
-                InputStream inFromServer = client.getInputStream();
-                DataInputStream in = new DataInputStream(inFromServer);
-                System.out.println("Server says " + in.readUTF());
+                client = connectToServer();
+                messageFromServer(client);
                 client.close();
                 break;
             } catch (IOException e) {
@@ -106,4 +113,5 @@ public class Client {
         System.out.println("Linnea Dahl");
         System.out.println("Markus Norström");
     }
+
 }

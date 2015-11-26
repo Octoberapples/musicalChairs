@@ -10,15 +10,15 @@ public class ClientInterface {
      * @return the client request
      */
     public static int getRequest() {
-        int tmp_req;
+        int tmpRequest;
         Scanner sc = new Scanner(System.in);
         do {
             CheckIfInt(sc);
-            tmp_req = sc.nextInt();
+            tmpRequest = sc.nextInt();
 
-        } while (tmp_req == 1 || tmp_req == 2);
+        } while (tmpRequest == 1 || tmpRequest == 2);
 
-        return tmp_req;
+        return tmpRequest;
     }
 
     /**
