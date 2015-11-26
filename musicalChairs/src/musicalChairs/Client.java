@@ -11,7 +11,7 @@ import java.util.Scanner;
 /**
  *
  * @author Nognaaaa
- */
+ 
 public class Client {
 
     public static void main(String[] args) throws IOException {
@@ -32,7 +32,7 @@ public class Client {
         } catch (NumberFormatException e) {
             System.out.println("Could not parse given port number. Using defaults.");
         }
-         */
+         
         
         while (cont) {
             Socket socket = new Socket(server, socket_port);
@@ -61,13 +61,13 @@ public class Client {
   *  playGame(clientChoices, clientRequest, server, socket_port);
   *  cont = askContinue("Exit game?: ");
   *  }
-  */
+  
 
     System.out.println (
 
     "Thanks for playing!");
     madeby();
-
+    
 }
 
 /**
@@ -107,7 +107,7 @@ public class Client {
         }
 
     }
- */
+ 
     
     
 //TODO Fix safe input
@@ -131,3 +131,4 @@ private static boolean askContinue(String phrase) {
         System.out.println("Markus Norström");
     }
 }
+*/

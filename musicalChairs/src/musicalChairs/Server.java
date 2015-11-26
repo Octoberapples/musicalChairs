@@ -8,7 +8,7 @@ import java.net.Socket;
 /**
  *
  * @author albin
- */
+ *//*
 public class Server {
 
     public static void main(String[] args) throws IOException {
@@ -27,4 +27,4 @@ public class Server {
         }
         serverSocket.close();
     }
-}
+}*/
