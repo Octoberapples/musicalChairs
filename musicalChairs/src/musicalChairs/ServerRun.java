@@ -1,4 +1,3 @@
-
 package musicalChairs;
 
 import java.net.*;
@@ -9,30 +8,38 @@ import java.io.*;
  * @author Nogna
  */
 public class ServerRun extends Thread {
+    private static int PORT;
+    private ServerSocket SERVERSOCKET;
 
-    private Socket socket = null;
-
-    public ServerRun(Socket socket) {
+    public ServerRun(int port) throws IOException {
         super("ServerRun");
-        this.socket = socket;
+        this.SERVERSOCKET = new ServerSocket(port);
     }
 
     public void run() {
+        while (true) {
+            try {
+                System.out.println("Waiting for client on port "
+                        + SERVERSOCKET.getLocalPort() + "...");
+                Socket server = SERVERSOCKET.accept();
+                System.out.println(server.getLocalSocketAddress());
+                System.out.println("Just connected to "
+                        + server.getRemoteSocketAddress());
 
-        try (
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));) {
-            String inputLine, outputLine;
-            ServerGameProtocol gameProtocol = new ServerGameProtocol();
-            inputLine = in.readLine();
-            //while ((inputLine = in.readLine()) != null) {
-                outputLine = gameProtocol.processInput(inputLine);
-                out.println("hej");
-
-            //}
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+                DataInputStream in
+                        = new DataInputStream(server.getInputStream());
+                System.out.println(in.readUTF());
+                DataOutputStream out
+                        = new DataOutputStream(server.getOutputStream());
+                out.writeUTF("Hello to you too " + "\nGoodbye!");
+                server.close();
+            } catch (SocketTimeoutException s) {
+                System.out.println("Socket timed out!");
+                break;
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
         }
     }
 }

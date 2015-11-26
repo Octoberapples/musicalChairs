@@ -1,4 +1,3 @@
-
 package musicalChairs;
 
 import java.io.IOException;
@@ -8,23 +7,18 @@ import java.net.Socket;
 /**
  *
  * @author albin
- *//*
+ */
 public class Server {
 
     public static void main(String[] args) throws IOException {
         ServerSocket serverSocket = null;
         boolean listeningSocket = true;
+        int port = 8080;
         try {
-            serverSocket = new ServerSocket(8080);
-        } catch (IOException e) {
-            System.err.println("Could not listen on port: 8080");
-        }
-        while (listeningSocket) { 
-            Socket clientSocket = serverSocket.accept();
-            ServerRun client = new ServerRun(clientSocket);
+            Thread client = new ServerRun(port);
             client.start();
-
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        serverSocket.close();
     }
-}*/
+}
