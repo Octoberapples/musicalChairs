@@ -19,8 +19,7 @@ public class GreetingClient
          DataOutputStream out =
                        new DataOutputStream(outToServer);
 
-         out.writeUTF("Hello from "
-                      + client.getLocalSocketAddress());
+         out.writeUTF("Hello from Adele");
          InputStream inFromServer = client.getInputStream();
          DataInputStream in =
                         new DataInputStream(inFromServer);
