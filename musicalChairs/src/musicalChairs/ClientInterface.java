@@ -1,7 +1,9 @@
 package musicalChairs;
 
 import java.util.Scanner;
-
+/*
+MÅSTE FIXAS, OTRILOGT BUGGIGT
+*/
 public class ClientInterface {
 
     /**
