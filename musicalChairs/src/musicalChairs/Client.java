@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package musicalChairs;
 
 import java.io.BufferedReader;
@@ -24,6 +20,7 @@ public class Client {
         int clientRequest = 0;
         int socket_port = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
         boolean cont = true;
+        
         /*
         if (args.length <= 1) {
             System.out.println("Usage: java musicalChairs [server name] [socket port]");
@@ -36,6 +33,7 @@ public class Client {
             System.out.println("Could not parse given port number. Using defaults.");
         }
          */
+        
         while (cont) {
             Socket socket = new Socket(server, socket_port);
             BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -57,21 +55,14 @@ public class Client {
         }
     
 
- 
+ /**
+  * Loopar tills man inte vill spela mer
+  * while (cont) {
+  *  playGame(clientChoices, clientRequest, server, socket_port);
+  *  cont = askContinue("Exit game?: ");
+  *  }
+  */
 
-    /*
-         Loopar tills man inte vill spela mer
-     */
- /*
-        while (cont) {
-
-            playGame(clientChoices, clientRequest, server, socket_port); //Hela rundan
-            cont = askContinue("Exit game?: ");
-        }
-     */
- /*
-         Spelet klart
-     */
     System.out.println (
 
     "Thanks for playing!");
@@ -80,8 +71,6 @@ public class Client {
 }
 
 /**
- *
- *
  * @param clientChoices What the server told the client to do
  * @param clientRequest what the client want to do
  * @param server the server we are going to use
@@ -119,6 +108,8 @@ public class Client {
 
     }
  */
+    
+    
 //TODO Fix safe input
 private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");

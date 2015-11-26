@@ -1,6 +1,4 @@
-/*
- * Socket client skeleton
- */
+
 package musicalChairs;
 
 import java.net.*;
@@ -14,8 +12,7 @@ class ClientSocket extends ClientInterface {
     private static Socket socket;
 
     /**
-     * Skickar iväg clientAction och väntar på serverResponse som den lägger i
-     * en array (Förhoppningsvis).
+     * Skickar iväg clientAction och väntar på serverResponse.
      *
      * @param clientAction what the client wants to do.
      * @param server
@@ -43,9 +40,10 @@ class ClientSocket extends ClientInterface {
 
     }
 
-    /*
-    Samma som funktionen över förutom att den tar in timer istället för clientAction.
-    Samt skicker iväg timer istället för clientAction.
+    
+    /**
+     * Samma som funktionen över förutom att den tar in timer istället för clientAction.
+     * Samt skicker iväg timer istället för clientAction.
      */
     public static String runCommand(long timer, String server, int socket_port) {
 
