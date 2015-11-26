@@ -31,7 +31,7 @@ public class ServerRun extends Thread {
             inputLine = in.readLine();
             //while ((inputLine = in.readLine()) != null) {
                 outputLine = gameProtocol.processInput(inputLine);
-                out.println(outputLine);
+                out.println("hej");
 
             //}
             socket.close();
