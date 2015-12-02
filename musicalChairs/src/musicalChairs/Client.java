@@ -37,7 +37,7 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        Socket client;
+        Socket clientSocket;
 
         /*
         if (args.length <= 1) {
@@ -55,10 +55,11 @@ public class Client {
         //String clientRequest = Integer.toString(ClientInterface.getRequest());
         while (true) {
             try {
-                client = connectToServer();
-                messageToServer(client, "hej");
-                messageFromServer(client);
-                client.close();
+                clientSocket = connectToServer();
+                String clientInput = ClientInterface.getRequest();
+                messageToServer(clientSocket, clientInput);
+                messageFromServer(clientSocket);
+                clientSocket.close();
                 break;
             } catch (IOException e) {
             }

@@ -6,17 +6,27 @@ MÅSTE FIXAS, OTRILOGT BUGGIGT jihihihi
 */
 public class ClientInterface {
 
+<<<<<<< HEAD
     
     public static int getRequest() {
+=======
+    /**
+     *
+     * 
+     * @return the client request
+     */
+    public static String getRequest() {
+>>>>>>> origin/master
         int tmpRequest;
+        System.out.println("Skriv 1 eller 2");
         Scanner sc = new Scanner(System.in);
         do {
             CheckIfInt(sc);
             tmpRequest = sc.nextInt();
 
         } while (tmpRequest == 1 || tmpRequest == 2);
-
-        return tmpRequest;
+        String test = Integer.toString(tmpRequest);
+        return test;
     }
 
     /**

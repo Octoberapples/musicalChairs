@@ -25,11 +25,12 @@ public class ServerRun extends Thread {
                 Socket server = SERVERSOCKET.accept();
                 System.out.println("Just connected to " + server.getRemoteSocketAddress());
                 DataInputStream in = new DataInputStream(server.getInputStream());
-                System.out.println(in.readUTF()+ " reacieved(?) this from "+ server.getRemoteSocketAddress().toString());
+                System.out.println(in.readUTF()+ " reacieved this from "+ server.getRemoteSocketAddress().toString());
                 DataOutputStream out = new DataOutputStream(server.getOutputStream());
-                out.writeUTF(" de här skickade du till mig"+ "\nGoodbye!");
+                out.writeUTF("de här skickade du till mig"+ "\nGoodbye!");
+                
                 server.close();
-
+                
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");
                 break;
