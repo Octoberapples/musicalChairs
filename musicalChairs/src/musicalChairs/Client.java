@@ -63,7 +63,6 @@ public class Client {
          System.out.println("Could not parse given port number. Using defaults.");
          }
          */
-        //ClientInterface.printChoices("Join Game");
         while (true) {
             try {
                 clientSocket = connectToServer();
