@@ -79,12 +79,6 @@ public class Client {
         }
         System.out.println("Thanks for playing!");
         madeby();
-
-        /**
-         * Loopar tills man inte vill spela mer while (cont) {
-         * playGame(clientChoices, clientRequest, server, socket_port); cont =
-         * askContinue("Exit game?: "); }
-         */
     }
 
     /**
