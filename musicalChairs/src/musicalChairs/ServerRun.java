@@ -41,13 +41,6 @@ public class ServerRun extends Thread {
                 DataOutputStream out = new DataOutputStream(server.getOutputStream());//skapar connection ut
                 System.out.println(in.readUTF()+ " received this from "+ playerIP);
                 out.writeUTF(" de här skickade du till mig"+ "\nGoodbye!");
-                System.out.println("Waiting for client on port " + SERVERSOCKET.getLocalPort() + "...");
-                Socket server = SERVERSOCKET.accept();
-                System.out.println("Just connected to " + server.getRemoteSocketAddress());
-                DataInputStream in = new DataInputStream(server.getInputStream());
-                System.out.println(in.readUTF()+ " received this from "+ server.getRemoteSocketAddress().toString());
-                DataOutputStream out = new DataOutputStream(server.getOutputStream());
-                out.writeUTF("de här skickade du till mig"+ "\nGoodbye!");
                 
                 server.close();
                 
