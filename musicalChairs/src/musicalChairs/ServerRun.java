@@ -4,7 +4,7 @@ import java.net.*;
 import java.io.*;
 
 /**
- *
+ *bdhdhdh
  * @author Nogna och lite tim
  */
 public class ServerRun extends Thread {
