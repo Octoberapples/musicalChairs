@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author Albin
  */
 public class Client {
-    
+
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
@@ -38,21 +38,19 @@ public class Client {
 
     public static void main(String[] args) throws IOException {
         Socket clientSocket;
-
         /*
-        if (args.length <= 1) {
-            System.out.println("Usage: java musicalChairs [server name] [socket port]");
-            System.exit(0);
-        }
-        //server = args[0];
-        try {
-            DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
-        } catch (NumberFormatException e) {
-            System.out.println("Could not parse given port number. Using defaults.");
-        }
+         if (args.length <= 1) {
+         System.out.println("Usage: java musicalChairs [server name] [socket port]");
+         System.exit(0);
+         }
+         //server = args[0];
+         try {
+         DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
+         } catch (NumberFormatException e) {
+         System.out.println("Could not parse given port number. Using defaults.");
+         }
          */
         //ClientInterface.printChoices("Join Game");
-        //String clientRequest = Integer.toString(ClientInterface.getRequest());
         while (true) {
             try {
                 clientSocket = connectToServer();

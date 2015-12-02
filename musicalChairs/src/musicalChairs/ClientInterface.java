@@ -2,27 +2,43 @@ package musicalChairs;
 
 import java.util.Scanner;
 /*
-MÅSTE FIXAS, OTRILOGT BUGGIGT
-*/
+ MÅSTE FIXAS, OTRILOGT BUGGIGT
+ */
+
 public class ClientInterface {
 
     /**
      *
-     * 
+     *
      * @return the client request
      */
     public static String getRequest() {
-        int tmpRequest;
-        System.out.println("Skriv 1 eller 2");
+        System.out.println("1-2: Skriv!");
+        System.out.println(printChoices("Hej linnea"));
         Scanner sc = new Scanner(System.in);
-        do {
-            CheckIfInt(sc);
+        int tmpRequest = sc.nextInt();
+        if (sc.hasNextInt() && (tmpRequest == 1 || tmpRequest == 2)) {
             tmpRequest = sc.nextInt();
-
-        } while (tmpRequest == 1 || tmpRequest == 2);
-        String test = Integer.toString(tmpRequest);
-        return test;
+        } else {
+            System.out.println("GÖR OM");
+        }
+        String tmpRequesttoString = Integer.toString(tmpRequest);
+        return tmpRequesttoString;
     }
+    /*
+     public static String getRequest() {
+     int tmpRequest;
+     System.out.println("Skriv 1 eller 2");
+     Scanner sc = new Scanner(System.in);
+     do {
+     CheckIfInt(sc);
+     tmpRequest = sc.nextInt();
+
+     } while (tmpRequest == 1 || tmpRequest == 2);
+     String test = Integer.toString(tmpRequest);
+     return test;
+     }
+     */
 
     /**
      *
@@ -35,12 +51,13 @@ public class ClientInterface {
         }
     }
 
-    
     /**
      * Print the requests that are available for the client.
+     *
+     * @param choice
      */
-    public static String printChoices(String choices) {
-        return "1: " + choices + " \n"
+    public static String printChoices(String choice) {
+        return "1: " + choice + " \n"
                 + "2: Leave Game";
     }
 }
