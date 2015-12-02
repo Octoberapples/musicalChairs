@@ -13,25 +13,31 @@ import java.util.Scanner;
  * @author Albin
  */
 public class Client {
-
+    static Socket SOCKET = null;
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-    private static void messageToServer(Socket client, String clientRequest) throws IOException {
-        OutputStream outToServer = client.getOutputStream();
+    private static void messageToServer(String clientRequest) throws IOException {
+        OutputStream outToServer = SOCKET.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
         out.writeUTF(clientRequest);
+    }
+
+    private static void messageToServer(String clientRequest, long totalResponseTime) throws IOException {
+        OutputStream outToServer = SOCKET.getOutputStream();
+        DataOutputStream out = new DataOutputStream(outToServer);
+        out.writeUTF(clientRequest+"\n"+totalResponseTime);
     }
 
     private static String messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
         System.out.println("Server says " + in.readUTF());
-        if (in.readUTF()!=null) {
+        if (in.readUTF() != null) {
             return in.readUTF();
         }
         return ("NO MESSAGE FROM THE SERVER");
-        
+
     }
 
     private static Socket connectToServer() throws IOException {
@@ -42,6 +48,7 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
+        SOCKET = connectToServer();
         Socket clientSocket;
         /*
          if (args.length <= 1) {
@@ -60,7 +67,7 @@ public class Client {
             try {
                 clientSocket = connectToServer();
                 String clientInput = ClientInterface.getRequest();
-                messageToServer(clientSocket, clientInput);
+                messageToServer(clientInput);
                 String ServerResponse = messageFromServer(clientSocket);
                 processMessageFromServer(ServerResponse);
                 clientSocket.close();
@@ -80,11 +87,12 @@ public class Client {
     }
 
     /**
-    *
-    * 
-     **/
-    private static void processMessageFromServer(String serverResponse) {
-        switch (serverResponse){
+     *
+     *
+     *
+     */
+    private static void processMessageFromServer(String serverResponse) throws IOException {
+        switch (serverResponse) {
             case ("WINNER"):
                 System.out.println("You are the winner!");
             case ("LOSER"):
@@ -94,14 +102,16 @@ public class Client {
             case ("Force Start"):
                 System.out.println("You are now in que to play");
             case ("Sit Down"):
-                
+                System.out.println("Sätt dig ner för fan");
+                long startTimer = System.currentTimeMillis();
+                String clientInput = ClientInterface.getRequest();
+                long stopTimer = System.currentTimeMillis();
+                long totalResponseTime = stopTimer - startTimer;
+                messageToServer(clientInput, totalResponseTime);
+            case ("Get Ready"):
+                System.out.println("Nu smäller de snart");
         }
-        
-        
-        
-        
-        
-        
+
     }
 
 //TODO Fix safe input
