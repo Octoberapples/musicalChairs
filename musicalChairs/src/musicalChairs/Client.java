@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author Albin
  */
 public class Client {
-
+    
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
@@ -23,15 +23,10 @@ public class Client {
         out.writeUTF(clientRequest);
     }
 
-    private static String messageFromServer(Socket client) throws IOException {
+    private static void messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
         System.out.println("Server says " + in.readUTF());
-        if (in.readUTF()!=null) {
-            return in.readUTF();
-        }
-        return ("NO MESSAGE FROM THE SERVER");
-        
     }
 
     private static Socket connectToServer() throws IOException {
@@ -42,35 +37,35 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        Socket clientSocket;
+        Socket client;
+
         /*
-         if (args.length <= 1) {
-         System.out.println("Usage: java musicalChairs [server name] [socket port]");
-         System.exit(0);
-         }
-         //server = args[0];
-         try {
-         DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
-         } catch (NumberFormatException e) {
-         System.out.println("Could not parse given port number. Using defaults.");
-         }
+        if (args.length <= 1) {
+            System.out.println("Usage: java musicalChairs [server name] [socket port]");
+            System.exit(0);
+        }
+        //server = args[0];
+        try {
+            DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Could not parse given port number. Using defaults.");
+        }
          */
         //ClientInterface.printChoices("Join Game");
+        //String clientRequest = Integer.toString(ClientInterface.getRequest());
         while (true) {
             try {
-                clientSocket = connectToServer();
-                String clientInput = ClientInterface.getRequest();
-                messageToServer(clientSocket, clientInput);
-                String ServerResponse = messageFromServer(clientSocket);
-                processMessageFromServer(ServerResponse);
-                clientSocket.close();
+                client = connectToServer();
+                messageToServer(client, "hej");
+                messageFromServer(client);
+                client.close();
                 break;
             } catch (IOException e) {
             }
 
         }
-        System.out.println("Thanks for playing!");
-        madeby();
+        //System.out.println("Thanks for playing!");
+        //madeby();
 
         /**
          * Loopar tills man inte vill spela mer while (cont) {
@@ -80,30 +75,32 @@ public class Client {
     }
 
     /**
-    *
-    * 
-     **/
-    private static void processMessageFromServer(String serverResponse) {
-        switch (serverResponse){
-            case ("WINNER"):
-                System.out.println("You are the winner!");
-            case ("LOSER"):
-                System.out.println("You are a noob and YOU'RE OUT!");
-            case ("ADVANCED"):
-                System.out.println("You advanced to the next round");
-            case ("Force Start"):
-                System.out.println("You are now in que to play");
-            case ("Sit Down"):
-                
-        }
-        
-        
-        
-        
-        
-        
-    }
-
+     * @param clientChoices What the server told the client to do
+     * @param clientRequest what the client want to do
+     * @param server the server we are going to use
+     * @param socket_port which port we are using
+     *
+     * private static void playGame(String clientChoices, int clientRequest,
+     * String server, int socket_port) { boolean cont = true; while (cont) {
+     * ClientInterface.printChoices(clientChoices); // Printar clientens val
+     *
+     * long startTime = System.currentTimeMillis(); //Start timer clientRequest
+     * = ClientInterface.getRequest(); //Kollar vad clienten vill göra if
+     * (clientRequest == 2) { //kollar om man vill leave game i rundan, kanske
+     * onödigt cont = false; } else { long stopTime =
+     * System.currentTimeMillis(); //stoppa timer long clientResponseTime =
+     * stopTime - startTime; //räknar ut response tiden för clienten
+     * clientChoices = ClientSocket.runCommand(clientResponseTime, server,
+     * socket_port); // Skickar timer till servern. och uppdaterar ClientChoices
+     * } switch (clientChoices) { case "WINNER": System.out.println("You are the
+     * winner, congratulations!"); cont = !(askContinue("Do you wanna sign up
+     * for a new game?")); break; case "ADVANCED": System.out.println("You are
+     * in the next round!"); break; case "LOSER": System.out.println("You're
+     * out"); cont = !(askContinue("Do you wanna sign up for a new game?"));
+     * break; } }
+     *
+     * }
+     */
 //TODO Fix safe input
     private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");

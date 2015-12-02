@@ -8,21 +8,20 @@ public class ServerResponseRepository {
                 return getChoicesWinner();
             case "LOSER":
                 return getChoicesLoser();
-            case "IN_PLAYER_QUEUE":
+            case "InPlayerQueue":
                 return getChoicesInPlayerQueue();
-            case "ADVANCED":
-                return getChoicesAdvanced();
-            case "SIT_DOWN":
-                return getChoicesSitDown();
-            case "GET_READY":
-                return getChoicesGetReady();
+            case "InGame":
+                return getChoicesInGame();
         }
         return "";
     }
 
+    private String getChoicesInGame() {
+        return "Sit down";
+    }
 
     private String getChoicesInPlayerQueue() {
-        return "Force Start";
+        return "Force game";
     }
 
     private String getChoicesWinner() {
@@ -31,18 +30,6 @@ public class ServerResponseRepository {
 
     private String getChoicesLoser() {
         return "LOSER";
-    }
-
-    private String getChoicesAdvanced() {
-        return "ADVANCED";
-    }
-
-    private String getChoicesSitDown() {
-        return "Sit Down";
-    }
-
-    private String getChoicesGetReady() {
-        return "Get Ready";
     }
 
 }
