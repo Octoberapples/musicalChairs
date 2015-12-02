@@ -28,7 +28,9 @@ public class Client {
         DataOutputStream out = new DataOutputStream(outToServer);
         out.writeUTF(clientRequest+"\n"+totalResponseTime);
     }
-
+/*
+    bla
+    */
     private static String messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
