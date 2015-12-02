@@ -1,53 +1,30 @@
 package musicalChairs;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 /*
 
  MÅSTE FIXAS, OTRILOGT BUGGIGT
  */
 
-
 public class ClientInterface {
 
-    
-    
     /**
-     *
-     *
-     * @return the client request
+     *  Fett buggig mannen
+     *  Ge mig SAFE INPUT jag svär jag blir nöjd då
+     * @return the client request in form of a String
      */
     public static String getRequest() {
 
         System.out.println("1-2: Skriv!");
-        System.out.println(printChoices("Hej linnea"));
-
-        int tmpRequest;
-        System.out.println("Skriv 1 eller 2");
-
+        System.out.println(printChoices("Join Game"));
         Scanner sc = new Scanner(System.in);
+        int tmpRequest = 0;
         tmpRequest = sc.nextInt();
-        if (sc.hasNextInt() && (tmpRequest == 1 || tmpRequest == 2)) {
-            tmpRequest = sc.nextInt();
-        } else {
-            System.out.println("GÖR OM");
-        }
         String tmpRequesttoString = Integer.toString(tmpRequest);
         return tmpRequesttoString;
     }
-    /*
-     public static String getRequest() {
-     int tmpRequest;
-     System.out.println("Skriv 1 eller 2");
-     Scanner sc = new Scanner(System.in);
-     do {
-     CheckIfInt(sc);
-     tmpRequest = sc.nextInt();
 
-     } while (tmpRequest == 1 || tmpRequest == 2);
-     String test = Integer.toString(tmpRequest);
-     return test;
-     }
-     */
 
     /**
      *
