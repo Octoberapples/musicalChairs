@@ -13,7 +13,7 @@ import java.util.Scanner;
  * @author Albin
  */
 public class Client {
-    static Socket SOCKET = null;
+    static Socket SOCKET;
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
