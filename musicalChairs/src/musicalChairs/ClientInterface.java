@@ -6,11 +6,7 @@ MÅSTE FIXAS, OTRILOGT BUGGIGT jihihihi
 */
 public class ClientInterface {
 
-    /**
-     *
-     * @param choices we get from the server
-     * @return the client request
-     */
+    
     public static int getRequest() {
         int tmpRequest;
         Scanner sc = new Scanner(System.in);
@@ -26,7 +22,6 @@ public class ClientInterface {
     /**
      *
      * @param Input from the player
-     * @param length the length of the choice array
      */
     private static void CheckIfInt(Scanner Input) {
         while (!Input.hasNextInt()) {
@@ -37,6 +32,7 @@ public class ClientInterface {
     
     /**
      * Print the requests that are available for the client.
+     * @param choices
      */
     public static String printChoices(String choices) {
         return "1: " + choices + " \n"
