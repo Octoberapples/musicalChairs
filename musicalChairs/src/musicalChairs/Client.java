@@ -13,6 +13,7 @@ import java.util.Scanner;
  * @author Albin
  */
 public class Client {
+
     static Socket SOCKET;
     static final String SERVER = "localhost";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
@@ -26,11 +27,9 @@ public class Client {
     private static void messageToServer(String clientRequest, long totalResponseTime) throws IOException {
         OutputStream outToServer = SOCKET.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF(clientRequest+"\n"+totalResponseTime);
+        out.writeUTF(clientRequest + "\n" + totalResponseTime);
     }
-/*
-    bla
-    */
+
     private static String messageFromServer(Socket client) throws IOException {
         InputStream inFromServer = client.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
@@ -80,12 +79,6 @@ public class Client {
         }
         System.out.println("Thanks for playing!");
         madeby();
-
-        /**
-         * Loopar tills man inte vill spela mer while (cont) {
-         * playGame(clientChoices, clientRequest, server, socket_port); cont =
-         * askContinue("Exit game?: "); }
-         */
     }
 
     /**
@@ -112,6 +105,7 @@ public class Client {
                 messageToServer(clientInput, totalResponseTime);
             case ("Get Ready"):
                 System.out.println("Nu smäller de snart");
+                messageToServer("READY");
         }
 
     }
