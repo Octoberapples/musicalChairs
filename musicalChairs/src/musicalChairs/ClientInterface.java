@@ -8,19 +8,20 @@ public class ClientInterface {
 
     /**
      *
-     * @param choices we get from the server
+     * 
      * @return the client request
      */
-    public static int getRequest() {
+    public static String getRequest() {
         int tmpRequest;
+        System.out.println("Skriv 1 eller 2");
         Scanner sc = new Scanner(System.in);
         do {
             CheckIfInt(sc);
             tmpRequest = sc.nextInt();
 
         } while (tmpRequest == 1 || tmpRequest == 2);
-
-        return tmpRequest;
+        String test = Integer.toString(tmpRequest);
+        return test;
     }
 
     /**
