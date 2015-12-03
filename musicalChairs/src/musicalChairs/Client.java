@@ -67,9 +67,9 @@ public class Client {
         while (true) {
             try {
                 clientSocket = connectToServer();
+                ClientInterface.joinOrExit(clientSocket); //för att testa funktionen bara
                 String clientInput = ClientInterface.getRequest();
                 messageToServer(clientInput);
-                //ClientInterface.joinOrExit(clientSocket); för att testa funktionen bara
                 String ServerResponse = messageFromServer(clientSocket);
                 processMessageFromServer(ServerResponse);
                 clientSocket.close();
