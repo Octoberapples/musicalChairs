@@ -32,10 +32,14 @@ public class ClientInterface {
         switch (getRequest()){
             case "1":
                 //Join game;
+                return;
             case "2":
+                //send something to server notifying it the socket can be closed?
                 System.out.println("Closing Socket");
                 clientSocket.close();
-                
+                if(clientSocket.isClosed()){
+                    System.out.println("SUCCCESSFUL CLOSING OF SOCKET");}
+                return;
             default: System.out.println("Try again, 1 or 2");
             return;
         }

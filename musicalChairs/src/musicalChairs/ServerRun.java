@@ -10,7 +10,7 @@ import java.io.*;
 public class ServerRun extends Thread {
     private static int PORT; //Kanske onödig
     private ServerSocket SERVERSOCKET;
-    Socket server;
+    Socket SERVER;
     
     
     
@@ -23,34 +23,24 @@ public class ServerRun extends Thread {
      * gets player IP and Port
      */
     public void getPlayerInfo(){
-        InetAddress clientIP = server.getInetAddress();
-        int clientPort = server.getPort();
+        InetAddress clientIP = SERVER.getInetAddress();
+        int clientPort = SERVER.getPort();
         System.out.println("TEST BA IP " + clientIP + "PORTEN OCKSÅ " + clientPort);
     }
     
-    /**
-     * Servers local clock. The time in the while loop is the maximum time before round automatically ends.
-     * KANSKE TAR BORT DENNA O HAR KODEN UTAN FUNKTION, MÅSTE UPPDATERA EMPTY CHAIRS O DET ÄR NOG LÄTTARE UTAN FUNKTIONEN
-     */
+
     
-    public void timer(int emptyChairs){
-        long timeElapsed = 0;
-        long startTimer = System.nanoTime();
-        while(timeElapsed<(20*(10^9)) || emptyChairs == 0){
-            timeElapsed = System.nanoTime() - startTimer;
-        }
-        
-    }
     /**
      * 
      * funkar inte riktigt 
      */
-    public void detectClosedClientSocket(DataInputStream in, DataOutputStream out, Socket server) throws IOException{
+    public void detectClosedClientSocket(DataInputStream in, DataOutputStream out, Socket SERVER) throws IOException{
         System.out.println(in.read());
         if (in.read() == -1){
             System.out.println("THE CLIENT HAS DISCONNECTED");
+            in.close();
             out.close();
-            server.close();
+            SERVER.close();
         }
     }
     
@@ -62,8 +52,8 @@ public class ServerRun extends Thread {
         InetAddress IP=InetAddress.getLocalHost();
         System.out.println("Waiting for client on port " + SERVERSOCKET.getLocalPort() + " and IP "
                 + IP.getHostAddress());
-        server = SERVERSOCKET.accept();
-        System.out.println("Just connected to client with IP " + server.getInetAddress().getHostAddress() + " on port " + server.getPort());
+        SERVER = SERVERSOCKET.accept();
+        System.out.println("Just connected to client with IP " + SERVER.getInetAddress().getHostAddress() + " on port " + SERVER.getPort());
         return;
     }
     
@@ -75,12 +65,13 @@ public class ServerRun extends Thread {
         while (true) {
             try {
                 waitForConnection();
-                DataInputStream in = new DataInputStream(server.getInputStream());//skapar connection in
-                DataOutputStream out = new DataOutputStream(server.getOutputStream());//skapar connection ut
-                System.out.println(in.readUTF()+ " received this from "+ server.getRemoteSocketAddress());
+                DataInputStream in = new DataInputStream(SERVER.getInputStream());//skapar connection in
+                DataOutputStream out = new DataOutputStream(SERVER.getOutputStream());//skapar connection ut
+                //ServerGameProtocol.playRound(out);
+                System.out.println(in.readUTF()+ " received this from "+ SERVER.getRemoteSocketAddress());
                 out.writeUTF(" de här skickade du till mig"+ "\nGoodbye!");
-                detectClosedClientSocket(in, out, server);
-                server.close();
+                detectClosedClientSocket(in, out, SERVER);
+                SERVER.close();
                 
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");

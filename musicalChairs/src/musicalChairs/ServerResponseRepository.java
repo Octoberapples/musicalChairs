@@ -1,5 +1,7 @@
 package musicalChairs;
 
+
+
 public class ServerResponseRepository {
 
     public String getResponseChoices(String state) {
