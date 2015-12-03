@@ -41,6 +41,18 @@ public class ServerRun extends Thread {
         }
         
     }
+    /**
+     * 
+     * funkar inte riktigt 
+     */
+    public void detectClosedClientSocket(DataInputStream in, DataOutputStream out, Socket server) throws IOException{
+        System.out.println(in.read());
+        if (in.read() == -1){
+            System.out.println("THE CLIENT HAS DISCONNECTED");
+            out.close();
+            server.close();
+        }
+    }
     
     /**
      * Sets up connection with client
@@ -67,7 +79,7 @@ public class ServerRun extends Thread {
                 DataOutputStream out = new DataOutputStream(server.getOutputStream());//skapar connection ut
                 System.out.println(in.readUTF()+ " received this from "+ server.getRemoteSocketAddress());
                 out.writeUTF(" de här skickade du till mig"+ "\nGoodbye!");
-                
+                detectClosedClientSocket(in, out, server);
                 server.close();
                 
             } catch (SocketTimeoutException s) {

@@ -1,7 +1,10 @@
 package musicalChairs;
 
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.net.Socket;
+
 /*
 
  MÅSTE FIXAS, OTRILOGT BUGGIGT
@@ -25,6 +28,18 @@ public class ClientInterface {
         return tmpRequesttoString;
     }
 
+    public static void joinOrExit(Socket clientSocket) throws IOException{
+        switch (getRequest()){
+            case "1":
+                //Join game;
+            case "2":
+                System.out.println("Closing Socket");
+                clientSocket.close();
+                
+            default: System.out.println("Try again, 1 or 2");
+            return;
+        }
+    }
 
     /**
      *
