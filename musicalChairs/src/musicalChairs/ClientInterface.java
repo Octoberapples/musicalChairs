@@ -1,5 +1,6 @@
 package musicalChairs;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -27,21 +28,27 @@ public class ClientInterface {
         String tmpRequesttoString = Integer.toString(tmpRequest);
         return tmpRequesttoString;
     }
-
+/**
+ * 
+ * the function that is called when connecting to server
+ * choices: JOIN(1) or EXIT(2)
+ */
     public static void joinOrExit(Socket clientSocket) throws IOException{
         switch (getRequest()){
             case "1":
                 //Join game;
+                //out.writeUTF("JOIN");//sending to server that client is joining//tror jag vill ta outputstream som inparameter
+                System.out.println("Joined the game");
                 return;
             case "2":
-                //send something to server notifying it the socket can be closed?
+                //out.writeUTF("EXIT"); //sending to server that client exits
                 System.out.println("Closing Socket");
                 clientSocket.close();
                 if(clientSocket.isClosed()){
                     System.out.println("SUCCCESSFUL CLOSING OF SOCKET");}
                 return;
             default: System.out.println("Try again, 1 or 2");
-            return;
+            
         }
     }
 
