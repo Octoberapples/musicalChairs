@@ -67,7 +67,7 @@ public class Client {
         while (true) {
             try {
                 clientSocket = connectToServer();
-                ClientInterface.joinOrExit(clientSocket); //för att testa funktionen bara
+                ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
                 String clientInput = ClientInterface.getRequest();
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer(clientSocket);

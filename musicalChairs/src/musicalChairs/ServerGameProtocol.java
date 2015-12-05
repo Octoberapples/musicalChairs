@@ -77,18 +77,26 @@ class ServerGameProtocol {
         String serverResponse = test.getResponseChoices(state);
         out.writeUTF(serverResponse);
     }
-    
+    /**
+     * gets a String from client and uses it
+     */
     public void handleClientInput(DataInputStream in) throws IOException{
         String clientResponse = in.readUTF();
         switch(clientResponse){
             case "JOIN":
                 connectedPlayers = connectedPlayers+1;
-                return;
+                
             case "EXIT":
                 //connectedPlayers = connectedPlayers -1; om den hade joinat tidigare
                 //do nothing; om den inte joinat. Typ skapat connection o direkt Exitat.
-                return;
-                //kommer fler cases
+                
+            case "SIT":
+                long sitTime = in.readLong(); //tar in klientens klocka. borde nog returna denna eller spara den där det passar
+                
+            default:
+                //do nothing
+                
+                
         }
         return;
     }
