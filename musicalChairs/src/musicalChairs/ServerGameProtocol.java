@@ -21,6 +21,9 @@ class ServerGameProtocol {
         return (String) object;
     }
     
+    public int connectedPlayers = 0;
+    
+    
     ServerResponseRepository test = new ServerResponseRepository();
     
     
@@ -39,7 +42,7 @@ class ServerGameProtocol {
         
     }
     /**
-     * helt orimligt fel. hatar livet 
+     * helt orimligt fel. hatar livet
      */
     public static void playRound(DataOutputStream out) throws IOException{
         //out.writeUTF("SIT DOWN NOW!");
@@ -63,10 +66,10 @@ class ServerGameProtocol {
         
     }
     /**
-     * 
+     *
      * updates state. Can be: WINNER, LOSER, IN_PLAYER_QUEUE, ADVANCED, SIT_DOWN, GET_READY
      */
-     public void updateState(Socket SERVER, String state){
+    public void updateState(Socket SERVER, String state){
         
     }
     
@@ -75,6 +78,19 @@ class ServerGameProtocol {
         out.writeUTF(serverResponse);
     }
     
-   
+    public void handleClientInput(DataInputStream in) throws IOException{
+        String clientResponse = in.readUTF();
+        switch(clientResponse){
+            case "JOIN":
+                connectedPlayers = connectedPlayers+1;
+                return;
+            case "EXIT":
+                //connectedPlayers = connectedPlayers -1; om den hade joinat tidigare
+                //do nothing; om den inte joinat. Typ skapat connection o direkt Exitat.
+                return;
+                //kommer fler cases
+        }
+        return;
+    }
     
 }
