@@ -8,7 +8,7 @@ import java.net.Socket;
 
 /*
 
- MÅSTE FIXAS, OTRILOGT BUGGIGT
+ MÅSTE FIXAS, OTRILOGT BUGGIGT 
  */
 
 public class ClientInterface {
