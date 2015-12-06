@@ -69,15 +69,15 @@ class ServerGameProtocol {
         
     }
     
-    public void sendResult(DataOutputStream out, String state) throws IOException{
+    public String sendResult(String state) throws IOException{
         String serverResponse = test.getResponseChoices(state);
-        out.writeUTF(serverResponse);
+        return serverResponse;
     }
     /**
      * gets a String from client and uses it
      */
-    public void handleClientInput(DataInputStream in) throws IOException{
-        String clientResponse = in.readUTF();
+    public String handleClientInput(String clientResponse) throws IOException{
+       
         switch(clientResponse){
             case "JOIN":
                 connectedPlayers = connectedPlayers+1;
@@ -87,14 +87,14 @@ class ServerGameProtocol {
                 //do nothing; om den inte joinat. Typ skapat connection o direkt Exitat.
                 
             case "SIT":
-                long sitTime = in.readLong(); //tar in klientens klocka. borde nog returna denna eller spara den där det passar
+                //long sitTime = in.readLong(); //tar in klientens klocka. borde nog returna denna eller spara den där det passar
                 
             default:
                 //do nothing
                 
                 
         }
-        return;
+        return "";
     }
     
 }
