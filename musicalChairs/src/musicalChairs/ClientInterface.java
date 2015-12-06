@@ -8,11 +8,11 @@ import java.net.Socket;
 
 /*
 
- MÅSTE FIXAS, OTRILOGT BUGGIGT 
- */
+MÅSTE FIXAS, OTRILOGT BUGGIGT
+*/
 
 public class ClientInterface {
-
+    
     /**
      *  Fett buggig mannen
      *  Ge mig SAFE INPUT jag svär jag blir nöjd då
@@ -23,48 +23,55 @@ public class ClientInterface {
         int tmpRequest = 0;
         while (flag == true){
             try{
-        System.out.println("Press 1 To " + string + " game or 2 to exit");
-        Scanner sc = new Scanner(System.in);
+                System.out.println("Press 1 To " + string + " game or 2 to exit");
+                Scanner sc = new Scanner(System.in);
+                
+                tmpRequest = sc.nextInt();
+                if (tmpRequest == 1){
+                    flag = false;
+                }
+                else if (tmpRequest == 2){
+                flag = false;
+                //Client.closeSocket();
+                }
+                else if (tmpRequest != 1 || tmpRequest != 2){
+                    System.out.println("Wrong input");
+                }
+            } catch (Exception e){
+                System.out.println("Wrong input");
+            }
+        }
         
-        tmpRequest = sc.nextInt();
-        if (tmpRequest == 1 || tmpRequest == 2){
-            flag = false; 
-        }
-        else if (tmpRequest != 1 || tmpRequest != 2){
-       System.out.println("Wrong input");
-        }
-        } catch (Exception e){   
-            System.out.println("Wrong input");
-        }
-        }
+        
         String tmpRequesttoString = Integer.toString(tmpRequest);
         return tmpRequesttoString;
     }
-/**
- * 
- * the function that is called when connecting to server
- * choices: JOIN(1) or EXIT(2)
- */
+
+    /**
+     *
+     * the function that is called when connecting to server
+     * choices: JOIN(1) or EXIT(2)
+     */
     /*
     public static void joinOrExit(Socket clientSocket) throws IOException{
-        switch (getRequest("Force Start")){
-            case "1":
-                //Join game;
-                //out.writeUTF("JOIN");//sending to server that client is joining//tror jag vill ta outputstream som inparameter
-                System.out.println("Joined the game");
-                return;
-            case "2":
-                //out.writeUTF("EXIT"); //sending to server that client exits
-                System.out.println("Closing Socket");
-                clientSocket.close();
-                if(clientSocket.isClosed()){
-                    System.out.println("SUCCCESSFUL CLOSING OF SOCKET");}
-                return;
-            default: System.out.println("Try again, 1 or 2");
-            
-        }
+    switch (getRequest("Force Start")){
+    case "1":
+    //Join game;
+    //out.writeUTF("JOIN");//sending to server that client is joining//tror jag vill ta outputstream som inparameter
+    System.out.println("Joined the game");
+    return;
+    case "2":
+    //out.writeUTF("EXIT"); //sending to server that client exits
+    System.out.println("Closing Socket");
+    clientSocket.close();
+    if(clientSocket.isClosed()){
+    System.out.println("SUCCCESSFUL CLOSING OF SOCKET");}
+    return;
+    default: System.out.println("Try again, 1 or 2");
+    
     }
-*/
+    }
+    */
     /**
      *
      * @param Input from the player
