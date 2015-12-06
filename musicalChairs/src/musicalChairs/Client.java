@@ -72,7 +72,7 @@ public class Client {
                 if (SOCKET.isConnected() == true) {
                 }
                 while (inGame()) {
-
+                    
                     //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                     cont = askContinue("Continue?");
                 }
@@ -149,7 +149,7 @@ public class Client {
         int Test = 0;
         while (Test < 3) {
             String clientInput = ClientInterface.getRequest("Force start");
-            if (clientInput =="2") {
+            if (clientInput == "2") {
                 return false;
             }
             messageToServer(clientInput);
