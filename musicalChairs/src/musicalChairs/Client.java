@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER =  "192.168.0.31"; //"localhost";
+    static final String SERVER =  "localhost"; //"localhost";
             //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
@@ -34,9 +34,10 @@ public class Client {
     private static String messageFromServer() throws IOException {
         InputStream inFromServer = SOCKET.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
-        System.out.println("Server says " + in.readUTF());
-        if (in.readUTF() != null) {
-            return in.readUTF();
+        String message = in.readUTF();
+        System.out.println("Server says " + message);
+        if (message != null) {
+            return message;
         }
         return ("NO MESSAGE FROM THE SERVER");
 
@@ -50,8 +51,6 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        SOCKET = connectToServer();
-        Socket clientSocket;
         boolean cont = false;
         boolean startSocket = true;
         /*
@@ -69,18 +68,19 @@ public class Client {
         //ClientInterface.printChoices("Join Game");
         while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
-                clientSocket = connectToServer();
-                if(clientSocket.isConnected() == true){
+                SOCKET = connectToServer();
+                if(SOCKET.isConnected() == true){
                 cont = true;
                 }
                 while (cont) {
-                String clientInput = ClientInterface.getRequest();
+                String clientInput = ClientInterface.getRequest("Force start");
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
-                processMessageFromServer(ServerResponse);
-                clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
-                }
+                processMessageFromServer(ServerResponse); // ServerResponse
+                //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 cont = false;
+                }
+                
                 startSocket = false;
                 break;
             } catch (IOException e) {
@@ -107,27 +107,29 @@ public class Client {
             case ("ADVANCED"):
                 System.out.println("You advanced to the next round");
                 break;
-            case ("Force Start"):
+            case ("FORCE START"):
                 System.out.println("You are now in que to play");
                 break;
-            case ("Sit Down"):
+            case ("SIT DOWN"):
                 System.out.println("Sätt dig ner för fan");
                 long startTimer = System.currentTimeMillis();
-                String clientInput = ClientInterface.getRequest();
+                String clientInput = ClientInterface.getRequest("To Sit down mofo!");
                 long stopTimer = System.currentTimeMillis();
                 long totalResponseTime = stopTimer - startTimer;
                 messageToServer(clientInput, totalResponseTime);
                 break;
-            case ("Get Ready"):
+            case ("GET READY"):
                 System.out.println("Nu smäller de snart");
                 messageToServer("READY");
                 break;
+            default:
+                System.out.println("Ingen giltig respons från servern");
         }
 
     }
 
 //TODO Fix safe input och flytta till ClientInterface
-    private static boolean askContinue(String phrase) {
+/*    private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
@@ -138,7 +140,7 @@ public class Client {
         sc.close();
         return true;
     }
-
+*/
     private static void madeby() {
         System.out.println("Made by:");
         System.out.println("Albin Sundqvist");
