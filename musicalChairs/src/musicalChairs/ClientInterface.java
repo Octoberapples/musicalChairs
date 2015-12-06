@@ -32,6 +32,7 @@ public class ClientInterface {
  * the function that is called when connecting to server
  * choices: JOIN(1) or EXIT(2)
  */
+    /*
     public static void joinOrExit(Socket clientSocket) throws IOException{
         switch (getRequest("Force Start")){
             case "1":
@@ -50,7 +51,7 @@ public class ClientInterface {
             
         }
     }
-
+*/
     /**
      *
      * @param Input from the player
