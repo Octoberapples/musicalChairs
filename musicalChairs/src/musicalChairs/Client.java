@@ -4,6 +4,8 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
@@ -15,30 +17,24 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER =  "localhost"; //"localhost";
-            //"192.168.0.31";
+    static final String SERVER = "localhost"; //"localhost";
+    //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-    public static void closeSocket() throws IOException{
-    SOCKET.close();
-    }
-    
-    private static void messageToServer(String clientRequest) throws IOException {
-        OutputStream outToServer = SOCKET.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF(clientRequest);
+    public static void closeSocket() throws IOException {
+        SOCKET.close();
     }
 
-    private static void messageToServer(String clientRequest, long totalResponseTime) throws IOException {
+    private static void messageToServer(Object clientRequest) throws IOException {
         OutputStream outToServer = SOCKET.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF(clientRequest + "\n" + totalResponseTime);
+        ObjectOutputStream out = new ObjectOutputStream(outToServer);
+        out.writeObject(clientRequest);
     }
 
-    private static String messageFromServer() throws IOException {
+    private static Object messageFromServer() throws IOException, ClassNotFoundException {
         InputStream inFromServer = SOCKET.getInputStream();
-        DataInputStream in = new DataInputStream(inFromServer);
-        String message = in.readUTF();
+        ObjectInputStream in = new ObjectInputStream(inFromServer);
+        String message = (String) in.readObject();
         System.out.println("Server says " + message);
         if (message != null) {
             return message;
@@ -54,7 +50,7 @@ public class Client {
         return newClientSocket;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         boolean cont = false;
         boolean startSocket = true;
         /*
@@ -65,7 +61,7 @@ public class Client {
          //server = args[0];
          try {
          DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
-         } catch (NumberFormatException e) {
+         } catch (NumberFormatException e) 1{
          System.out.println("Could not parse given port number. Using defaults.");
          }
          */
@@ -73,27 +69,21 @@ public class Client {
         while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
                 SOCKET = connectToServer();
-                if(SOCKET.isConnected() == true){
-                cont = true;
+                if (SOCKET.isConnected() == true) {
                 }
-                while (cont) {
-                String clientInput = ClientInterface.getRequest("Force start");
-                messageToServer(clientInput);
-                String ServerResponse = messageFromServer();
-                processMessageFromServer(ServerResponse); // ServerResponse
-                
-                
-                //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
-                cont = false;
+                while (inGame()) {
+
+                    //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
+                    cont = askContinue("Continue?");
                 }
-                
+
                 startSocket = false;
                 break;
             } catch (IOException e) {
             }
 
         }
-        
+
         System.out.println("Thanks for playing!");
         madeby();
     }
@@ -103,8 +93,8 @@ public class Client {
      *
      *
      */
-    private static void processMessageFromServer(String serverResponse) throws IOException {
-        switch (serverResponse) {
+    private static void processMessageFromServer(Object serverResponse) throws IOException {
+        switch ((String) serverResponse) {
             case ("WINNER"):
                 System.out.println("You are the winner!");
                 break;
@@ -123,7 +113,7 @@ public class Client {
                 String clientInput = ClientInterface.getRequest("To Sit down mofo!");
                 long stopTimer = System.currentTimeMillis();
                 long totalResponseTime = stopTimer - startTimer;
-                messageToServer(clientInput, totalResponseTime);
+                messageToServer(totalResponseTime);
                 break;
             case ("GET READY"):
                 System.out.println("Nu smäller de snart");
@@ -136,7 +126,7 @@ public class Client {
     }
 
 //TODO Fix safe input och flytta till ClientInterface
-/*    private static boolean askContinue(String phrase) {
+    private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
@@ -144,10 +134,9 @@ public class Client {
                 sc.close();
                 return false;
         }
-        sc.close();
         return true;
     }
-*/
+
     private static void madeby() {
         System.out.println("Made by:");
         System.out.println("Albin Sundqvist");
@@ -156,4 +145,18 @@ public class Client {
         System.out.println("Markus Norström");
     }
 
+    private static boolean inGame() throws IOException, ClassNotFoundException {
+        int Test = 0;
+        while (Test < 3) {
+            String clientInput = ClientInterface.getRequest("Force start");
+            if (clientInput =="2") {
+                return false;
+            }
+            messageToServer(clientInput);
+            Object ServerResponse = (String) messageFromServer();
+            processMessageFromServer(ServerResponse); // ServerResponse}
+
+        }
+        return false;
+    }
 }

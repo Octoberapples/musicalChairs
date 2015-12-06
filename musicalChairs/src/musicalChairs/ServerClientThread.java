@@ -9,6 +9,7 @@ import java.io.*;
  */
 public class ServerClientThread extends Thread {
 
+    Object CLIENT_CURRENT_ACTION;
     boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
     long TIMER;
@@ -30,9 +31,10 @@ public class ServerClientThread extends Thread {
         return clientPort;
     }
 
-    public void changeState(boolean newState){
+    public void changeState(boolean newState) {
         CLIENTSTATE = newState;
     }
+
     /**
      * return client IP
      */
@@ -48,21 +50,22 @@ public class ServerClientThread extends Thread {
         System.out.println("Accepted Client : ID - " + CLIENT_ID + " : Address - "
                 + getClientIP() + " : Portnumber - " + getClientPort());
         try {
-            DataInputStream in = new DataInputStream(CLIENTSOCKET.getInputStream());
+            ObjectInputStream in = new ObjectInputStream(CLIENTSOCKET.getInputStream());
             DataOutputStream out = new DataOutputStream(CLIENTSOCKET.getOutputStream());
             while (RUNNING) {
-                String clientCommand;
-                clientCommand = in.readUTF();
-                System.out.println("Client Says :" + clientCommand);
-                if (clientCommand.equalsIgnoreCase("EXIT")) {
+                CLIENT_CURRENT_ACTION = in.readObject();
+                System.out.println("Client: "+ CLIENT_ID +" says :" + CLIENT_CURRENT_ACTION);
+                if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
                     CLIENTSTATE = false;
                     System.out.print("Stopping communication for client : " + CLIENT_ID);
-                } else {
-                    String serverResponse = ServerGameProtocol.handleClientInput(clientCommand);
-                    System.out.println(serverResponse);
+                } else if(CLIENT_CURRENT_ACTION instanceof String){
+                    String serverResponse = (String)ServerGameProtocol.handleClientInput(CLIENT_CURRENT_ACTION);
                     out.writeUTF(serverResponse);
                 }
+               /*
+                VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
+                */
             }
         } catch (Exception e) {
             e.printStackTrace();
