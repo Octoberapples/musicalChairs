@@ -12,7 +12,7 @@ public class ServerRun extends Thread {
     private static int PORT; //Kanske onödig
     private final ServerSocket SERVERSOCKET;
     Socket[] CLIENT;
-    private static int TOTAL_AMOUNT_OF_PLAYERS=0;
+    private static int TOTAL_AMOUNT_OF_PLAYERS;
 
     public ServerRun(int port) throws IOException {
         super("ServerRun");
@@ -38,12 +38,12 @@ public class ServerRun extends Thread {
      */
     public void setUpConnection() throws IOException {
         InetAddress IP = InetAddress.getLocalHost();
-        
+
         System.out.println("Waiting for client on port " + SERVERSOCKET.getLocalPort() + " and IP "
                 + IP.getHostAddress());
-        CLIENT[0] = SERVERSOCKET.accept();
+        CLIENT[TOTAL_AMOUNT_OF_PLAYERS] = SERVERSOCKET.accept();
+        System.out.println("Just connected to client with IP " + CLIENT[TOTAL_AMOUNT_OF_PLAYERS].getInetAddress().getHostAddress() + " on port " + CLIENT[TOTAL_AMOUNT_OF_PLAYERS].getPort());
         TOTAL_AMOUNT_OF_PLAYERS++;
-        System.out.println("Just connected to client with IP " + CLIENT[0].getInetAddress().getHostAddress() + " on port " + CLIENT[0].getPort());
     }
 
     /**
@@ -53,12 +53,15 @@ public class ServerRun extends Thread {
         while (true) {
             try {
                 setUpConnection();
-                DataInputStream in = new DataInputStream(CLIENT[0].getInputStream());//skapar connection in
-                DataOutputStream out = new DataOutputStream(CLIENT[0].getOutputStream());//skapar connection ut
+                DataInputStream in = new DataInputStream(CLIENT[(TOTAL_AMOUNT_OF_PLAYERS - 1)].getInputStream());//skapar connection in
+                DataOutputStream out = new DataOutputStream(CLIENT[(TOTAL_AMOUNT_OF_PLAYERS - 1)].getOutputStream());//skapar connection ut
                 //ServerGameProtocol.playRound(out);
                 String serverResponse = in.readUTF();
-                System.out.println(serverResponse + " <- skickades from " + CLIENT[0].getRemoteSocketAddress());
-                out.writeUTF("Det här skickade du till mig: "+serverResponse + " Här är din socket som jag använder: " + CLIENT[0].getRemoteSocketAddress());
+                System.out.println(serverResponse + " <- skickades from " + CLIENT[(TOTAL_AMOUNT_OF_PLAYERS - 1)].getRemoteSocketAddress());
+                out.writeUTF("Det här skickade du till mig: " + serverResponse
+                        + "\n" + " Här är din socket som jag använder: " + CLIENT[0].getRemoteSocketAddress()
+                        + "\n" + "Så här många spelare: " + TOTAL_AMOUNT_OF_PLAYERS);
+                System.out.println(TOTAL_AMOUNT_OF_PLAYERS);
                 //CLIENT[0].close();
 
             } catch (SocketTimeoutException s) {
