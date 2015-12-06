@@ -73,21 +73,16 @@ class ServerGameProtocol {
     /**
      * gets a String from client and uses it
      */
-    public static String handleClientInput(String clientResponse, String clientState) {
+    public static String handleClientInput(String clientResponse) {
         String serverResponse;
         switch (clientResponse) {
             case "":
 
-            case "EXIT":
-            //connectedPlayers = connectedPlayers -1; om den hade joinat tidigare
-            //do nothing; om den inte joinat. Typ skapat connection o direkt Exitat.
-
             case "SIT":
-            //long sitTime = in.readLong(); //tar in klientens klocka. borde nog returna denna eller spara den där det passar
 
             default:
                 System.out.println("A client joined the game");
-                serverResponse = ServerResponseRepository.getResponseChoices(clientState);
+                serverResponse = "FORCE START";
                 System.out.println(serverResponse);
                 return serverResponse;
 

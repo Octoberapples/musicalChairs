@@ -8,8 +8,10 @@ import java.io.*;
  * @author Nogna och lite tim
  */
 public class ServerClientThread extends Thread {
-    String CLIENTSTATE;
+
+    boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
+    long TIMER;
     int CLIENT_ID = -1;
     boolean RUNNING = true;
 
@@ -17,7 +19,7 @@ public class ServerClientThread extends Thread {
         super("ServerClientThread");
         CLIENTSOCKET = socket;
         CLIENT_ID = clientIndex;
-        CLIENTSTATE = "IN_PLAYER_QUEUE";
+        CLIENTSTATE = false;
     }
 
     /*
@@ -28,6 +30,9 @@ public class ServerClientThread extends Thread {
         return clientPort;
     }
 
+    public void changeState(boolean newState){
+        CLIENTSTATE = newState;
+    }
     /**
      * return client IP
      */
@@ -46,10 +51,12 @@ public class ServerClientThread extends Thread {
             DataInputStream in = new DataInputStream(CLIENTSOCKET.getInputStream());
             DataOutputStream out = new DataOutputStream(CLIENTSOCKET.getOutputStream());
             while (RUNNING) {
-                String clientCommand = in.readUTF();
+                String clientCommand;
+                clientCommand = in.readUTF();
                 System.out.println("Client Says :" + clientCommand);
                 if (clientCommand.equalsIgnoreCase("EXIT")) {
                     RUNNING = false;
+                    CLIENTSTATE = false;
                     System.out.print("Stopping communication for client : " + CLIENT_ID);
                 } else {
                     String serverResponse = ServerGameProtocol.handleClientInput(clientCommand, CLIENTSTATE);
