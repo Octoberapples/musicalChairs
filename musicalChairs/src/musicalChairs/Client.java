@@ -19,6 +19,10 @@ public class Client {
             //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
+    public static void closeSocket() throws IOException{
+    SOCKET.close();
+    }
+    
     private static void messageToServer(String clientRequest) throws IOException {
         OutputStream outToServer = SOCKET.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
@@ -77,6 +81,8 @@ public class Client {
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
                 processMessageFromServer(ServerResponse); // ServerResponse
+                
+                
                 //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 cont = false;
                 }
@@ -87,6 +93,7 @@ public class Client {
             }
 
         }
+        
         System.out.println("Thanks for playing!");
         madeby();
     }
