@@ -56,19 +56,8 @@ class ServerGameProtocol {
 
     }
 
-    /**
-     *
-     * updates state. Can be: WINNER, LOSER, IN_PLAYER_QUEUE, ADVANCED,
-     * SIT_DOWN, GET_READY
-     */
-    public void updateState(Socket SERVER, String state) {
 
-    }
 
-    public String sendResult(String state) throws IOException {
-        String serverResponse = test.getResponseChoices(state);
-        return serverResponse;
-    }
 
     /**
      * gets a String from client and uses it
