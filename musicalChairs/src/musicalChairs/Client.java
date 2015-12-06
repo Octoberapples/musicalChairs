@@ -65,7 +65,7 @@ public class Client {
          }
          */
         //ClientInterface.printChoices("Join Game");
-        while (true) {
+        while (true) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
                 clientSocket = connectToServer();
                 //ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
