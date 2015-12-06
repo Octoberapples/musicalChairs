@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER = "localhost";
+    static final String SERVER =  "192.168.0.31"; //"localhost";
             //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
@@ -69,7 +69,8 @@ public class Client {
         //ClientInterface.printChoices("Join Game");
         while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
-                if(SOCKET.isConnected() == true){
+                clientSocket = connectToServer();
+                if(clientSocket.isConnected() == true){
                 cont = true;
                 }
                 while (cont) {
@@ -77,7 +78,7 @@ public class Client {
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
                 processMessageFromServer(ServerResponse);
-                SOCKET.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
+                clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 }
                 cont = false;
                 startSocket = false;
