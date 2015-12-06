@@ -10,10 +10,9 @@ import java.io.*;
 public class ServerRun extends Thread {
 
     private static int PORT; //Kanske onödig
-    private ServerSocket SERVERSOCKET;
+    private final ServerSocket SERVERSOCKET;
     Socket[] CLIENT;
     private static int TOTAL_AMOUNT_OF_PLAYERS=0;
-    int[] CLIENTS_PORT;
 
     public ServerRun(int port) throws IOException {
         super("ServerRun");
@@ -57,9 +56,10 @@ public class ServerRun extends Thread {
                 DataInputStream in = new DataInputStream(CLIENT[0].getInputStream());//skapar connection in
                 DataOutputStream out = new DataOutputStream(CLIENT[0].getOutputStream());//skapar connection ut
                 //ServerGameProtocol.playRound(out);
-                System.out.println(in.readUTF() + " received this from " + CLIENT[0].getRemoteSocketAddress());
-                out.writeUTF("Hejsan på dig " + "\nGoodbye!");
-                CLIENT[0].close();
+                String serverResponse = in.readUTF();
+                System.out.println(serverResponse + " <- skickades from " + CLIENT[0].getRemoteSocketAddress());
+                out.writeUTF("Det här skickade du till mig: "+serverResponse + " Här är din socket som jag använder: " + CLIENT[0].getRemoteSocketAddress());
+                //CLIENT[0].close();
 
             } catch (SocketTimeoutException s) {
                 System.out.println("Socket timed out!");
