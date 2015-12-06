@@ -15,9 +15,14 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER = "localhost";
+    static final String SERVER =  "localhost"; //"localhost";
+            //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
+    public static void closeSocket() throws IOException{
+    SOCKET.close();
+    }
+    
     private static void messageToServer(String clientRequest) throws IOException {
         OutputStream outToServer = SOCKET.getOutputStream();
         DataOutputStream out = new DataOutputStream(outToServer);
@@ -30,12 +35,13 @@ public class Client {
         out.writeUTF(clientRequest + "\n" + totalResponseTime);
     }
 
-    private static String messageFromServer(Socket client) throws IOException {
-        InputStream inFromServer = client.getInputStream();
+    private static String messageFromServer() throws IOException {
+        InputStream inFromServer = SOCKET.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
-        System.out.println("Server says " + in.readUTF());
-        if (in.readUTF() != null) {
-            return in.readUTF();
+        String message = in.readUTF();
+        System.out.println("Server says " + message);
+        if (message != null) {
+            return message;
         }
         return ("NO MESSAGE FROM THE SERVER");
 
@@ -49,8 +55,8 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException {
-        SOCKET = connectToServer();
-        Socket clientSocket;
+        boolean cont = false;
+        boolean startSocket = true;
         /*
          if (args.length <= 1) {
          System.out.println("Usage: java musicalChairs [server name] [socket port]");
@@ -64,19 +70,30 @@ public class Client {
          }
          */
         //ClientInterface.printChoices("Join Game");
-        while (true) {
+        while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
-                clientSocket = connectToServer();
-                String clientInput = ClientInterface.getRequest();
+                SOCKET = connectToServer();
+                if(SOCKET.isConnected() == true){
+                cont = true;
+                }
+                while (cont) {
+                String clientInput = ClientInterface.getRequest("Force start");
                 messageToServer(clientInput);
-                String ServerResponse = messageFromServer(clientSocket);
-                processMessageFromServer(ServerResponse);
-                clientSocket.close();
+                String ServerResponse = messageFromServer();
+                processMessageFromServer(ServerResponse); // ServerResponse
+                
+                
+                //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
+                cont = false;
+                }
+                
+                startSocket = false;
                 break;
             } catch (IOException e) {
             }
 
         }
+        
         System.out.println("Thanks for playing!");
         madeby();
     }
@@ -90,28 +107,36 @@ public class Client {
         switch (serverResponse) {
             case ("WINNER"):
                 System.out.println("You are the winner!");
+                break;
             case ("LOSER"):
                 System.out.println("You are a noob and YOU'RE OUT!");
+                break;
             case ("ADVANCED"):
                 System.out.println("You advanced to the next round");
-            case ("Force Start"):
+                break;
+            case ("FORCE START"):
                 System.out.println("You are now in que to play");
-            case ("Sit Down"):
+                break;
+            case ("SIT DOWN"):
                 System.out.println("Sätt dig ner för fan");
                 long startTimer = System.currentTimeMillis();
-                String clientInput = ClientInterface.getRequest();
+                String clientInput = ClientInterface.getRequest("To Sit down mofo!");
                 long stopTimer = System.currentTimeMillis();
                 long totalResponseTime = stopTimer - startTimer;
                 messageToServer(clientInput, totalResponseTime);
-            case ("Get Ready"):
+                break;
+            case ("GET READY"):
                 System.out.println("Nu smäller de snart");
                 messageToServer("READY");
+                break;
+            default:
+                System.out.println("Ingen giltig respons från servern");
         }
 
     }
 
-//TODO Fix safe input
-    private static boolean askContinue(String phrase) {
+//TODO Fix safe input och flytta till ClientInterface
+/*    private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
@@ -122,7 +147,7 @@ public class Client {
         sc.close();
         return true;
     }
-
+*/
     private static void madeby() {
         System.out.println("Made by:");
         System.out.println("Albin Sundqvist");

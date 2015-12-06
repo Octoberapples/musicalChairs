@@ -1,30 +1,52 @@
 package musicalChairs;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.net.Socket;
+
 /*
 
- MÅSTE FIXAS, OTRILOGT BUGGIGT
+ MÅSTE FIXAS, OTRILOGT BUGGIGT 
  */
 
 public class ClientInterface {
-
+    
     /**
-     *  Fett buggig mannen
-     *  Ge mig SAFE INPUT jag svär jag blir nöjd då
+     * Fett buggig mannen Ge mig SAFE INPUT jag svär jag blir nöjd då
+     *
      * @return the client request in form of a String
      */
-    public static String getRequest() {
-
-        System.out.println("1-2: Skriv!");
-        System.out.println(printChoices("Join Game"));
-        Scanner sc = new Scanner(System.in);
+    public static String getRequest(String string) throws IOException {
+        boolean flag = true;
         int tmpRequest = 0;
-        tmpRequest = sc.nextInt();
+
+        while (flag == true){
+            try{
+                System.out.println("Press 1 To " + string + " game or 2 to exit");
+                Scanner sc = new Scanner(System.in);
+                
+                tmpRequest = sc.nextInt();
+                if (tmpRequest == 1){
+                    flag = false;
+                }
+                else if (tmpRequest == 2){
+                flag = false;
+                //Client.closeSocket();
+                }
+                else if (tmpRequest != 1 || tmpRequest != 2){
+                    System.out.println("Wrong input");
+                }
+            } catch (Exception e){
+                System.out.println("Wrong input");
+            }
+        }
+        
+        
         String tmpRequesttoString = Integer.toString(tmpRequest);
         return tmpRequesttoString;
     }
-
 
     /**
      *
@@ -34,13 +56,5 @@ public class ClientInterface {
         while (!Input.hasNextInt()) {
             Input.next();
         }
-    }
-
-    /**
-     * Print the requests that are available for the client.
-     */
-    public static String printChoices(String choice) {
-        return "1: " + choice + " \n"
-                + "2: Leave Game";
     }
 }

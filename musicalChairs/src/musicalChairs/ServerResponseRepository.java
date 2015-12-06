@@ -1,8 +1,10 @@
 package musicalChairs;
 
+
+
 public class ServerResponseRepository {
 
-    public String getResponseChoices(String state) {
+    public static String getResponseChoices(String state) {
         switch (state) {
             case "WINNER":
                 return getChoicesWinner();
@@ -21,28 +23,28 @@ public class ServerResponseRepository {
     }
 
 
-    private String getChoicesInPlayerQueue() {
-        return "Force Start";
+    private static String getChoicesInPlayerQueue() {
+        return "FORCE START";
     }
 
-    private String getChoicesWinner() {
+    private static String getChoicesWinner() {
         return "WINNER";
     }
 
-    private String getChoicesLoser() {
+    private static String getChoicesLoser() {
         return "LOSER";
     }
 
-    private String getChoicesAdvanced() {
+    private static String getChoicesAdvanced() {
         return "ADVANCED";
     }
 
-    private String getChoicesSitDown() {
-        return "Sit Down";
+    private static String getChoicesSitDown() {
+        return "SIT DOWM";
     }
 
-    private String getChoicesGetReady() {
-        return "Get Ready";
+    private static String getChoicesGetReady() {
+        return "GET READY";
     }
 
 }

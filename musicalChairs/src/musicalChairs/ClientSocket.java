@@ -9,7 +9,7 @@ class ClientSocket extends ClientInterface {
     private String[] args;
     String server = args[1];
     int port = Integer.parseInt(args[2]);
-    private static Socket socket;
+    private static Socket SOCKET; //FIXA SOCKET PÅ ALLT
 
     /**
      * Skickar iväg clientAction och väntar på serverResponse.
@@ -24,10 +24,10 @@ class ClientSocket extends ClientInterface {
         String ans = null;
 
         try {
-            socket = new Socket(server, socket_port);
+            SOCKET = new Socket(server, socket_port);
             ObjectOutputStream out
-                    = new ObjectOutputStream(socket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                    = new ObjectOutputStream(SOCKET.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(SOCKET.getInputStream()));
             //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
             out.writeObject(clientAction);
 
@@ -50,12 +50,12 @@ class ClientSocket extends ClientInterface {
         String ans = null;
 
         try {
-            Socket echoSocket = new Socket(server, socket_port);
-            ObjectOutputStream out = new ObjectOutputStream(echoSocket.getOutputStream());
-            BufferedReader in = new BufferedReader(new InputStreamReader(echoSocket.getInputStream()));
+            Socket socket = new Socket(server, socket_port);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             //BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in)); behöver vi nog inte
             out.writeObject(timer);
-            echoSocket.close();
+            socket.close();
             ans = in.readLine();
 
         } catch (Exception e) {
