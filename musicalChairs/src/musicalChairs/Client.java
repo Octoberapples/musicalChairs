@@ -16,6 +16,7 @@ public class Client {
 
     static Socket SOCKET;
     static final String SERVER = "localhost";
+            //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
     private static void messageToServer(String clientRequest) throws IOException {
@@ -67,7 +68,7 @@ public class Client {
         while (true) {
             try {
                 clientSocket = connectToServer();
-                ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
+                //ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
                 String clientInput = ClientInterface.getRequest();
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
