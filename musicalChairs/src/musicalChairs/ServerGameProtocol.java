@@ -28,7 +28,7 @@ class ServerGameProtocol {
      * KANSKE TAR BORT DENNA O HAR KODEN UTAN FUNKTION, MÅSTE UPPDATERA EMPTY CHAIRS O DET ÄR NOG LÄTTARE UTAN FUNKTIONEN
      */
     
-    public void timer(int emptyChairs){
+    public void checkIfRoundIsOver(int emptyChairs){
         long timeElapsed = 0;
         long startTimer = System.nanoTime();
         while(timeElapsed<(20*(10^9)) || emptyChairs == 0){
