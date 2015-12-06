@@ -52,6 +52,8 @@ public class Client {
     public static void main(String[] args) throws IOException {
         SOCKET = connectToServer();
         Socket clientSocket;
+        boolean cont = false;
+        boolean startSocket = true;
         /*
          if (args.length <= 1) {
          System.out.println("Usage: java musicalChairs [server name] [socket port]");
@@ -65,15 +67,21 @@ public class Client {
          }
          */
         //ClientInterface.printChoices("Join Game");
-        while (true) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
+        while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
             try {
                 clientSocket = connectToServer();
-                //ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
+                if(clientSocket.isConnected() == true){
+                cont = true;
+                }
+                while (cont) {
                 String clientInput = ClientInterface.getRequest();
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
                 processMessageFromServer(ServerResponse);
-                clientSocket.close();
+                clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
+                }
+                cont = false;
+                startSocket = false;
                 break;
             } catch (IOException e) {
             }
