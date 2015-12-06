@@ -76,7 +76,7 @@ public class Client {
                 String clientInput = ClientInterface.getRequest("Force start");
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
-                processMessageFromServer("LOSER"); // ServerResponse
+                processMessageFromServer(ServerResponse); // ServerResponse
                 //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 cont = false;
                 }
@@ -107,10 +107,10 @@ public class Client {
             case ("ADVANCED"):
                 System.out.println("You advanced to the next round");
                 break;
-            case ("Force Start"):
+            case ("FORCE START"):
                 System.out.println("You are now in que to play");
                 break;
-            case ("Sit Down"):
+            case ("SIT DOWN"):
                 System.out.println("Sätt dig ner för fan");
                 long startTimer = System.currentTimeMillis();
                 String clientInput = ClientInterface.getRequest("To Sit down mofo!");
@@ -118,16 +118,18 @@ public class Client {
                 long totalResponseTime = stopTimer - startTimer;
                 messageToServer(clientInput, totalResponseTime);
                 break;
-            case ("Get Ready"):
+            case ("GET READY"):
                 System.out.println("Nu smäller de snart");
                 messageToServer("READY");
                 break;
+            default:
+                System.out.println("Ingen giltig respons från servern");
         }
 
     }
 
 //TODO Fix safe input och flytta till ClientInterface
-    private static boolean askContinue(String phrase) {
+/*    private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
         switch (sc.nextLine().charAt(0)) {
@@ -138,7 +140,7 @@ public class Client {
         sc.close();
         return true;
     }
-
+*/
     private static void madeby() {
         System.out.println("Made by:");
         System.out.println("Albin Sundqvist");
