@@ -30,8 +30,8 @@ public class Client {
         out.writeUTF(clientRequest + "\n" + totalResponseTime);
     }
 
-    private static String messageFromServer(Socket client) throws IOException {
-        InputStream inFromServer = client.getInputStream();
+    private static String messageFromServer() throws IOException {
+        InputStream inFromServer = SOCKET.getInputStream();
         DataInputStream in = new DataInputStream(inFromServer);
         System.out.println("Server says " + in.readUTF());
         if (in.readUTF() != null) {
@@ -70,7 +70,7 @@ public class Client {
                 ClientInterface.joinOrExit(clientSocket); //tror jag vill ta in outputstreamen i denna men vet inte hur //för att testa funktionen bara
                 String clientInput = ClientInterface.getRequest();
                 messageToServer(clientInput);
-                String ServerResponse = messageFromServer(clientSocket);
+                String ServerResponse = messageFromServer();
                 processMessageFromServer(ServerResponse);
                 clientSocket.close();
                 break;
@@ -91,12 +91,16 @@ public class Client {
         switch (serverResponse) {
             case ("WINNER"):
                 System.out.println("You are the winner!");
+                break;
             case ("LOSER"):
                 System.out.println("You are a noob and YOU'RE OUT!");
+                break;
             case ("ADVANCED"):
                 System.out.println("You advanced to the next round");
+                break;
             case ("Force Start"):
                 System.out.println("You are now in que to play");
+                break;
             case ("Sit Down"):
                 System.out.println("Sätt dig ner för fan");
                 long startTimer = System.currentTimeMillis();
@@ -104,14 +108,16 @@ public class Client {
                 long stopTimer = System.currentTimeMillis();
                 long totalResponseTime = stopTimer - startTimer;
                 messageToServer(clientInput, totalResponseTime);
+                break;
             case ("Get Ready"):
                 System.out.println("Nu smäller de snart");
                 messageToServer("READY");
+                break;
         }
 
     }
 
-//TODO Fix safe input
+//TODO Fix safe input och flytta till ClientInterface
     private static boolean askContinue(String phrase) {
         System.out.println(phrase + "(y/n)");
         Scanner sc = new Scanner(System.in);
