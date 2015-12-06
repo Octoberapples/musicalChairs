@@ -59,7 +59,7 @@ public class ServerClientThread extends Thread {
                     CLIENTSTATE = false;
                     System.out.print("Stopping communication for client : " + CLIENT_ID);
                 } else {
-                    String serverResponse = ServerGameProtocol.handleClientInput(clientCommand, CLIENTSTATE);
+                    String serverResponse = ServerGameProtocol.handleClientInput(clientCommand);
                     System.out.println(serverResponse);
                     out.writeUTF(serverResponse);
                 }
