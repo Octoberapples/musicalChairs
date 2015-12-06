@@ -78,7 +78,7 @@ public class Client {
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
                 processMessageFromServer(ServerResponse);
-                clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
+                //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 }
                 cont = false;
                 startSocket = false;
