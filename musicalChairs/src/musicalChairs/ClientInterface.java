@@ -18,10 +18,9 @@ public class ClientInterface {
      *  Ge mig SAFE INPUT jag svär jag blir nöjd då
      * @return the client request in form of a String
      */
-    public static String getRequest() {
+    public static String getRequest(String string) {
 
-        System.out.println("1 eller 2: Skriv!");
-        System.out.println(printChoices("Join Game"));
+        System.out.println("Press 1 To " + string + " game or 2 to exit");
         Scanner sc = new Scanner(System.in);
         int tmpRequest = 0;
         tmpRequest = sc.nextInt();
@@ -34,7 +33,7 @@ public class ClientInterface {
  * choices: JOIN(1) or EXIT(2)
  */
     public static void joinOrExit(Socket clientSocket) throws IOException{
-        switch (getRequest()){
+        switch (getRequest("Force Start")){
             case "1":
                 //Join game;
                 //out.writeUTF("JOIN");//sending to server that client is joining//tror jag vill ta outputstream som inparameter
@@ -60,13 +59,5 @@ public class ClientInterface {
         while (!Input.hasNextInt()) {
             Input.next();
         }
-    }
-
-    /**
-     * Print the requests that are available for the client.
-     */
-    public static String printChoices(String choice) {
-        return "1: " + choice + " \n"
-                + "2: Leave Game";
     }
 }

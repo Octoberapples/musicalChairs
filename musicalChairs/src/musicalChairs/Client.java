@@ -73,10 +73,10 @@ public class Client {
                 cont = true;
                 }
                 while (cont) {
-                String clientInput = ClientInterface.getRequest();
+                String clientInput = ClientInterface.getRequest("Force start");
                 messageToServer(clientInput);
                 String ServerResponse = messageFromServer();
-                processMessageFromServer(ServerResponse);
+                processMessageFromServer("LOSER"); // ServerResponse
                 //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
                 cont = false;
                 }
@@ -113,7 +113,7 @@ public class Client {
             case ("Sit Down"):
                 System.out.println("Sätt dig ner för fan");
                 long startTimer = System.currentTimeMillis();
-                String clientInput = ClientInterface.getRequest();
+                String clientInput = ClientInterface.getRequest("To Sit down mofo!");
                 long stopTimer = System.currentTimeMillis();
                 long totalResponseTime = stopTimer - startTimer;
                 messageToServer(clientInput, totalResponseTime);
