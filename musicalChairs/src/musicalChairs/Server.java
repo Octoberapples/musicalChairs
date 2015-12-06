@@ -18,7 +18,7 @@ public class Server {
             System.out.println("Waiting for client on port: " + serverSocket.getLocalPort()
                     + " and IP: " + InetAddress.getLocalHost());
             Socket clientSocket = serverSocket.accept();
-            ServerRun cliThread = new ServerRun(clientSocket, id++);
+            ServerClientThread cliThread = new ServerClientThread(clientSocket, id++);
             cliThread.start();
         }
     }
