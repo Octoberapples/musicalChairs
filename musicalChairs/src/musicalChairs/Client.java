@@ -15,7 +15,7 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER = "localhost";
+    static final String SERVER =  "192.168.0.31"; //"localhost";
             //"192.168.0.31";
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 

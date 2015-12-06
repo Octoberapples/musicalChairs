@@ -20,7 +20,7 @@ public class ClientInterface {
      */
     public static String getRequest() {
 
-        System.out.println("1-2: Skriv!");
+        System.out.println("1 eller 2: Skriv!");
         System.out.println(printChoices("Join Game"));
         Scanner sc = new Scanner(System.in);
         int tmpRequest = 0;
