@@ -57,40 +57,28 @@ class ServerGameProtocol {
     }
 
     /**
-     *
-     * updates state. Can be: WINNER, LOSER, IN_PLAYER_QUEUE, ADVANCED,
-     * SIT_DOWN, GET_READY
-     */
-    public void updateState(Socket SERVER, String state) {
-
-    }
-
-    public String sendResult(String state) throws IOException {
-        String serverResponse = test.getResponseChoices(state);
-        return serverResponse;
-    }
-
-    /**
      * gets a String from client and uses it
      */
-    public static String handleClientInput(String clientResponse, String clientState) {
+    public static Object handleClientInput(Object clientResponse) {
         String serverResponse;
-        switch (clientResponse) {
-            case "":
+        if (clientResponse instanceof String) {
 
-            case "EXIT":
-            //connectedPlayers = connectedPlayers -1; om den hade joinat tidigare
-            //do nothing; om den inte joinat. Typ skapat connection o direkt Exitat.
+            switch ((String) clientResponse) {
+                case "FORCE START":
+                    System.out.println("A client forcestarted the game");
+                    serverResponse = "A client forcestarted the game";
+                    return serverResponse;
+                default:
+                    System.out.println("A client joined the game");
+                    serverResponse = "FORCE START";
+                    return serverResponse;
+            }
 
-            case "SIT":
-            //long sitTime = in.readLong(); //tar in klientens klocka. borde nog returna denna eller spara den där det passar
+        } else if (clientResponse instanceof Long) {
+            return (Long) clientResponse;
 
-            default:
-                System.out.println("A client joined the game");
-                serverResponse = ServerResponseRepository.getResponseChoices(clientState);
-                System.out.println(serverResponse);
-                return serverResponse;
-
+        } else {
+            return "CLIENT_CORRUPTED";
         }
     }
 
