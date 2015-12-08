@@ -19,7 +19,7 @@ public class ServerClientThread extends Thread {
     public ServerClientThread(Socket socket, int clientIndex) throws IOException {
         super("ServerClientThread");
         CLIENTSOCKET = socket;
-        CLIENT_ID = clientIndex;
+        this.CLIENT_ID = clientIndex;
         CLIENTSTATE = false;
     }
 
