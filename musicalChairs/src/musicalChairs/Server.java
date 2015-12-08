@@ -65,7 +65,10 @@ public class Server {
             }
         }
     }
-
+    
+/*
+    Skicka ut att någon är vinnaren typ, eller att spelet börjar
+*/
     private void broadcast(Object thing_to_send) {
 
         for (int i = 0; i < PLAYER_LIST.size(); i++) {

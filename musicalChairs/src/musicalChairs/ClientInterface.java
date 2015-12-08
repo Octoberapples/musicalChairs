@@ -17,7 +17,7 @@ public class ClientInterface {
      *
      * @return the client request in form of a String
      */
-    public static Long getRequest(String string) throws IOException {
+    public static Object getRequest(String string) throws IOException {
         boolean flag = true;
         long startTimer = System.currentTimeMillis();
         
@@ -30,7 +30,7 @@ public class ClientInterface {
                 if (tmpRequest == 1) {
                     flag = false;
                 } else if (tmpRequest == 2) {
-                    flag = false;
+                    return "2";
                     //Client.closeSocket();
                 } else if (tmpRequest != 1 || tmpRequest != 2) {
                     System.out.println("Wrong input");

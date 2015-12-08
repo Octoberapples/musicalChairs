@@ -18,16 +18,26 @@ public class Client {
 
     static Socket SOCKET;
     static final String SERVER = "localhost"; //"localhost";
+    //"192.168.0.31";
     static String SERVER_RESPONSE;
     static Object CLIENT_ACTION;
-    //"192.168.0.31";
+    static private ObjectOutputStream OUT_TO_SERVER;
+    static private ObjectInputStream IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-    private static void closeSocket() throws IOException {
-        SOCKET.close();
+    private static void closeConnection() throws IOException {
+        if (SOCKET != null) {
+            SOCKET.close();
+        }
+        if (OUT_TO_SERVER != null) {
+            OUT_TO_SERVER.close();
+        }
+        if (IN_FROM_SERVER != null) {
+            IN_FROM_SERVER.close();
+        }
     }
 
-    private static class ClientCheckServerResponse extends Thread {
+    private static class UpdateSERVER_RESPONSE extends Thread {
 
         public void start() {
             while (true) {
@@ -45,42 +55,55 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        SOCKET = connectToServer();
-        ClientCheckServerResponse response = new ClientCheckServerResponse();
-        response.start();
+        SOCKET = createSocketToServer();
+        System.out.println("Socket ---- Succes");
+        createStreamsToServer();
+        System.out.println("Streams ---- Succes");
+
+        //Här uppdateras SERVER_RESPONSE
+        UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
+        UpdateResponseFromServer.start();
 
         while (!CLIENT_ACTION.equals("2")) {
             System.out.println(SERVER_RESPONSE);
             CLIENT_ACTION = ClientInterface.getRequest();
             sleep(10);
             processMessageFromServer();
-            messageToServer(CLIENT_ACTION);
+            OUT_TO_SERVER.writeObject(CLIENT_ACTION);
 
         }
         //response.stop(); // VILL NOG HA DEN HÄR MEN BÄTTRE GREJ
         System.out.println("Closing the connection...");
-        closeSocket();
-        System.out.println("Succes!" + "\n"+ "Goodbye!");
+        closeConnection();
+        System.out.println("Succes!" + "\n" + "Goodbye!");
     }
 
-    private static Socket connectToServer() throws IOException {
+    private static Socket createSocketToServer() throws IOException {
         System.out.println("Connecting to " + SERVER + " on port " + DEFAULT_SOCKET_PORT);
         Socket newClientSocket = new Socket(SERVER, DEFAULT_SOCKET_PORT);
         System.out.println("Just connected to " + newClientSocket.getRemoteSocketAddress());
         return newClientSocket;
     }
 
-    private static void messageToServer(Object clientRequest) throws IOException {
-        OutputStream outToServer = SOCKET.getOutputStream();
-        ObjectOutputStream out = new ObjectOutputStream(outToServer);
-        out.writeObject(clientRequest);
+    private static void createStreamsToServer() throws IOException, InterruptedException {
+        System.out.println("Trying to create OutputStream...");
+        OUT_TO_SERVER = new ObjectOutputStream(SOCKET.getOutputStream());
+        OUT_TO_SERVER.flush();
+        System.out.println("OutputStream ---- Succes");
+        System.out.println("Trying to create InputStream...");
+        IN_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
+        System.out.println("InputStream ---- Succes");
     }
 
+    /*
+    private static void messageToServer(Object clientRequest) throws IOException {
+        OUT_TO_SERVER.writeObject(clientRequest);
+    }
+     */
     private static Object messageFromServer() throws IOException, ClassNotFoundException {
-        InputStream inFromServer = SOCKET.getInputStream();
-        ObjectInputStream in = new ObjectInputStream(inFromServer);
-        SERVER_RESPONSE = (String) in.readObject();
+        SERVER_RESPONSE = (String) IN_FROM_SERVER.readObject();
         System.out.println("Server says " + SERVER_RESPONSE);
+
         if (SERVER_RESPONSE != null) {
             return SERVER_RESPONSE;
         }
