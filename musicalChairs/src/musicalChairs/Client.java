@@ -43,6 +43,7 @@ public class Client {
             while (true) {
                 try {
                     SERVER_RESPONSE = (String) messageFromServer();
+                    System.out.println(SERVER_RESPONSE);
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
