@@ -1,7 +1,7 @@
 package musicalChairs;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
@@ -20,7 +20,7 @@ public class Client {
     static String SERVER_RESPONSE = "";
     static Object CLIENT_ACTION = "";
     static private ObjectOutputStream STREAM_OUT_TO_SERVER;
-    static private DataInputStream STREAM_IN_FROM_SERVER;
+    static private ObjectInputStream STREAM_IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
     private static void closeConnection() throws IOException {
@@ -40,9 +40,7 @@ public class Client {
         public void run() {
             while (true) {
                 try {
-                    System.out.println(SERVER_RESPONSE);
-                    SERVER_RESPONSE = messageFromServer();
-                    System.out.println(SERVER_RESPONSE);
+                    messageFromServer();
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -68,12 +66,15 @@ public class Client {
         UpdateResponseFromServer.start();
         System.out.println(CLIENT_ACTION);
         while (!CLIENT_ACTION.equals("EXIT")) {
-            CLIENT_ACTION = ClientInterface.getRequest("test game timer");
-            System.out.println(SERVER_RESPONSE);
-            processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
-            sleep(10); //Ser till så vi läser av CLIENT_ACTION
-            STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+            String lastServerResponse = null;
+            if (SERVER_RESPONSE != lastServerResponse) {
 
+                CLIENT_ACTION = ClientInterface.getRequest("test game timer");
+                processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
+                sleep(10); //Ser till så vi läser av CLIENT_ACTION
+                STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+                lastServerResponse = SERVER_RESPONSE;
+            }
         }
 
         //SÄGER TILL SERVERN "EXIT", att clienten avslutar
@@ -100,7 +101,7 @@ public class Client {
         STREAM_OUT_TO_SERVER.flush();
         System.out.println("OutputStream ---- Success");
         System.out.println("Trying to create InputStream...");
-        STREAM_IN_FROM_SERVER = new DataInputStream(SOCKET.getInputStream());
+        STREAM_IN_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
         System.out.println("InputStream ---- Success");
 
     }
@@ -110,15 +111,14 @@ public class Client {
         OUT_TO_SERVER.writeObject(clientRequest);
     }
      */
-    private static String messageFromServer() throws IOException, ClassNotFoundException {
-        String tmp_SERVER_RESPONSE = "";
-        while (tmp_SERVER_RESPONSE == "") {
-            tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readUTF();
+    private static void messageFromServer() throws IOException, ClassNotFoundException {
+        String tmp_SERVER_RESPONSE = null;
+        while (tmp_SERVER_RESPONSE == null) {
+            tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readObject();
             System.out.println("Server says " + tmp_SERVER_RESPONSE);
-            return tmp_SERVER_RESPONSE;
+            SERVER_RESPONSE = tmp_SERVER_RESPONSE;
 
         }
-        return "";
 
     }
 
@@ -146,6 +146,9 @@ public class Client {
                 break;
             case ("GET READY"):
                 System.out.println("Nu smäller de snart");
+                break;
+            case (""):
+                System.out.println("In player queue"); // HAHA LINNEA JAG STAVADE RÄTT
                 break;
             default:
                 System.out.println("Ingen giltig respons från servern");
