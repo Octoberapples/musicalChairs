@@ -2,6 +2,7 @@ package musicalChairs;
 
 import java.net.*;
 import java.io.*;
+import static musicalChairs.Server.PLAYER_LIST;
 
 /**
  *
@@ -10,8 +11,8 @@ import java.io.*;
 public class ServerClientThread extends Thread {
 
     Object CLIENT_CURRENT_ACTION;
-    static private DataOutputStream OUT_TO_CLIENT;
-    static private ObjectInputStream IN_FROM_CLIENT;
+    static private ObjectOutputStream STREAM_OUT_TO_CLIENT;
+    static private ObjectInputStream STREAM_IN_FROM_CLIENT;
     String SERVER_RESPONSE;
     boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
@@ -24,8 +25,8 @@ public class ServerClientThread extends Thread {
         CLIENTSOCKET = socket;
         this.CLIENT_ID = clientIndex;
         CLIENTSTATE = false;
-        IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
-        OUT_TO_CLIENT = new DataOutputStream(CLIENTSOCKET.getOutputStream());
+        STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
+        STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
     }
 
     /*
@@ -39,8 +40,8 @@ public class ServerClientThread extends Thread {
     int getClientID() {
         return CLIENT_ID;
     }
-    
-    void setSERVER_RESPONSE(String stringForTheServerResponse){
+
+    void setSERVER_RESPONSE(String stringForTheServerResponse) {
         this.SERVER_RESPONSE = stringForTheServerResponse;
     }
 
@@ -55,9 +56,26 @@ public class ServerClientThread extends Thread {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
+
+    public void sendToClient() throws IOException {
+            System.out.println("Sending this: "+SERVER_RESPONSE+ " to Client: "+ CLIENT_ID);
+            STREAM_OUT_TO_CLIENT.writeObject(SERVER_RESPONSE);
+            STREAM_OUT_TO_CLIENT.flush();
+        
+    }
     
-    public void sendToClient(String string_to_client) throws IOException{
-        OUT_TO_CLIENT.writeUTF(string_to_client);
+        /*
+     Skicka ut att någon är vinnaren typ, eller att spelet börjar
+     */
+    private static void broadcast() throws IOException {
+        for (int i = 0; i < PLAYER_LIST.size(); i++) {
+            PLAYER_LIST.get(i).setSERVER_RESPONSE("WINNER");
+            while (PLAYER_LIST.get(i) != null) {
+                PLAYER_LIST.get(i).sendToClient();
+                System.out.println(PLAYER_LIST.get(i).SERVER_RESPONSE);
+                //PLAYER_LIST.get(i).sendToClient(PLAYER_LIST.get(i).SERVER_RESPONSE);
+            }
+        }
     }
 
     /**
@@ -65,23 +83,27 @@ public class ServerClientThread extends Thread {
      * clients, Opens data streams, in and out,
      */
     public void run() {
-        System.out.println("Accepted Client : ID - " + CLIENT_ID + " : Address - "
-                + getClientIP() + " : Portnumber - " + getClientPort());
         try {
 
             while (RUNNING) {
-                CLIENT_CURRENT_ACTION = IN_FROM_CLIENT.readObject();
+                CLIENT_CURRENT_ACTION = STREAM_IN_FROM_CLIENT.readObject();
                 System.out.println("Client: " + CLIENT_ID + " says :" + CLIENT_CURRENT_ACTION);
                 if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
                     CLIENTSTATE = false;
                     System.out.println("Stopping communication for client : " + CLIENT_ID);
-                } else if (CLIENT_CURRENT_ACTION instanceof Long) {
+                } else{
                     TIMER = (long) CLIENT_CURRENT_ACTION;
+                    System.out.println(TIMER);
+                    //HÄR SKA VI "SKICKA" DET HÄR TILL TYP SERVER SOM KOLLAR VEM SOM VUNNIT
+                    //
+                    //
+                    //
+                    //
+                    setSERVER_RESPONSE("WINNER");
+                    sendToClient();
                 }
-                while (OUT_TO_CLIENT !=null){
-                sendToClient(SERVER_RESPONSE);
-                }
+                
                 /*
                  VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
                  */
