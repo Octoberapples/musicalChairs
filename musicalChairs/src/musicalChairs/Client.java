@@ -1,7 +1,7 @@
 package musicalChairs;
 
-import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
@@ -20,7 +20,7 @@ public class Client {
     static String SERVER_RESPONSE = "";
     static Object CLIENT_ACTION = "";
     static private ObjectOutputStream STREAM_OUT_TO_SERVER;
-    static private DataInputStream STREAM_IN_FROM_SERVER;
+    static private ObjectInputStream STREAM_IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
     private static void closeConnection() throws IOException {
@@ -41,7 +41,7 @@ public class Client {
             while (true) {
                 try {
                     System.out.println(SERVER_RESPONSE);
-                    SERVER_RESPONSE = messageFromServer();
+                    messageFromServer();
                     System.out.println(SERVER_RESPONSE);
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -100,7 +100,7 @@ public class Client {
         STREAM_OUT_TO_SERVER.flush();
         System.out.println("OutputStream ---- Success");
         System.out.println("Trying to create InputStream...");
-        STREAM_IN_FROM_SERVER = new DataInputStream(SOCKET.getInputStream());
+        STREAM_IN_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
         System.out.println("InputStream ---- Success");
 
     }
@@ -110,15 +110,14 @@ public class Client {
         OUT_TO_SERVER.writeObject(clientRequest);
     }
      */
-    private static String messageFromServer() throws IOException, ClassNotFoundException {
-        String tmp_SERVER_RESPONSE = "";
-        while (tmp_SERVER_RESPONSE == "") {
-            tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readUTF();
+    private static void messageFromServer() throws IOException, ClassNotFoundException {
+        String tmp_SERVER_RESPONSE = null;
+        while (tmp_SERVER_RESPONSE == null) {
+            tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readObject();
             System.out.println("Server says " + tmp_SERVER_RESPONSE);
-            return tmp_SERVER_RESPONSE;
+            System.out.println(tmp_SERVER_RESPONSE);
 
         }
-        return "";
 
     }
 
