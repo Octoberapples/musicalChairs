@@ -10,7 +10,7 @@ import java.io.*;
 public class ServerClientThread extends Thread {
 
     Object CLIENT_CURRENT_ACTION;
-    static private DataOutputStream OUT_TO_CLIENT;
+    static private ObjectOutputStream OUT_TO_CLIENT;
     static private ObjectInputStream IN_FROM_CLIENT;
     String SERVER_RESPONSE;
     boolean CLIENTSTATE;
@@ -25,7 +25,7 @@ public class ServerClientThread extends Thread {
         this.CLIENT_ID = clientIndex;
         CLIENTSTATE = false;
         IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
-        OUT_TO_CLIENT = new DataOutputStream(CLIENTSOCKET.getOutputStream());
+        OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
     }
 
     /*
@@ -57,7 +57,7 @@ public class ServerClientThread extends Thread {
     }
     
     public void sendToClient(String string_to_client) throws IOException{
-        OUT_TO_CLIENT.writeUTF(string_to_client);
+        OUT_TO_CLIENT.writeObject(string_to_client);
     }
 
     /**
