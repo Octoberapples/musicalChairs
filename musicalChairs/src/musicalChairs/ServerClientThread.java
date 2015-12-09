@@ -31,6 +31,10 @@ public class ServerClientThread extends Thread {
         return clientPort;
     }
 
+    int getClientID() {
+        return CLIENT_ID;
+    }
+
     public void changeState(boolean newState) {
         CLIENTSTATE = newState;
     }
@@ -43,8 +47,9 @@ public class ServerClientThread extends Thread {
         return clientIP;
     }
 
-    /** TODO Fixa så man inte crashar servern om någon dcar
-     * Gets connection with clients, Opens data streams, in and out,
+    /**
+     * TODO Fixa så man inte crashar servern om någon dcar Gets connection with
+     * clients, Opens data streams, in and out,
      */
     public void run() {
         System.out.println("Accepted Client : ID - " + CLIENT_ID + " : Address - "
