@@ -23,7 +23,7 @@ public class ClientInterface {
         
         while (flag == true) {
             try {
-                System.out.println("Press 1 To " + string + " game or 2 to exit");
+                System.out.println("Press 1 To " + string + " or 2 to exit");
                 Scanner sc = new Scanner(System.in);
 
                 int tmpRequest = sc.nextInt();

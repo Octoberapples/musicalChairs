@@ -2,10 +2,7 @@ package musicalChairs;
 
 import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -70,7 +67,7 @@ public class Client {
         UpdateResponseFromServer.start();
         System.out.println(CLIENT_ACTION);
         while (!CLIENT_ACTION.equals("EXIT")) {
-            CLIENT_ACTION = ClientInterface.getRequest(); //SKICKAR IVÄG 1 nu
+            CLIENT_ACTION = ClientInterface.getRequest("test game timer"); 
             System.out.println(SERVER_RESPONSE);
             processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
             sleep(10); //Ser till så vi läser av CLIENT_ACTION
@@ -78,15 +75,15 @@ public class Client {
 
         }
 
-        //SÄGER TILL SERVERN "EXIT"
-        OUT_TO_SERVER.writeObject(CLIENT_ACTION); //vet inte om den behövs
-        //response.stop(); // VILL NOG HA DEN HÄR MEN BÄTTRE GREJ
+        //SÄGER TILL SERVERN "EXIT", att clienten avslutar
+        OUT_TO_SERVER.writeObject(CLIENT_ACTION);
         try {
             System.out.println("Closing the connection...");
             closeConnection();
         } catch (IOException e) {
         }
         System.out.println("Success!" + "\n" + "Goodbye!");
+        System.exit(0);
     }
 
     private static Socket createSocketToServer() throws IOException {

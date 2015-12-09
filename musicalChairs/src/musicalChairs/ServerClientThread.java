@@ -43,7 +43,7 @@ public class ServerClientThread extends Thread {
         return clientIP;
     }
 
-    /**
+    /** TODO Fixa så man inte crashar servern om någon dcar
      * Gets connection with clients, Opens data streams, in and out,
      */
     public void run() {
@@ -54,17 +54,17 @@ public class ServerClientThread extends Thread {
             DataOutputStream out = new DataOutputStream(CLIENTSOCKET.getOutputStream());
             while (RUNNING) {
                 CLIENT_CURRENT_ACTION = in.readObject();
-                System.out.println("Client: "+ CLIENT_ID +" says :" + CLIENT_CURRENT_ACTION);
+                System.out.println("Client: " + CLIENT_ID + " says :" + CLIENT_CURRENT_ACTION);
                 if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
                     CLIENTSTATE = false;
-                    System.out.print("Stopping communication for client : " + CLIENT_ID);
-                } else if(CLIENT_CURRENT_ACTION instanceof Long){
+                    System.out.println("Stopping communication for client : " + CLIENT_ID);
+                } else if (CLIENT_CURRENT_ACTION instanceof Long) {
                     TIMER = (long) CLIENT_CURRENT_ACTION;
                 }
-               /*
+                /*
                 VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
-                */
+                 */
             }
         } catch (Exception e) {
             e.printStackTrace();
