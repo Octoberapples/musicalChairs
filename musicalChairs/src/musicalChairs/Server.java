@@ -29,7 +29,7 @@ public class Server {
             /*for (int i = 0; i < PLAYER_LIST.size(); i++) {
              System.out.println(PLAYER_LIST.get(i).getClientID());
              }*/
-            broadcast();
+            
             System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
         }
     }
@@ -44,10 +44,17 @@ public class Server {
         ServerClientThread clientThread = new ServerClientThread(newclient, id);
         clientThread.start();
         PLAYER_LIST.add(clientThread);
+        System.out.println("Accepted Client : ID - " + clientThread.CLIENT_ID + " : Address - "
+                + clientThread.getClientIP() + " : Portnumber - " + clientThread.getClientPort());
 
     }
 
-    private static class ServerPlayerList extends Thread {
+   
+
+    /*
+    Håller koll på vilka spelare som finns
+    */
+     private static class ServerPlayerList extends Thread {
 
         public void run() {
             while (true) {
@@ -66,15 +73,5 @@ public class Server {
         }
     }
 
-    /*
-     Skicka ut att någon är vinnaren typ, eller att spelet börjar
-     */
-    private static void broadcast() throws IOException {
-        for (int i = 0; i < PLAYER_LIST.size(); i++) {
-            while (PLAYER_LIST.get(i) != null && PLAYER_LIST.get(i).SERVER_RESPONSE != null) {
-                PLAYER_LIST.get(i).sendToClient(PLAYER_LIST.get(i).SERVER_RESPONSE);
-            }
-        }
-    }
 
 }
