@@ -10,6 +10,9 @@ import java.io.*;
 public class ServerClientThread extends Thread {
 
     Object CLIENT_CURRENT_ACTION;
+    static private DataOutputStream OUT_TO_CLIENT;
+    static private ObjectInputStream IN_FROM_CLIENT;
+    String SERVER_RESPONSE;
     boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
     long TIMER;
@@ -21,6 +24,8 @@ public class ServerClientThread extends Thread {
         CLIENTSOCKET = socket;
         this.CLIENT_ID = clientIndex;
         CLIENTSTATE = false;
+        IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
+        OUT_TO_CLIENT = new DataOutputStream(CLIENTSOCKET.getOutputStream());
     }
 
     /*
@@ -34,6 +39,10 @@ public class ServerClientThread extends Thread {
     int getClientID() {
         return CLIENT_ID;
     }
+    
+    void setSERVER_RESPONSE(String stringForTheServerResponse){
+        this.SERVER_RESPONSE = stringForTheServerResponse;
+    }
 
     public void changeState(boolean newState) {
         CLIENTSTATE = newState;
@@ -46,6 +55,10 @@ public class ServerClientThread extends Thread {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
+    
+    public void sendToClient(String string_to_client) throws IOException{
+        OUT_TO_CLIENT.writeUTF(string_to_client);
+    }
 
     /**
      * TODO Fixa så man inte crashar servern om någon dcar Gets connection with
@@ -55,10 +68,9 @@ public class ServerClientThread extends Thread {
         System.out.println("Accepted Client : ID - " + CLIENT_ID + " : Address - "
                 + getClientIP() + " : Portnumber - " + getClientPort());
         try {
-            ObjectInputStream in = new ObjectInputStream(CLIENTSOCKET.getInputStream());
-            DataOutputStream out = new DataOutputStream(CLIENTSOCKET.getOutputStream());
+
             while (RUNNING) {
-                CLIENT_CURRENT_ACTION = in.readObject();
+                CLIENT_CURRENT_ACTION = IN_FROM_CLIENT.readObject();
                 System.out.println("Client: " + CLIENT_ID + " says :" + CLIENT_CURRENT_ACTION);
                 if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
@@ -67,8 +79,11 @@ public class ServerClientThread extends Thread {
                 } else if (CLIENT_CURRENT_ACTION instanceof Long) {
                     TIMER = (long) CLIENT_CURRENT_ACTION;
                 }
+                while (OUT_TO_CLIENT !=null){
+                sendToClient(SERVER_RESPONSE);
+                }
                 /*
-                VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
+                 VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
                  */
             }
         } catch (Exception e) {

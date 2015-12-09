@@ -99,7 +99,7 @@ public class Client {
         OUT_TO_SERVER.flush();
         System.out.println("OutputStream ---- Success");
         System.out.println("Trying to create InputStream...");
-        IN_FROM_SERVER = new DataInputStream(SOCKET.getInputStream()); // FASSNAR HÄR
+        IN_FROM_SERVER = new DataInputStream(SOCKET.getInputStream()); 
         System.out.println("InputStream ---- Success");
 
     }
