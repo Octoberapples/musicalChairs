@@ -1,5 +1,6 @@
 package musicalChairs;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -20,9 +21,9 @@ public class Client {
     static final String SERVER = "localhost"; //"localhost";
     //"192.168.0.31";
     static String SERVER_RESPONSE;
-    static Object CLIENT_ACTION;
+    static Object CLIENT_ACTION = "";
     static private ObjectOutputStream OUT_TO_SERVER;
-    static private ObjectInputStream IN_FROM_SERVER;
+    static private DataInputStream IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
     private static void closeConnection() throws IOException {
@@ -39,7 +40,7 @@ public class Client {
 
     private static class UpdateSERVER_RESPONSE extends Thread {
 
-        public void start() {
+        public void run() {
             while (true) {
                 try {
                     SERVER_RESPONSE = (String) messageFromServer();
@@ -56,27 +57,36 @@ public class Client {
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
-        SOCKET = createSocketToServer();
-        System.out.println("Socket ---- Succes");
-        createStreamsToServer();
-        System.out.println("Streams ---- Succes");
-
-        //Här uppdateras SERVER_RESPONSE
-        UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
-        UpdateResponseFromServer.start();
-
-        while (!CLIENT_ACTION.equals("2")) {
-            System.out.println(SERVER_RESPONSE);
-            CLIENT_ACTION = ClientInterface.getRequest();
-            sleep(10);
-            processMessageFromServer();
-            OUT_TO_SERVER.writeObject(CLIENT_ACTION);
+        try {
+            SOCKET = createSocketToServer();
+            System.out.println("Socket ---- Success");
+            createStreamsToServer();
+            System.out.println("Streams ---- Success");
+        } catch (IOException e) {
 
         }
+        UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
+        //Här uppdateras SERVER_RESPONSE
+        UpdateResponseFromServer.start();
+        System.out.println(CLIENT_ACTION);
+        while (!CLIENT_ACTION.equals("EXIT")) {
+            CLIENT_ACTION = ClientInterface.getRequest(); //SKICKAR IVÄG 1 nu
+            System.out.println(SERVER_RESPONSE);
+            processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
+            sleep(10); //Ser till så vi läser av CLIENT_ACTION
+            OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+
+        }
+
+        //SÄGER TILL SERVERN "EXIT"
+        OUT_TO_SERVER.writeObject(CLIENT_ACTION); //vet inte om den behövs
         //response.stop(); // VILL NOG HA DEN HÄR MEN BÄTTRE GREJ
-        System.out.println("Closing the connection...");
-        closeConnection();
-        System.out.println("Succes!" + "\n" + "Goodbye!");
+        try {
+            System.out.println("Closing the connection...");
+            closeConnection();
+        } catch (IOException e) {
+        }
+        System.out.println("Success!" + "\n" + "Goodbye!");
     }
 
     private static Socket createSocketToServer() throws IOException {
@@ -86,14 +96,15 @@ public class Client {
         return newClientSocket;
     }
 
-    private static void createStreamsToServer() throws IOException, InterruptedException {
+    private static void createStreamsToServer() throws IOException {
         System.out.println("Trying to create OutputStream...");
         OUT_TO_SERVER = new ObjectOutputStream(SOCKET.getOutputStream());
         OUT_TO_SERVER.flush();
-        System.out.println("OutputStream ---- Succes");
+        System.out.println("OutputStream ---- Success");
         System.out.println("Trying to create InputStream...");
-        IN_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
-        System.out.println("InputStream ---- Succes");
+        IN_FROM_SERVER = new DataInputStream(SOCKET.getInputStream()); // FASSNAR HÄR
+        System.out.println("InputStream ---- Success");
+
     }
 
     /*
@@ -102,7 +113,7 @@ public class Client {
     }
      */
     private static Object messageFromServer() throws IOException, ClassNotFoundException {
-        SERVER_RESPONSE = (String) IN_FROM_SERVER.readObject();
+        SERVER_RESPONSE = (String) IN_FROM_SERVER.readUTF();
         System.out.println("Server says " + SERVER_RESPONSE);
 
         if (SERVER_RESPONSE != null) {

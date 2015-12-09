@@ -59,9 +59,8 @@ public class ServerClientThread extends Thread {
                     RUNNING = false;
                     CLIENTSTATE = false;
                     System.out.print("Stopping communication for client : " + CLIENT_ID);
-                } else if(CLIENT_CURRENT_ACTION instanceof String){
-                    String serverResponse = (String)ServerGameProtocol.handleClientInput(CLIENT_CURRENT_ACTION);
-                    out.writeUTF(serverResponse);
+                } else if(CLIENT_CURRENT_ACTION instanceof Long){
+                    TIMER = (long) CLIENT_CURRENT_ACTION;
                 }
                /*
                 VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS

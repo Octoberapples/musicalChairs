@@ -30,7 +30,7 @@ public class ClientInterface {
                 if (tmpRequest == 1) {
                     flag = false;
                 } else if (tmpRequest == 2) {
-                    return "2";
+                    return "EXIT";
                     //Client.closeSocket();
                 } else if (tmpRequest != 1 || tmpRequest != 2) {
                     System.out.println("Wrong input");
