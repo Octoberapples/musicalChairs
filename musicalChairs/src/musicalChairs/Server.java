@@ -27,15 +27,11 @@ public class Server {
             newClient = waitForConnection(serverSocket);
             setUpConnectionWithClient(newClient, id++);
             /*for (int i = 0; i < PLAYER_LIST.size(); i++) {
-                System.out.println(PLAYER_LIST.get(i).getClientID());
-
-            }*/
+             System.out.println(PLAYER_LIST.get(i).getClientID());
+             }*/
+            broadcast();
             System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
         }
-    }
-
-    public List getPlayerList() {
-        return PLAYER_LIST;
     }
 
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {
@@ -71,12 +67,13 @@ public class Server {
     }
 
     /*
-    Skicka ut att någon är vinnaren typ, eller att spelet börjar
+     Skicka ut att någon är vinnaren typ, eller att spelet börjar
      */
-    private void broadcast(Object thing_to_send) {
-
+    private static void broadcast() throws IOException {
         for (int i = 0; i < PLAYER_LIST.size(); i++) {
-            //PLAYER_LIST.get(i)
+            while (PLAYER_LIST.get(i) != null && PLAYER_LIST.get(i).SERVER_RESPONSE != null) {
+                PLAYER_LIST.get(i).sendToClient(PLAYER_LIST.get(i).SERVER_RESPONSE);
+            }
         }
     }
 
