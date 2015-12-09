@@ -40,9 +40,7 @@ public class Client {
         public void run() {
             while (true) {
                 try {
-                    System.out.println(SERVER_RESPONSE);
                     messageFromServer();
-                    System.out.println(SERVER_RESPONSE);
                 } catch (IOException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (ClassNotFoundException ex) {
@@ -68,12 +66,15 @@ public class Client {
         UpdateResponseFromServer.start();
         System.out.println(CLIENT_ACTION);
         while (!CLIENT_ACTION.equals("EXIT")) {
-            CLIENT_ACTION = ClientInterface.getRequest("test game timer");
-            System.out.println(SERVER_RESPONSE);
-            processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
-            sleep(10); //Ser till så vi läser av CLIENT_ACTION
-            STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+            String lastServerResponse = null;
+            if (SERVER_RESPONSE != lastServerResponse) {
 
+                CLIENT_ACTION = ClientInterface.getRequest("test game timer");
+                processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
+                sleep(10); //Ser till så vi läser av CLIENT_ACTION
+                STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+                lastServerResponse = SERVER_RESPONSE;
+            }
         }
 
         //SÄGER TILL SERVERN "EXIT", att clienten avslutar
@@ -115,7 +116,7 @@ public class Client {
         while (tmp_SERVER_RESPONSE == null) {
             tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readObject();
             System.out.println("Server says " + tmp_SERVER_RESPONSE);
-            System.out.println(tmp_SERVER_RESPONSE);
+            SERVER_RESPONSE = tmp_SERVER_RESPONSE;
 
         }
 
@@ -145,6 +146,9 @@ public class Client {
                 break;
             case ("GET READY"):
                 System.out.println("Nu smäller de snart");
+                break;
+            case (""):
+                System.out.println("In player queue"); // HAHA LINNEA JAG STAVADE RÄTT
                 break;
             default:
                 System.out.println("Ingen giltig respons från servern");
