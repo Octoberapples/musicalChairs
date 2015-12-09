@@ -26,6 +26,10 @@ public class Server {
         while (true) {
             newClient = waitForConnection(serverSocket);
             setUpConnectionWithClient(newClient, id++);
+            /*for (int i = 0; i < PLAYER_LIST.size(); i++) {
+                System.out.println(PLAYER_LIST.get(i).getClientID());
+
+            }*/
             System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
         }
     }
@@ -65,14 +69,14 @@ public class Server {
             }
         }
     }
-    
-/*
+
+    /*
     Skicka ut att någon är vinnaren typ, eller att spelet börjar
-*/
+     */
     private void broadcast(Object thing_to_send) {
 
         for (int i = 0; i < PLAYER_LIST.size(); i++) {
-            //PLAYER_LIST.get(i).(thing_to_send); fixa en send fucntion TODO
+            //PLAYER_LIST.get(i)
         }
     }
 

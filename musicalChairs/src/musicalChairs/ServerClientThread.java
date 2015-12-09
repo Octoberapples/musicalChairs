@@ -31,6 +31,10 @@ public class ServerClientThread extends Thread {
         return clientPort;
     }
 
+    int getClientID() {
+        return CLIENT_ID;
+    }
+
     public void changeState(boolean newState) {
         CLIENTSTATE = newState;
     }
@@ -44,7 +48,8 @@ public class ServerClientThread extends Thread {
     }
 
     /**
-     * Gets connection with clients, Opens data streams, in and out,
+     * TODO Fixa så man inte crashar servern om någon dcar Gets connection with
+     * clients, Opens data streams, in and out,
      */
     public void run() {
         System.out.println("Accepted Client : ID - " + CLIENT_ID + " : Address - "
@@ -54,18 +59,17 @@ public class ServerClientThread extends Thread {
             DataOutputStream out = new DataOutputStream(CLIENTSOCKET.getOutputStream());
             while (RUNNING) {
                 CLIENT_CURRENT_ACTION = in.readObject();
-                System.out.println("Client: "+ CLIENT_ID +" says :" + CLIENT_CURRENT_ACTION);
+                System.out.println("Client: " + CLIENT_ID + " says :" + CLIENT_CURRENT_ACTION);
                 if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
                     CLIENTSTATE = false;
-                    System.out.print("Stopping communication for client : " + CLIENT_ID);
-                } else if(CLIENT_CURRENT_ACTION instanceof String){
-                    String serverResponse = (String)ServerGameProtocol.handleClientInput(CLIENT_CURRENT_ACTION);
-                    out.writeUTF(serverResponse);
+                    System.out.println("Stopping communication for client : " + CLIENT_ID);
+                } else if (CLIENT_CURRENT_ACTION instanceof Long) {
+                    TIMER = (long) CLIENT_CURRENT_ACTION;
                 }
-               /*
+                /*
                 VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
-                */
+                 */
             }
         } catch (Exception e) {
             e.printStackTrace();

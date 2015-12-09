@@ -23,14 +23,14 @@ public class ClientInterface {
         
         while (flag == true) {
             try {
-                System.out.println("Press 1 To " + string + " game or 2 to exit");
+                System.out.println("Press 1 To " + string + " or 2 to exit");
                 Scanner sc = new Scanner(System.in);
 
                 int tmpRequest = sc.nextInt();
                 if (tmpRequest == 1) {
                     flag = false;
                 } else if (tmpRequest == 2) {
-                    return "2";
+                    return "EXIT";
                     //Client.closeSocket();
                 } else if (tmpRequest != 1 || tmpRequest != 2) {
                     System.out.println("Wrong input");
