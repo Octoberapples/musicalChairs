@@ -1,12 +1,12 @@
 package musicalChairs;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import static java.lang.Thread.sleep;
 import java.net.Socket;
-import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -15,80 +15,111 @@ import java.util.Scanner;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER =  "localhost"; //"localhost";
-            //"192.168.0.31";
+    static final String SERVER = "localhost"; //"localhost";
+    //"192.168.0.31";
+    static String SERVER_RESPONSE = "";
+    static Object CLIENT_ACTION = "";
+    static private ObjectOutputStream STREAM_OUT_TO_SERVER;
+    static private ObjectInputStream STREAM_IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
-    private static void messageToServer(String clientRequest) throws IOException {
-        OutputStream outToServer = SOCKET.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF(clientRequest);
-    }
-
-    private static void messageToServer(String clientRequest, long totalResponseTime) throws IOException {
-        OutputStream outToServer = SOCKET.getOutputStream();
-        DataOutputStream out = new DataOutputStream(outToServer);
-        out.writeUTF(clientRequest + "\n" + totalResponseTime);
-    }
-
-    private static String messageFromServer() throws IOException {
-        InputStream inFromServer = SOCKET.getInputStream();
-        DataInputStream in = new DataInputStream(inFromServer);
-        String message = in.readUTF();
-        System.out.println("Server says " + message);
-        if (message != null) {
-            return message;
+    private static void closeConnection() throws IOException {
+        if (SOCKET != null) {
+            SOCKET.close();
         }
-        return ("NO MESSAGE FROM THE SERVER");
-
+        if (STREAM_OUT_TO_SERVER != null) {
+            STREAM_OUT_TO_SERVER.close();
+        }
+        if (STREAM_IN_FROM_SERVER != null) {
+            STREAM_IN_FROM_SERVER.close();
+        }
     }
 
-    private static Socket connectToServer() throws IOException {
+    private static class UpdateSERVER_RESPONSE extends Thread {
+
+        public void run() {
+            while (true) {
+                try {
+                    messageFromServer();
+                } catch (IOException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
+            }
+
+        }
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+        try {
+            SOCKET = createSocketToServer();
+            System.out.println("Socket ---- Success");
+            createStreamsToServer();
+            System.out.println("Streams ---- Success");
+        } catch (IOException e) {
+
+        }
+        UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
+        //Här uppdateras SERVER_RESPONSE
+        UpdateResponseFromServer.start();
+        System.out.println(CLIENT_ACTION);
+        while (!CLIENT_ACTION.equals("EXIT")) {
+            String lastServerResponse = null;
+            if (SERVER_RESPONSE != lastServerResponse) {
+
+                CLIENT_ACTION = ClientInterface.getRequest("test game timer");
+                processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
+                sleep(10); //Ser till så vi läser av CLIENT_ACTION
+                STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+                lastServerResponse = SERVER_RESPONSE;
+            }
+        }
+
+        //SÄGER TILL SERVERN "EXIT", att clienten avslutar
+        STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION);
+        try {
+            System.out.println("Closing the connection...");
+            closeConnection();
+        } catch (IOException e) {
+        }
+        System.out.println("Success!" + "\n" + "Goodbye!");
+        System.exit(0);
+    }
+
+    private static Socket createSocketToServer() throws IOException {
         System.out.println("Connecting to " + SERVER + " on port " + DEFAULT_SOCKET_PORT);
         Socket newClientSocket = new Socket(SERVER, DEFAULT_SOCKET_PORT);
         System.out.println("Just connected to " + newClientSocket.getRemoteSocketAddress());
         return newClientSocket;
     }
 
-    public static void main(String[] args) throws IOException {
-        boolean cont = false;
-        boolean startSocket = true;
-        /*
-         if (args.length <= 1) {
-         System.out.println("Usage: java musicalChairs [server name] [socket port]");
-         System.exit(0);
-         }
-         //server = args[0];
-         try {
-         DEFAULT_SOCKET_PORT = Integer.parseInt(args[1]);
-         } catch (NumberFormatException e) {
-         System.out.println("Could not parse given port number. Using defaults.");
-         }
-         */
-        //ClientInterface.printChoices("Join Game");
-        while (startSocket) { //tror att vi bör sätta connect to server raden i egen while true try och när den connectar så blir den falsk 
-            try {
-                SOCKET = connectToServer();
-                if(SOCKET.isConnected() == true){
-                cont = true;
-                }
-                while (cont) {
-                String clientInput = ClientInterface.getRequest("Force start");
-                messageToServer(clientInput);
-                String ServerResponse = messageFromServer();
-                processMessageFromServer(ServerResponse); // ServerResponse
-                //clientSocket.close(); //TODO byt ställe på closeSocket annars kan vi inte gå vidare i spelet.
-                cont = false;
-                }
-                
-                startSocket = false;
-                break;
-            } catch (IOException e) {
-            }
+    private static void createStreamsToServer() throws IOException {
+        System.out.println("Trying to create OutputStream...");
+        STREAM_OUT_TO_SERVER = new ObjectOutputStream(SOCKET.getOutputStream());
+        STREAM_OUT_TO_SERVER.flush();
+        System.out.println("OutputStream ---- Success");
+        System.out.println("Trying to create InputStream...");
+        STREAM_IN_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
+        System.out.println("InputStream ---- Success");
+
+    }
+
+    /*
+    private static void messageToServer(Object clientRequest) throws IOException {
+        OUT_TO_SERVER.writeObject(clientRequest);
+    }
+     */
+    private static void messageFromServer() throws IOException, ClassNotFoundException {
+        String tmp_SERVER_RESPONSE = null;
+        while (tmp_SERVER_RESPONSE == null) {
+            tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readObject();
+            System.out.println("Server says " + tmp_SERVER_RESPONSE);
+            SERVER_RESPONSE = tmp_SERVER_RESPONSE;
 
         }
-        System.out.println("Thanks for playing!");
-        madeby();
+
     }
 
     /**
@@ -96,8 +127,8 @@ public class Client {
      *
      *
      */
-    private static void processMessageFromServer(String serverResponse) throws IOException {
-        switch (serverResponse) {
+    private static void processMessageFromServer() throws IOException {
+        switch (SERVER_RESPONSE) {
             case ("WINNER"):
                 System.out.println("You are the winner!");
                 break;
@@ -112,41 +143,17 @@ public class Client {
                 break;
             case ("SIT DOWN"):
                 System.out.println("Sätt dig ner för fan");
-                long startTimer = System.currentTimeMillis();
-                String clientInput = ClientInterface.getRequest("To Sit down mofo!");
-                long stopTimer = System.currentTimeMillis();
-                long totalResponseTime = stopTimer - startTimer;
-                messageToServer(clientInput, totalResponseTime);
                 break;
             case ("GET READY"):
                 System.out.println("Nu smäller de snart");
-                messageToServer("READY");
+                break;
+            case (""):
+                System.out.println("In player queue"); // HAHA LINNEA JAG STAVADE RÄTT
                 break;
             default:
                 System.out.println("Ingen giltig respons från servern");
-        }
 
-    }
-
-//TODO Fix safe input och flytta till ClientInterface
-/*    private static boolean askContinue(String phrase) {
-        System.out.println(phrase + "(y/n)");
-        Scanner sc = new Scanner(System.in);
-        switch (sc.nextLine().charAt(0)) {
-            case 'y':
-                sc.close();
-                return false;
         }
-        sc.close();
-        return true;
-    }
-*/
-    private static void madeby() {
-        System.out.println("Made by:");
-        System.out.println("Albin Sundqvist");
-        System.out.println("Tim Kulich");
-        System.out.println("Linnea Dahl");
-        System.out.println("Markus Norström");
     }
 
 }
