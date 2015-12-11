@@ -9,7 +9,6 @@ import java.util.Scanner;
 public class ClientInterface {
 
     /**
-     * Fett buggig mannen Ge mig SAFE INPUT jag svär jag blir nöjd då
      *
      * @param string 
      * @return the client request in form of a String
@@ -41,17 +40,9 @@ public class ClientInterface {
         return finalTimer;
     }
 
-    /**
-     *
-     * @param Input from the player
-     */
-    private static void CheckIfInt(Scanner Input) {
-        while (!Input.hasNextInt()) {
-            Input.next();
-        }
-    }
-/*
-    test skit bara
+   
+    /*
+    Test för getRequest()
     */
     static Object getRequest() {
         Scanner sc = new Scanner(System.in);

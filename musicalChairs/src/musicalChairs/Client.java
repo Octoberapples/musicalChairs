@@ -15,14 +15,16 @@ import java.util.logging.Logger;
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER = "localhost"; //"localhost";
-    //"192.168.0.31";
+    static final String SERVER = "localhost"; //"localhost" eller så kan man skriva in en annan IP 
     static String SERVER_RESPONSE = "";
     static Object CLIENT_ACTION = "";
     static private ObjectOutputStream STREAM_OUT_TO_SERVER;
     static private ObjectInputStream STREAM_IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
+    /*
+    Closes the correct socket depending on the state
+    */
     private static void closeConnection() throws IOException {
         if (SOCKET != null) {
             SOCKET.close();
@@ -77,7 +79,7 @@ public class Client {
             }
         }
 
-        //SÄGER TILL SERVERN "EXIT", att clienten avslutar
+        //SÄGER TILL SERVERN "EXIT", att clienten avslutar (aka det som händer när du trycker 2 för exit 
         STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION);
         try {
             System.out.println("Closing the connection...");
@@ -133,25 +135,40 @@ public class Client {
                 System.out.println("You are the winner!");
                 break;
             case ("LOSER"):
-                System.out.println("You are a noob and YOU'RE OUT!");
+                System.out.println("You did not get a chair and therefore lost");
                 break;
             case ("ADVANCED"):
                 System.out.println("You advanced to the next round");
                 break;
             case ("FORCE START"):
-                System.out.println("You are now in que to play");
+                System.out.println("You are now in que to play"); //<-- DOCK HÄR STAVADE DU FEL PÅ QUEUE IGEN ALBIN 
                 break;
             case ("SIT DOWN"):
-                System.out.println("Sätt dig ner för fan");
+                System.out.println("Sit down!" + "\n" +
+                    "i______i" + "\n" +
+                    "I______I" + "\n" +
+                    "I      I" + "\n" +
+                    "I______I" + "\n" +
+                   "/      /I" + "\n" +
+                  "(______( I" + "\n" +
+                  "I I    I I" + "\n" +
+                  "I      I");
                 break;
             case ("GET READY"):
-                System.out.println("Nu smäller de snart");
+                System.out.println("The music is playing" + "\n" + 
+                
+                "┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n" +
+                "┈┣━┫┈┈┈┈┈┣╯┈┈┈┈┣╯┈" + "\n" +
+                "╭┫╭┫┈┈┃┈╭┫┈┈┃┈╭┫┈┈" + "\n" +
+                "╰╯╰╯┈╭┫┈╰╯┈╭┫┈╰╯┈┈" + "\n" +
+                "┈┈┈┈┈╰╯┈┈┈┈╰╯┈┈┈┈┈");
+                
                 break;
             case (""):
                 System.out.println("In player queue"); // HAHA LINNEA JAG STAVADE RÄTT
                 break;
             default:
-                System.out.println("Ingen giltig respons från servern");
+                System.out.println("No valid response from the server");
 
         }
     }
