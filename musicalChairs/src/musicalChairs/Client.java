@@ -8,10 +8,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Albin
- */
+
+ //Client klassen, håller koll på klienten och skapar strömmen samt socket till servern.
+ 
 public class Client {
 
     static Socket SOCKET;
@@ -20,11 +19,9 @@ public class Client {
     static Object CLIENT_ACTION = "";
     static public ObjectOutputStream STREAM_OUT_TO_SERVER;
     static public ObjectInputStream STREAM_IN_FROM_SERVER;
-    static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
+    static final int DEFAULT_SOCKET_PORT = 8080; 
 
-    /*
-    Closes the correct socket depending on the state
-    */
+   
     private static void closeConnection() throws IOException {
         if (SOCKET != null) {
             SOCKET.close();
@@ -39,68 +36,55 @@ public class Client {
 
     private static class UpdateSERVER_RESPONSE extends Thread {
 
+        @Override
         public void run() {
             while (true) {
                 try {
                     messageFromServer();
-                } catch (IOException ex) {
-                    Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ClassNotFoundException ex) {
+                } catch (IOException | ClassNotFoundException ex) {
                     Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
                 }
-
             }
-
         }
     }
 
     public static void main(String[] args) throws Exception, IOException, ClassNotFoundException, InterruptedException {
+        
+        //skapar socket och streamen till servern
         try {
             SOCKET = createSocketToServer();
             System.out.println("Socket ---- Success");
             createStreamsToServer();
             System.out.println("Streams ---- Success");
-            if (STREAM_IN_FROM_SERVER.readObject() == "START"){
-            STREAM_OUT_TO_SERVER.writeObject(ClientInterface.sitDown());
-            }
         } catch (IOException e) {
 
         }
-        /*
+        
         UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
-        //Här uppdateras SERVER_RESPONSE
+        //Här uppdateras SERVER_RESPONSE genom att använda sig av updateSERVER_RESPONSE klassen 
         UpdateResponseFromServer.start();
         System.out.println(CLIENT_ACTION);
         while (!CLIENT_ACTION.equals("EXIT")) {
             String lastServerResponse = null;
             if (SERVER_RESPONSE != lastServerResponse) {
-
-                CLIENT_ACTION = ClientInterface.getRequest("test game timer");
+                CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs");
                 processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
                 sleep(10); //Ser till så vi läser av CLIENT_ACTION
                 STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
                 lastServerResponse = SERVER_RESPONSE;
-            }*/
-        
+            }
+        }  
+      }
 
-        //SÄGER TILL SERVERN "EXIT", att clienten avslutar (aka det som händer när du trycker 2 för exit 
-        STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION);
-        try {
-            System.out.println("Closing the connection...");
-            closeConnection();
-        } catch (IOException e) {
-        }
-        System.out.println("Success!" + "\n" + "Goodbye!");
-        System.exit(0);
-    }
-
+    //Creates the socket to the server
     private static Socket createSocketToServer() throws IOException {
         System.out.println("Connecting to " + SERVER + " on port " + DEFAULT_SOCKET_PORT);
         Socket newClientSocket = new Socket(SERVER, DEFAULT_SOCKET_PORT);
         System.out.println("Just connected to " + newClientSocket.getRemoteSocketAddress());
         return newClientSocket;
     }
-
+    
+    //Get the Object input and output stream from the SOCKET
     private static void createStreamsToServer() throws IOException {
         System.out.println("Trying to create OutputStream...");
         STREAM_OUT_TO_SERVER = new ObjectOutputStream(SOCKET.getOutputStream());
@@ -111,12 +95,8 @@ public class Client {
         System.out.println("InputStream ---- Success");
 
     }
-
-    /*
-    private static void messageToServer(Object clientRequest) throws IOException {
-        OUT_TO_SERVER.writeObject(clientRequest);
-    }
-     */
+     
+    //Reads the stream (string) from the server and updates the SERVER_RESPONSE
     private static void messageFromServer() throws IOException, ClassNotFoundException {
         String tmp_SERVER_RESPONSE = null;
         while (tmp_SERVER_RESPONSE == null) {
@@ -127,12 +107,9 @@ public class Client {
         }
 
     }
-
-    /**
-     *
-     *
-     *
-     */
+    
+    //Processes the messsage from the server, depending on the SERVER_RESPONSE the 
+    //different cases states what the client should print. 
     private static void processMessageFromServer() throws IOException {
         switch (SERVER_RESPONSE) {
             case ("WINNER"):
@@ -142,10 +119,7 @@ public class Client {
                 System.out.println("You did not get a chair and therefore lost");
                 break;
             case ("ADVANCED"):
-                System.out.println("You advanced to the next round");
-                break;
-            case ("FORCE START"):
-                System.out.println("You are now in que to play"); //<-- DOCK HÄR STAVADE DU FEL PÅ QUEUE IGEN ALBIN 
+                System.out.println("You advanced to the next round!");
                 break;
             case ("SIT DOWN"):
                 System.out.println("Sit down!" + "\n" +
@@ -159,7 +133,7 @@ public class Client {
                   "I      I");
                 break;
             case ("GET READY"):
-                System.out.println("The music is playing" + "\n" + 
+                System.out.println("The music is playing..." + "\n" + 
                 
                 "┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n" +
                 "┈┣━┫┈┈┈┈┈┣╯┈┈┈┈┣╯┈" + "\n" +
@@ -168,13 +142,22 @@ public class Client {
                 "┈┈┈┈┈╰╯┈┈┈┈╰╯┈┈┈┈┈");
                 
                 break;
-            case (""):
-                System.out.println("In player queue"); // HAHA LINNEA JAG STAVADE RÄTT
-                break;
             default:
                 System.out.println("No valid response from the server");
 
         }
     }
-
+    
+    /*
+      //SÄGER TILL SERVERN "EXIT", att clienten avslutar (aka det som händer när du trycker 2 för exit) 
+        STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION);
+        try {
+            System.out.println("Closing the connection...");
+            closeConnection();
+        } catch (IOException e) {
+        }
+        System.out.println("The connection was successfully closed." + "\n" + "Goodbye!");
+        System.exit(0);
+        }
+*/
 }

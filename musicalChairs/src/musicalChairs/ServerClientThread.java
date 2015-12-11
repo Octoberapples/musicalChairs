@@ -4,10 +4,8 @@ import java.net.*;
 import java.io.*;
 import static musicalChairs.Server.PLAYER_LIST;
 
-/**
- *
- * @author Nogna och lite tim
- */
+
+//Klass som håller koll på varje enskild tråd 
 public class ServerClientThread extends Thread {
 
     Object CLIENT_CURRENT_ACTION;
@@ -20,6 +18,7 @@ public class ServerClientThread extends Thread {
     int CLIENT_ID = -1;
     boolean RUNNING = true;
 
+       //Get the Object input and output stream from the CLIENTSOCKET 
     public ServerClientThread(Socket socket, int clientIndex) throws IOException {
         super("ServerClientThread");
         CLIENTSOCKET = socket;
@@ -29,9 +28,7 @@ public class ServerClientThread extends Thread {
         STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
     }
 
-    /*
-     return client portnumber
-     */
+ 
     public int getClientPort() {
         int clientPort = CLIENTSOCKET.getPort();
         return clientPort;
@@ -49,9 +46,7 @@ public class ServerClientThread extends Thread {
         CLIENTSTATE = newState;
     }
 
-    /**
-     * return client IP
-     */
+ 
     public InetAddress getClientIP() {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
@@ -78,10 +73,7 @@ public class ServerClientThread extends Thread {
         }
     }
 
-    /**
-     * TODO Fixa så man inte crashar servern om någon dcar Gets connection with
-     * clients, Opens data streams, in and out,
-     */
+    //TODO Fixa så man inte crashar servern om någon dcar 
     public void run() {
         try {
 
@@ -104,9 +96,6 @@ public class ServerClientThread extends Thread {
                     sendToClient();
                 }
                 
-                /*
-                 VILL NOG HA NÅNTING OM LONG CASE MEN TROR INTE DE BEHÖVS
-                 */
             }
         } catch (Exception e) {
             e.printStackTrace();
