@@ -40,7 +40,7 @@ public class Server {
         sendStart();
         ServerGameProtocol.runGame();
     }
-    
+    //blah
     private static void sendStart() {
         for (ServerClientThread PLAYER_LIST1 : PLAYER_LIST) {
             try {
