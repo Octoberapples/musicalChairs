@@ -7,6 +7,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,6 +18,7 @@ public class Server {
     static int players = 0;
     static Socket newClient;
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
+    
 
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(8080);
@@ -26,15 +29,33 @@ public class Server {
         while (players < 2) {
             newClient = waitForConnection(serverSocket);
             setUpConnectionWithClient(newClient, id++);
-            /*for (int i = 0; i < PLAYER_LIST.size(); i++) {
+            for (int i = 0; i < PLAYER_LIST.size(); i++) {
              System.out.println(PLAYER_LIST.get(i).getClientID());
-             }*/
+             }
             
-            System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
+            System.out.println("bla" + PLAYER_LIST.toString()); //Bara här för debugg!
             players = players +1;
+              
         }
-        
+        sendStart();
+        ServerGameProtocol.runGame();
     }
+    
+    private static void sendStart() {
+        for (ServerClientThread PLAYER_LIST1 : PLAYER_LIST) {
+            try {
+                ServerClientThread.STREAM_OUT_TO_CLIENT.writeObject("START");
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                ServerClientThread.STREAM_OUT_TO_CLIENT.flush();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.println("Sending this: 'start' to everyone");
+        }
+       }
 
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {
         System.out.println("Waiting for client on port: " + serverSocket.getLocalPort()

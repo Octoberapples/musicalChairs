@@ -62,16 +62,9 @@ public class ClientInterface {
     return -1;
     }
     
-    public static Object sitDown() throws Exception{
-        
-        System.out.println("Sit Down in");
-        Thread.sleep(1000);
-        System.out.println("3");
-        Thread.sleep(1000);
-        System.out.println("2");
-        Thread.sleep(1000);
-        System.out.println("1");
-        Thread.sleep(1000);
+    public static int sitDown() throws Exception{
+        System.out.println("Prepare to Sit Down");
+        Thread.sleep(0);
         long startTimer = System.currentTimeMillis();
         System.out.println("Sit Down!");
         /*TODO - glöm inte att stänga socketen om exit*/
@@ -79,14 +72,15 @@ public class ClientInterface {
         if(clientResponse == 1){
         long stopTimer = System.currentTimeMillis();
         long finalTimer = stopTimer - startTimer;
-        finalTimer = finalTimer*1000;
         int finalTid = (int)(long)finalTimer;
+            System.out.println(finalTid);
         return finalTid;
         }
         else{/*close socket*/};
         return 0;
     }
    
+    
     /*
     Test för getRequest()
     */

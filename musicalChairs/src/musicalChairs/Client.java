@@ -18,8 +18,8 @@ public class Client {
     static final String SERVER = "localhost"; //"localhost" eller så kan man skriva in en annan IP 
     static String SERVER_RESPONSE = "";
     static Object CLIENT_ACTION = "";
-    static private ObjectOutputStream STREAM_OUT_TO_SERVER;
-    static private ObjectInputStream STREAM_IN_FROM_SERVER;
+    static public ObjectOutputStream STREAM_OUT_TO_SERVER;
+    static public ObjectInputStream STREAM_IN_FROM_SERVER;
     static final int DEFAULT_SOCKET_PORT = 8080; //Kanske vill ha en CommonSTuffClient klass men nog onödigt
 
     /*
@@ -54,15 +54,19 @@ public class Client {
         }
     }
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
+    public static void main(String[] args) throws Exception, IOException, ClassNotFoundException, InterruptedException {
         try {
             SOCKET = createSocketToServer();
             System.out.println("Socket ---- Success");
             createStreamsToServer();
             System.out.println("Streams ---- Success");
+            if (STREAM_IN_FROM_SERVER.readObject() == "START"){
+            STREAM_OUT_TO_SERVER.writeObject(ClientInterface.sitDown());
+            }
         } catch (IOException e) {
 
         }
+        /*
         UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
         //Här uppdateras SERVER_RESPONSE
         UpdateResponseFromServer.start();
@@ -76,8 +80,8 @@ public class Client {
                 sleep(10); //Ser till så vi läser av CLIENT_ACTION
                 STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
                 lastServerResponse = SERVER_RESPONSE;
-            }
-        }
+            }*/
+        
 
         //SÄGER TILL SERVERN "EXIT", att clienten avslutar (aka det som händer när du trycker 2 för exit 
         STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION);

@@ -61,7 +61,7 @@ public class ServerClientThread extends Thread {
             System.out.println("Sending this: "+SERVER_RESPONSE+ " to Client: "+ CLIENT_ID);
             STREAM_OUT_TO_CLIENT.writeObject(SERVER_RESPONSE);
             STREAM_OUT_TO_CLIENT.flush();
-        
+           
     }
     
         /*
