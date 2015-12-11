@@ -33,6 +33,7 @@ public class Server {
             System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
             players = players +1;
         }
+        
     }
 
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {

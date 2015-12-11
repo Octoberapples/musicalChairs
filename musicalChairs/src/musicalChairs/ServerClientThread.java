@@ -11,8 +11,8 @@ import static musicalChairs.Server.PLAYER_LIST;
 public class ServerClientThread extends Thread {
 
     Object CLIENT_CURRENT_ACTION;
-    static private ObjectOutputStream STREAM_OUT_TO_CLIENT;
-    static private ObjectInputStream STREAM_IN_FROM_CLIENT;
+    static public ObjectOutputStream STREAM_OUT_TO_CLIENT;
+    static public ObjectInputStream STREAM_IN_FROM_CLIENT;
     String SERVER_RESPONSE;
     boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
@@ -67,7 +67,7 @@ public class ServerClientThread extends Thread {
         /*
      Skicka ut att någon är vinnaren typ, eller att spelet börjar
      */
-    private static void broadcast() throws IOException {
+    public static void broadcast() throws IOException {
         for (int i = 0; i < PLAYER_LIST.size(); i++) {
             PLAYER_LIST.get(i).setSERVER_RESPONSE("WINNER");
             while (PLAYER_LIST.get(i) != null) {

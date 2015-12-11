@@ -30,10 +30,8 @@ class ServerGameProtocol {
 
     }
 
-    /**
-     * helt orimligt fel. hatar livet
-     */
-    public static void playRound(DataOutputStream out) throws IOException {
+    
+    /*public static void playRound(DataOutputStream out) throws IOException {
         //out.writeUTF("SIT DOWN NOW!");
         int emptyChairs = 0;
         long timeElapsed = 0;
@@ -48,12 +46,12 @@ class ServerGameProtocol {
         System.out.println("TIMERN SLUTAR PÅ: " + timeElapsed);
         System.out.println("ROUND DONE");
     }
-
+*/
     /**
      * updates semaphore when server gets timestamp from client
      */
     public void checkChairs() {
-
+            
     }
 
     /**
