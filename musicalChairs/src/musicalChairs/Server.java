@@ -13,7 +13,7 @@ import java.util.List;
  * @author albin
  */
 public class Server {
-
+    static int players = 0;
     static Socket newClient;
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
 
@@ -23,7 +23,7 @@ public class Server {
         playerList.start();
         int id = 0;
 
-        while (true) {
+        while (players < 2) {
             newClient = waitForConnection(serverSocket);
             setUpConnectionWithClient(newClient, id++);
             /*for (int i = 0; i < PLAYER_LIST.size(); i++) {
@@ -31,6 +31,7 @@ public class Server {
              }*/
             
             System.out.println(PLAYER_LIST.toString()); //Bara här för debugg!
+            players = players +1;
         }
     }
 
