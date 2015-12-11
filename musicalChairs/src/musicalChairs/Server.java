@@ -9,7 +9,6 @@ import java.util.List;
 
 
 public class Server {
-    static int players = 0;
     static Socket newClient;
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
     
@@ -18,19 +17,18 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(8080);
         int id = 0;
 
-        while (players < 2) {
+        while (id < 2) { //ökar den här om man vill ha mer spelare just nu är det två stycken
             newClient = waitForConnection(serverSocket);
             setUpConnectionWithClient(newClient, id++);
-            for (int i = 0; i < PLAYER_LIST.size(); i++) {
-             System.out.println(PLAYER_LIST.get(i).getClientID());
-             }
             
-            System.out.println("bla" + PLAYER_LIST.toString()); //Bara här för debugg!
-            
-              
+            System.out.println("The size of the list of players: " + PLAYER_LIST.size());         
+          
         }
+        
     }
+    
  
+    
     //waits on the clients
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {
         System.out.println("Waiting for the players to connect.");

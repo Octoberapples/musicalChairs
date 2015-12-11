@@ -36,6 +36,7 @@ public class Client {
 
     private static class UpdateSERVER_RESPONSE extends Thread {
 
+        
         @Override
         public void run() {
             while (true) {
@@ -60,20 +61,23 @@ public class Client {
 
         }
         
+         //Här uppdateras SERVER_RESPONSE genom att använda sig av updateSERVER_RESPONSE klassen 
+        
         UpdateSERVER_RESPONSE UpdateResponseFromServer = new UpdateSERVER_RESPONSE();
-        //Här uppdateras SERVER_RESPONSE genom att använda sig av updateSERVER_RESPONSE klassen 
         UpdateResponseFromServer.start();
         System.out.println(CLIENT_ACTION);
-        while (!CLIENT_ACTION.equals("EXIT")) {
             String lastServerResponse = null;
             if (SERVER_RESPONSE != lastServerResponse) {
-                CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs");
-                processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
-                sleep(10); //Ser till så vi läser av CLIENT_ACTION
+                CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs");     
+                sleep(100); //Ser till så vi läser av CLIENT_ACTION
+                //processMessageFromServer(); //Skriver ut om du vunnit/förlorat/gått vidare/ska sätta dig  osv osv
                 STREAM_OUT_TO_SERVER.writeObject(CLIENT_ACTION); //SKICKAR IVÄG TILL SERVERN
+               System.out.println("This is what the client sends: " + CLIENT_ACTION);
+               System.out.println("This is the server response: " + SERVER_RESPONSE);
+                processMessageFromServer();
                 lastServerResponse = SERVER_RESPONSE;
-            }
-        }  
+            
+       }  
       }
 
     //Creates the socket to the server
@@ -101,7 +105,7 @@ public class Client {
         String tmp_SERVER_RESPONSE = null;
         while (tmp_SERVER_RESPONSE == null) {
             tmp_SERVER_RESPONSE = (String) STREAM_IN_FROM_SERVER.readObject();
-            System.out.println("Server says " + tmp_SERVER_RESPONSE);
+            System.out.println("Server says: " + tmp_SERVER_RESPONSE);
             SERVER_RESPONSE = tmp_SERVER_RESPONSE;
 
         }
@@ -132,7 +136,7 @@ public class Client {
                   "I I    I I" + "\n" +
                   "I      I");
                 break;
-            case ("GET READY"):
+            case ("You wanna play a game?"):
                 System.out.println("The music is playing..." + "\n" + 
                 
                 "┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n" +

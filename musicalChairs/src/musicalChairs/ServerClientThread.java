@@ -2,6 +2,8 @@ package musicalChairs;
 
 import java.net.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import static musicalChairs.Server.PLAYER_LIST;
 
 
@@ -12,7 +14,6 @@ public class ServerClientThread extends Thread {
     static public ObjectOutputStream STREAM_OUT_TO_CLIENT;
     static public ObjectInputStream STREAM_IN_FROM_CLIENT;
     String SERVER_RESPONSE;
-    boolean CLIENTSTATE;
     Socket CLIENTSOCKET;
     long TIMER;
     int CLIENT_ID = -1;
@@ -23,7 +24,6 @@ public class ServerClientThread extends Thread {
         super("ServerClientThread");
         CLIENTSOCKET = socket;
         this.CLIENT_ID = clientIndex;
-        CLIENTSTATE = false;
         STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
         STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
     }
@@ -42,9 +42,6 @@ public class ServerClientThread extends Thread {
         this.SERVER_RESPONSE = stringForTheServerResponse;
     }
 
-    public void changeState(boolean newState) {
-        CLIENTSTATE = newState;
-    }
 
  
     public InetAddress getClientIP() {
@@ -75,31 +72,34 @@ public class ServerClientThread extends Thread {
 
     //TODO Fixa så man inte crashar servern om någon dcar 
     public void run() {
-        try {
+        
 
             while (RUNNING) {
-                CLIENT_CURRENT_ACTION = STREAM_IN_FROM_CLIENT.readObject();
+                try {
+                    CLIENT_CURRENT_ACTION = STREAM_IN_FROM_CLIENT.readObject();
+                } catch (IOException | ClassNotFoundException ex) {
+                    Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 System.out.println("Client: " + CLIENT_ID + " says :" + CLIENT_CURRENT_ACTION);
                 if (CLIENT_CURRENT_ACTION.equals("EXIT")) {
                     RUNNING = false;
-                    CLIENTSTATE = false;
                     System.out.println("Stopping communication for client : " + CLIENT_ID);
-                } else{
-                    TIMER = (long) CLIENT_CURRENT_ACTION;
-                    System.out.println(TIMER);
-                    //HÄR SKA VI "SKICKA" DET HÄR TILL TYP SERVER SOM KOLLAR VEM SOM VUNNIT
-                    //
-                    //
-                    //
-                    //
-                    setSERVER_RESPONSE("WINNER");
-                    sendToClient();
-                }
-                
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+                } 
+                if (CLIENT_CURRENT_ACTION.equals("PLAY")) {
+                    RUNNING = true;                
+                    System.out.println("The client with ID: " + CLIENT_ID + " Wrote PLAY");
+                    setSERVER_RESPONSE("You wanna play a game?");
+                    try {
+                        sendToClient();
+                    } catch (IOException ex) {
+                        Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } 
+               
+            
         }
     }
-
 }
+    
+
+
