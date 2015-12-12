@@ -44,11 +44,8 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
         ServerPlayerList playerList = new ServerPlayerList();
-<<<<<<< HEAD
-=======
         playerList.start();
         
->>>>>>> Linneas-kvist-från-Markus
         //The appplication main method, which just listens on a port and
         //spawns ServerClientThread threads.
         try {
