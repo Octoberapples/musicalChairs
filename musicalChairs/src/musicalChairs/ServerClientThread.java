@@ -70,6 +70,7 @@ public class ServerClientThread extends Thread {
                     CLIENTSOCKET.close();
                     return;
                 } if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
+                    System.out.println("MEN TITTA HER KOMMER DEN HIT HELA TIDEN?");
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                     sendToClient(toSendTheClient);
                 }
