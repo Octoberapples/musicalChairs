@@ -52,6 +52,7 @@ public class ServerClientThread extends Thread {
        try {
            
         WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
+           System.out.println("Stream in from client is: " + WHAT_THE_CLIENT_SENT);
         System.out.println("\n" + "Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
         
        } catch (EOFException e) {
@@ -82,11 +83,12 @@ public class ServerClientThread extends Thread {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
-                }if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
+                }else if(!WHAT_THE_CLIENT_SENT.equals("") || WHAT_THE_CLIENT_SENT instanceof Integer) { //måste fixa if-satsen här
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                     System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
                 }
+                
 
             }
 

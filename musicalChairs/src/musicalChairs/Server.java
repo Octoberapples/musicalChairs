@@ -56,7 +56,7 @@ public class Server {
         } finally {
             System.out.println("Stängs nåt?");
             newClient.close();
-        } 
+        }
        
     }
       

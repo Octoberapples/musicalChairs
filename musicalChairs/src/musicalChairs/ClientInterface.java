@@ -13,8 +13,30 @@ public class ClientInterface {
                 + " players have arrived." + "\n" + " Meanwhile write PLAY or HEJ in the terminal.");
         Scanner sc = new Scanner(System.in);
         String PLAY = sc.nextLine();
-
         return PLAY;
+    }
+    
+    public static int input() {
+        boolean flag = true;    
+        while (flag == true) {
+            try {
+                System.out.println("Press 1 to Sit down:");
+                Scanner sc = new Scanner(System.in);
+                int tmpRequest = sc.nextInt();
+                if (tmpRequest == 1) {
+                    flag = false;
+                    return 1;
+                } else if (tmpRequest == 2) {
+                    //Client.closeSocket();
+                    return 2;
+                } else if (tmpRequest != 1 || tmpRequest != 2) {
+                    System.out.println("Wrong input");
+                }
+            } catch (Exception e) {
+                System.out.println("Wrong input");
+            }
+        }
+    return -1;
     }
 
     //Processerar server response
@@ -40,6 +62,7 @@ public class ClientInterface {
                             + "\t" + "          (______( I" + "\n"
                             + "\t" + "          I I    I I" + "\n"
                             + "\t" + "          I      I  ");
+                    
                     break;
                 default:
                     System.out.println("Something from the server came back");
@@ -47,5 +70,17 @@ public class ClientInterface {
             }
         }
 
+    }
+
+public static Object timer() {
+        long finalTimer = 0;
+        long startTimer = System.currentTimeMillis();
+        int clientResponse = input();
+        if (clientResponse == 1) {
+            long stopTimer = System.currentTimeMillis();
+            finalTimer = stopTimer - startTimer;
+
+        }
+        return finalTimer;
     }
 }

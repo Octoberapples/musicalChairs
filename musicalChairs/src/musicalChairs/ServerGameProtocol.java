@@ -10,11 +10,15 @@ class ServerGameProtocol {
                 System.out.println("What the server does with the clientResponse:'A client wants to play'");
                 serverResponse = "GET READY";
                        
-            }if("HEJ".equals(clientResponse)) {
+            }else if("HEJ".equals(clientResponse)) {
                 System.out.println("What the server does with the clientResponse:'A client wants to play'");
                 serverResponse = "SIT DOWN";
                        
             }
+            if(clientResponse instanceof Long){
+                    System.out.println("Fick timestampen");
+                    serverResponse = "WINNER";
+                }
             
             return serverResponse;
     }   
