@@ -38,28 +38,29 @@ public class ServerClientThread extends Thread {
 
     //Skriver till klienten via en ström
     public void sendToClient(Object obj) throws IOException {
-       try {
-        System.out.println("Sending this: " + obj + " to Client: " + CLIENT_ID);
-        STREAM_OUT_TO_CLIENT.writeObject(obj);
-        STREAM_OUT_TO_CLIENT.flush();
-       } catch (EOFException e) {
-           System.out.println("\n" + "This client: " + CLIENT_ID + "is disconnected");
-       }
+        try {
+            System.out.println("Sending this: " + obj + " to Client: " + CLIENT_ID);
+            STREAM_OUT_TO_CLIENT.writeObject(obj);
+            STREAM_OUT_TO_CLIENT.flush();
+        } catch (EOFException e) {
+            System.out.println("\n" + "This client: " + CLIENT_ID + "is disconnected");
+        }
     }
 
     //Läser in från strömmen från klienten för att se vad klienten skicka
     public void whatTheClientSent() throws IOException, ClassNotFoundException {
-       try {
-           
-        WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
-        System.out.println("\n" + "Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
-        
-       } catch (EOFException e) {
-           System.out.println("\n" + "This client is disconnected: " + CLIENT_ID);
-       }/*catch (StreamCorruptedException ex){
-           System.out.println("Invalid type code!");
-       }*/
-        
+        try {
+
+            WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
+            System.out.println("Stream in from client is: " + WHAT_THE_CLIENT_SENT);
+            System.out.println("\n" + "Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
+
+        } catch (EOFException e) {
+            System.out.println("\n" + "This client is disconnected: " + CLIENT_ID);
+        }/*catch (StreamCorruptedException ex){
+         System.out.println("Invalid type code!");
+         }*/
+
     }
 
     //TODO Fixa så man inte crashar servern om någon dcar 
@@ -72,20 +73,29 @@ public class ServerClientThread extends Thread {
             //Create streams for each player
             STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
             STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
-            STREAM_OUT_TO_CLIENT.flush(); 
+            STREAM_OUT_TO_CLIENT.flush();
 
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
             while (true) {
+                Server.sendToSpecificClient(CLIENT_ID);
                 whatTheClientSent();
                 if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
+<<<<<<< HEAD
                 }if(!WHAT_THE_CLIENT_SENT.equals("")) { 
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
+=======
+                } else if (WHAT_THE_CLIENT_SENT instanceof Long) { //måste fixa if-satsen här
+                    Object toSendTheClient = "Hej";//ServerGameMaster.compareTime()
+>>>>>>> Albins-kvist
                     System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
+                }
+                else{
+                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                 }
 
             }
