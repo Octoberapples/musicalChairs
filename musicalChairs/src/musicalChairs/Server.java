@@ -59,6 +59,9 @@ public class Server {
         }
        
     }
+    public static void sendToSpecificClient(int i) throws IOException{
+        PLAYER_LIST.get(i).sendToClient("THIS WORK?");
+    }
       
    //Gör som funktionen säger, väntar på en connection och
    //accepter sedan serverSocket 

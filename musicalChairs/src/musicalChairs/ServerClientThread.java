@@ -78,15 +78,19 @@ public class ServerClientThread extends Thread {
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
             while (true) {
+                Server.sendToSpecificClient(CLIENT_ID);
                 whatTheClientSent();
                 if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
-                } else if (!WHAT_THE_CLIENT_SENT.equals("") || WHAT_THE_CLIENT_SENT instanceof Long) { //måste fixa if-satsen här
-                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
+                } else if (WHAT_THE_CLIENT_SENT instanceof Long) { //måste fixa if-satsen här
+                    Object toSendTheClient = "Hej";//ServerGameMaster.compareTime()
                     System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
+                }
+                else{
+                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                 }
 
             }
