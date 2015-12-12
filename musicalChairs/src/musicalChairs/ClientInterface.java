@@ -10,7 +10,7 @@ public class ClientInterface {
     public static Object getRequest(String stringFromClient) {
 
         System.out.println("\n" + "Welcome to a game of " + stringFromClient + ". Please wait until all of the"
-                + " players have arrived." + "\n" + " Meanwhile write PLAY or HEJ in the terminal.");
+                + " players have arrived." + "\n" + " Meanwhile write PLAY or SIT DOWN in the terminal.");
         Scanner sc = new Scanner(System.in);
         String PLAY = sc.nextLine();
         return PLAY;
@@ -37,6 +37,28 @@ public class ClientInterface {
             }
         }
     return -1;
+    }
+    
+    public static String inputString() {
+        boolean flag = true;    
+        while (flag == true) {
+            try {
+                System.out.println("Write PLAY to begin game or SIT DOWN to sit:");
+                Scanner sc = new Scanner(System.in);
+                String tmpRequest = sc.nextLine();
+                System.out.println("kom vi hit");
+                if (tmpRequest.equals("PLAY")) {
+                    System.out.println("Här då?");
+                    return "PLAY";
+                } else if (tmpRequest.equals("SIT DOWN")) {
+                    //Client.closeSocket();
+                    return "SIT DOWN";
+                }
+            } catch (Exception e) {
+                System.out.println("Wrong input");
+            }
+        }
+    return "";
     }
 
     //Processerar server response

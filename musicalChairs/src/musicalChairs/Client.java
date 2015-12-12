@@ -50,25 +50,22 @@ public class Client {
                 + "Successfully created a stream from the server");
 
         // Processerar meddelandena från servern
-        
+        System.out.println("\n" + "Welcome to a game of " + "Musical Chairs" + ". Please wait until all of the"
+                + " players have arrived." + "\n" + " Meanwhile write PLAY or SIT DOWN in the terminal.");
         while (true) {
-            CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs");
-            SERVER_RESPONSE = null;
+            CLIENT_ACTION = ClientInterface.inputString();
             STREAM_TO_SERVER.writeObject(CLIENT_ACTION);
             SERVER_RESPONSE = STREAM_FROM_SERVER.readObject();
             System.out.println("This is what the client sent: " + CLIENT_ACTION);
             System.out.println("This is the server response: " + SERVER_RESPONSE);
-            
-            if (!"".equals(SERVER_RESPONSE)) {
-                ClientInterface.processMessageFromServer(SERVER_RESPONSE);
-                if (SERVER_RESPONSE == "SIT DOWN") {
-                    Object test = ClientInterface.timer();
-                    System.out.println("SKRIVERVI UT TIMERN HÄR kanske??" + test);
-                    STREAM_TO_SERVER.writeObject(test);
-                    System.out.println("SKRIVERVI UT TIMERN HÄR??" + test);
-                }
+
+            ClientInterface.processMessageFromServer(SERVER_RESPONSE);
+            if (SERVER_RESPONSE.equals("SIT DOWN")) {
+                Object test = ClientInterface.timer();
+                STREAM_TO_SERVER.writeObject(test);
+                System.out.println("This was your reaction time: " + test);
             }
-            
+
             if ("".equals(SERVER_RESPONSE)) {
                 System.out.println("Unfortunetly the response from the server was empty");
             }
