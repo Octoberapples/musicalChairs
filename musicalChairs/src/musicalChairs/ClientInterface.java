@@ -2,62 +2,50 @@ package musicalChairs;
 
 import java.util.Scanner;
 
-/*
-
- MÅSTE FIXAS, OTRILOGT BUGGIGT 
- */
 public class ClientInterface {
 
-    /**
-     * Fett buggig mannen Ge mig SAFE INPUT jag svär jag blir nöjd då
-     *
-     * @param string 
-     * @return the client request in form of a String
-     */
-    public static Object getRequest(String string) {
-        boolean flag = true;
-        long startTimer = System.currentTimeMillis();
-        
-        while (flag == true) {
-            try {
-                System.out.println("Press 1 To " + string + " or 2 to exit");
-                Scanner sc = new Scanner(System.in);
+    // Just nu gör den här funktionen att den skriver ut en rad när man har blivit connectad
+    // Skriv HEJ eller PLAY för att få ett svar från servern som sedan processeras av funktionen
+    // nedanför
+    public static Object getRequest(String stringFromClient) {
 
-                int tmpRequest = sc.nextInt();
-                if (tmpRequest == 1) {
-                    flag = false;
-                } else if (tmpRequest == 2) {
-                    return "EXIT";
-                    //Client.closeSocket();
-                } else if (tmpRequest != 1 || tmpRequest != 2) {
-                    System.out.println("Wrong input");
-                }
-            } catch (Exception e) {
-                System.out.println("Wrong input");
+        System.out.println("\n" + "Welcome to a game of " + stringFromClient + ". Please wait until all of the"
+                + " players have arrived." + "\n" + " Meanwhile write PLAY or HEJ in the terminal.");
+        Scanner sc = new Scanner(System.in);
+        String PLAY = sc.nextLine();
+
+        return PLAY;
+    }
+
+    //Processerar server response
+    public static void processMessageFromServer(Object serverResponse) {
+        if (serverResponse instanceof String) {
+
+            switch ((String) serverResponse) {
+                case "GET READY":
+                    System.out.println("\n"
+                            + "                            ┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n"
+                            + " The music is playing...    ┈┣━┫┈┈┈┈┈┣╯┈┈┈┈┣╯┈" + "\n"
+                            + "                            ╭┫╭┫┈┈┃┈╭┫┈┈┃┈╭┫┈┈" + "\n"
+                            + "                            ╰╯╰╯┈╭┫┈╰╯┈╭┫┈╰╯┈┈" + "\n"
+                            + "                            ┈┈┈┈┈╰╯┈┈┈┈╰╯┈┈┈┈┈");
+                    break;
+                case "SIT DOWN":
+                    System.out.println(
+                              "\t" + "            i______i" + "\n"
+                            + "\t" + "            I______I" + "\n"
+                            + "\t" + "            I      I" + "\n"
+                            + "\t" + " SIT DOWN!  I______I" + "\n"
+                            + "\t" + "           /      /I" + "\n"
+                            + "\t" + "          (______( I" + "\n"
+                            + "\t" + "          I I    I I" + "\n"
+                            + "\t" + "          I      I  ");
+                    break;
+                default:
+                    System.out.println("Something from the server came back");
+                    break;
             }
         }
-        long stopTimer = System.currentTimeMillis();
-        long finalTimer = stopTimer - startTimer;
-        return finalTimer;
-    }
 
-    /**
-     *
-     * @param Input from the player
-     */
-    private static void CheckIfInt(Scanner Input) {
-        while (!Input.hasNextInt()) {
-            Input.next();
-        }
-    }
-/*
-    test skit bara
-    */
-    static Object getRequest() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("skriv in test värde: ");
-        int tmpRequest = sc.nextInt();
-        String tmpRequesttoString = Integer.toString(tmpRequest);
-        return tmpRequesttoString;
     }
 }
