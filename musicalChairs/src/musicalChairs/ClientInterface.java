@@ -19,6 +19,7 @@ public class ClientInterface {
 
     //Processerar server response
     public static void processMessageFromServer(Object serverResponse) {
+        System.out.println("kommer vi hit?");
         if (serverResponse instanceof String) {
 
             switch ((String) serverResponse) {
