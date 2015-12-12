@@ -10,6 +10,8 @@ TODO-list
 1. Se till att servern inte crashar när en client disconnectar
 2. Gör så man kan skriva i alla klienterna utan att de hakar upp sig
 3. Fixa så att globala tillstånd uppdateras i realtid 
+Bra sida (kanske bra till rapporten): http://makemobiapps.blogspot.se/p/multiple-client-server-chat-programming.html
+Nämner bla att stream socket är TCP och datagram socket är UDP
 */
 
 

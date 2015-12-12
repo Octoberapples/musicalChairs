@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-// Behöver göra så att en client kan disconnecta på ett fint sät utan servern
+// Behöver göra så att en client kan disconnecta på ett fint sätt utan servern
 // dör. 
 // Den här klassen intisierar alla trådar, servern lyssnar på porten angiven.
 public class Server {
