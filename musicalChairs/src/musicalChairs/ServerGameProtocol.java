@@ -7,13 +7,11 @@ class ServerGameProtocol {
     public static Object handleClientInput(Object clientResponse) {
         Object serverResponse = null;
             if("PLAY".equals(clientResponse)) {
-                System.out.println("What the server does with the clientResponse:" +
-                            "\n" +  "'A client wants to play'");
+                System.out.println("What the server does with the clientResponse:'A client wants to play'");
                 serverResponse = "GET READY";
                        
             }if("HEJ".equals(clientResponse)) {
-                System.out.println("What the server does with the clientResponse:" +
-                            "\n" +  "'A client wants to play'");
+                System.out.println("What the server does with the clientResponse:'A client wants to play'");
                 serverResponse = "SIT DOWN";
                        
             }

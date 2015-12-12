@@ -38,15 +38,28 @@ public class ServerClientThread extends Thread {
 
     //Skriver till klienten via en ström
     public void sendToClient(Object obj) throws IOException {
+       try {
         System.out.println("Sending this: " + obj + " to Client: " + CLIENT_ID);
         STREAM_OUT_TO_CLIENT.writeObject(obj);
         STREAM_OUT_TO_CLIENT.flush();
+       } catch (EOFException e) {
+           System.out.println("\n" + "This client: " + CLIENT_ID + "is disconnected");
+       }
     }
 
     //Läser in från strömmen från klienten för att se vad klienten skicka
     public void whatTheClientSent() throws IOException, ClassNotFoundException {
+       try {
+           
         WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
-        System.out.println("Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
+        System.out.println("\n" + "Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
+        
+       } catch (EOFException e) {
+           System.out.println("\n" + "This client is disconnected: " + CLIENT_ID);
+       }/*catch (StreamCorruptedException ex){
+           System.out.println("Invalid type code!");
+       }*/
+        
     }
 
     //TODO Fixa så man inte crashar servern om någon dcar 
@@ -69,8 +82,9 @@ public class ServerClientThread extends Thread {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
-                } if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
+                }if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
+                    System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
                 }
 
