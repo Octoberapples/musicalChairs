@@ -5,12 +5,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
- //Client klassen, håller koll på klienten och skapar strömmen samt socket till servern.
- 
 public class Client {
 
     static Socket SOCKET;
-    static final String SERVER = "localhost"; //"localhost" eller så kan man skriva in en annan IP 
+    static final String SERVER = "localhost";
     static String SERVER_RESPONSE = "";
     static Object CLIENT_ACTION = "";
     public static ObjectOutputStream STREAM_TO_SERVER;
@@ -51,9 +49,10 @@ public class Client {
                 if (!SERVER_RESPONSE.isEmpty()){
                     ClientInterface.processMessageFromServer();
                 }
-              // if (SERVER_RESPONSE.equalsIgnoreCase("You wanna play a game?")) {
-               //    System.out.println("Hej du har lyckats");
-             else if (SERVER_RESPONSE.equalsIgnoreCase("Exit")) {
+                if (SERVER_RESPONSE.isEmpty()){
+                    System.out.println("Unfortunetly the response from the server was empty");
+                }
+                else if (SERVER_RESPONSE.equalsIgnoreCase("EXIT")) {
                  STREAM_TO_SERVER.close();
             } 
         }

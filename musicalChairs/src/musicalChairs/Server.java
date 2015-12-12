@@ -9,12 +9,33 @@ import java.util.List;
 
 
 public class Server {
+    //The port the server is listening to
+    private static final int PORT = 8080;
+    
     static Socket newClient;
+    
+    //The list containing all of the players
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
     
 
     public static void main(String[] args) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(8080);
+        ServerSocket serverSocket = new ServerSocket(PORT);
+        int id = 0;
+       
+        //The appplication main method, which just listens on a port and
+        //spawns ServerClientThread threads.
+        try {
+            while (true) {
+                newClient = waitForConnection(serverSocket);
+                setUpConnectionWithClient(newClient, id);
+                
+            }
+        } finally {
+            newClient.close();
+        } 
+       
+    }
+        /*
         int id = 0;
 
         while (id < 2) { //ökar den här om man vill ha mer spelare just nu är det två stycken
@@ -23,15 +44,13 @@ public class Server {
             
             System.out.println("The size of the list of players: " + PLAYER_LIST.size());         
           
-        }
-        
-    }
+        }       
+    }*/
     
  
-    
-    //waits on the clients
+   
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {
-        System.out.println("Waiting for the players to connect.");
+        System.out.println("\n" + "Waiting for the players to connect.");
         return serverSocket.accept();
     }
 
@@ -39,9 +58,8 @@ public class Server {
         ServerClientThread clientThread = new ServerClientThread(newclient, id);
         clientThread.start();
         PLAYER_LIST.add(clientThread);
-        System.out.println("Accepted Client : ID - " + clientThread.CLIENT_ID + " : Address - "
+        System.out.println("\n" +"Accepted Client : ID - " + clientThread.CLIENT_ID + " : Address - "
                 + clientThread.getClientIP() + " : Portnumber - " + clientThread.getClientPort());
-
     }
 
    

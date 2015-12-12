@@ -18,6 +18,7 @@ public class ServerClientThread extends Thread {
     boolean RUNNING = true;
     int CLIENT_ID = -1;
     
+    
     //Constructs a ServerCLientThread thread
     public ServerClientThread(Socket CLIENTSOCKET, int clientIndex) {
             this.CLIENTSOCKET = CLIENTSOCKET;
@@ -61,12 +62,15 @@ public class ServerClientThread extends Thread {
                     //Create streams for each player
                     STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
                     STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
+                    System.out.println("THREAD SAYS " + Server.PLAYER_LIST.size());
     
+                // Accept messages from this client and broadcast them.
+                // Ignore other clients that cannot be broadcasted to.
                 while(true) {    
                 whatTheClientSent();
                 System.out.println("Client: " + CLIENT_ID + " says :" + WHAT_THE_CLIENT_SENT);
-                if (WHAT_THE_CLIENT_SENT.equals("EXIT")) {
-                    System.out.println("Stopping communication for client : " + CLIENT_ID);
+                if (!WHAT_THE_CLIENT_SENT.equals("")) {
+                    ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                 } 
                 if (WHAT_THE_CLIENT_SENT.equals("PLAY")) {               
                     System.out.println("The client with ID: " + CLIENT_ID + " Wrote PLAY");
@@ -78,6 +82,7 @@ public class ServerClientThread extends Thread {
                     }
                 }
                 }
+                
                 } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
              }finally {

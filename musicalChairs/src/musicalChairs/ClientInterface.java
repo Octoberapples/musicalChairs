@@ -18,8 +18,7 @@ public class ClientInterface {
         return PLAY;
     }
     
-     //Processes the messsage from the server, depending on the SERVER_RESPONSE the 
-    //different cases states what the client should print. 
+    
     public static void processMessageFromServer() throws IOException {
         switch (SERVER_RESPONSE) {
             case ("WINNER"):
