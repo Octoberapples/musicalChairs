@@ -44,20 +44,21 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
         ServerPlayerList playerList = new ServerPlayerList();
-        playerList.start();
-        
-        //The appplication main method, which just listens on a port and
+
+        //The application main method, which just listens on a port and
         //spawns ServerClientThread threads.
-        //try {
+        try {
             while (true) {
                 newClient = waitForConnection(serverSocket);
+                System.out.println("new client är" + newClient);
                 setUpConnectionWithClient(newClient, id++);
             }
-        } //finally {
-           // newClient.close();
-       // } 
+        } finally {
+            System.out.println("Stängs nåt?");
+            newClient.close();
+        }
        
-    
+    }
       
    //Gör som funktionen säger, väntar på en connection och
    //accepter sedan serverSocket 
@@ -76,4 +77,3 @@ public class Server {
     }
 
 }
-  

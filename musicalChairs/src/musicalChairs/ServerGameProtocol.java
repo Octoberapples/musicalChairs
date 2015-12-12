@@ -2,18 +2,19 @@ package musicalChairs;
 
 //Klassen där vi hanterar det vi får från klienten och skickar tillbaka
 //ett serverResponse
-class ServerGameProtocol extends Thread {
+class ServerGameProtocol {
 
     public static Object handleClientInput(Object clientResponse) {
         Object serverResponse = null;
         if (clientResponse instanceof String) {
-            switch ((String) clientResponse) {
-                case ("PLAY"):
-                    serverResponse = "In Player Queue";
-                    break;
-                case ("GET READY"):
-                    serverResponse = "Music is playing!";
-                    break;
+            if ("PLAY".equals(clientResponse)) {
+                System.out.println("What the server does with the clientResponse:'A client wants to play'");
+                serverResponse = "SIT DOWN";
+
+            } else /*("SIT DOWN".equals(clientResponse))*/ {
+                System.out.println("What the server does with the clientResponse:'A client wants to play'");
+                serverResponse = "SIT DOWN";
+
             }
         }
         if (clientResponse instanceof Long) {
