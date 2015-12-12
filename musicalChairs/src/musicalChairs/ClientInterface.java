@@ -40,7 +40,47 @@ public class ClientInterface {
         return finalTimer;
     }
 
+  public static int input() {
+        boolean flag = true;    
+        while (flag == true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                int tmpRequest = sc.nextInt();
+                if (tmpRequest == 1) {
+                    flag = false;
+                    return 1;
+                } else if (tmpRequest == 2) {
+                    //Client.closeSocket();
+                    return 2;
+                } else if (tmpRequest != 1 || tmpRequest != 2) {
+                    System.out.println("Wrong input");
+                }
+            } catch (Exception e) {
+                System.out.println("Wrong input");
+            }
+        }
+    return -1;
+    }
+    
+    public static int sitDown() throws Exception{
+        System.out.println("Prepare to Sit Down");
+        Thread.sleep(0);
+        long startTimer = System.currentTimeMillis();
+        System.out.println("Sit Down!");
+        /*TODO - glöm inte att stänga socketen om exit*/
+        int clientResponse = input();
+        if(clientResponse == 1){
+        long stopTimer = System.currentTimeMillis();
+        long finalTimer = stopTimer - startTimer;
+        int finalTid = (int)(long)finalTimer;
+            System.out.println(finalTid);
+        return finalTid;
+        }
+        else{/*close socket*/};
+        return 0;
+    }
    
+    
     /*
     Test för getRequest()
     */

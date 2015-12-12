@@ -29,10 +29,17 @@ class ServerGameProtocol {
         }
 
     }
+    public static void runGame() throws Exception{
+        Object tid = ServerClientThread.STREAM_IN_FROM_CLIENT.readObject();
+        System.out.println(tid + " TTITTTA HÄR HALLÅÅÅ");
+        System.out.println("KOMMER VI HIT DÅ?");
+        
 
-    /**
-     * helt orimligt fel. hatar livet
-     */
+        
+}
+            
+            
+            
     public static void playRound(DataOutputStream out) throws IOException {
         //out.writeUTF("SIT DOWN NOW!");
         int emptyChairs = 0;
