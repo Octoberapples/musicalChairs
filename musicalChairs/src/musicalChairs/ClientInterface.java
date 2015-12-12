@@ -46,9 +46,7 @@ public class ClientInterface {
                 System.out.println("Write PLAY to begin game or SIT DOWN to sit:");
                 Scanner sc = new Scanner(System.in);
                 String tmpRequest = sc.nextLine();
-                System.out.println("kom vi hit");
                 if (tmpRequest.equals("PLAY")) {
-                    System.out.println("Här då?");
                     return "PLAY";
                 } else if (tmpRequest.equals("SIT DOWN")) {
                     //Client.closeSocket();
