@@ -28,7 +28,6 @@ public class Server {
             while (true) {
                 newClient = waitForConnection(serverSocket);
                 setUpConnectionWithClient(newClient, id);
-                
             }
         } finally {
             newClient.close();

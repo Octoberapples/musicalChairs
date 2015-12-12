@@ -12,6 +12,10 @@ class ServerGameProtocol {
                     System.out.println("A client wants to play");
                     serverResponse = "GET READY";
                     return serverResponse;
+                case "HEJ":
+                    System.out.println("A client wants to play");
+                    serverResponse = "SIT DOWN";
+                    return serverResponse;
                 default:
                     System.out.println("A client joined the game");
                     serverResponse = "FORCE START";

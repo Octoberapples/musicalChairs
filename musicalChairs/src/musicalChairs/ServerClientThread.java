@@ -4,7 +4,6 @@ import java.net.*;
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static musicalChairs.Server.PLAYER_LIST;
 
 
 //Klass som håller koll på varje enskild tråd 
@@ -35,19 +34,15 @@ public class ServerClientThread extends Thread {
         return CLIENT_ID;
     }
 
-    void setSERVER_RESPONSE(String stringForTheServerResponse) {
-        this.SERVER_RESPONSE = stringForTheServerResponse;
-    }
-
  
     public InetAddress getClientIP() {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
 
-    public void sendToClient() throws IOException {
-            System.out.println("Sending this: "+SERVER_RESPONSE+ " to Client: "+ CLIENT_ID);
-            STREAM_OUT_TO_CLIENT.writeObject(SERVER_RESPONSE);
+    public void sendToClient(Object obj) throws IOException {
+            System.out.println("Sending this: "+obj+ " to Client: "+ CLIENT_ID);
+            STREAM_OUT_TO_CLIENT.writeObject(obj);
             STREAM_OUT_TO_CLIENT.flush();
     }
     
@@ -62,7 +57,7 @@ public class ServerClientThread extends Thread {
                     //Create streams for each player
                     STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
                     STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
-                    System.out.println("THREAD SAYS " + Server.PLAYER_LIST.size());
+                    
     
                 // Accept messages from this client and broadcast them.
                 // Ignore other clients that cannot be broadcasted to.
@@ -70,26 +65,16 @@ public class ServerClientThread extends Thread {
                 whatTheClientSent();
                 System.out.println("Client: " + CLIENT_ID + " says :" + WHAT_THE_CLIENT_SENT);
                 if (!WHAT_THE_CLIENT_SENT.equals("")) {
-                    ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
-                } 
-                if (WHAT_THE_CLIENT_SENT.equals("PLAY")) {               
-                    System.out.println("The client with ID: " + CLIENT_ID + " Wrote PLAY");
-                    setSERVER_RESPONSE("GET READY");
-                    try {
-                        sendToClient();
-                    } catch (IOException ex) {
-                        Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
+                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
+                    sendToClient(toSendTheClient);
+                    } 
                 }
                 
                 } catch (IOException | ClassNotFoundException ex) {
             Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
              }finally {
-                // This client is going down!  Remove its name and its print
-                // writer from the sets, and close its socket.
+                // This client is going down!  Remove it and close its socket.
                 //remove it from the list
-               
                 try {
                     CLIENTSOCKET.close();
                 } catch (IOException e) {

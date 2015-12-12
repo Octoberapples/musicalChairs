@@ -31,24 +31,24 @@ public class ClientInterface {
                 System.out.println("\n" + "You advanced to the next round!");
                 break;
             case ("SIT DOWN"):
-                System.out.println("\n" + "Sit down!" + "\n" +
-                    "i______i" + "\n" +
-                    "I______I" + "\n" +
-                    "I      I" + "\n" +
-                    "I______I" + "\n" +
-                   "/      /I" + "\n" +
-                  "(______( I" + "\n" +
-                  "I I    I I" + "\n" +
-                  "I      I");
+                System.out.println(
+                 "\t" +   "            i______i" + "\n" +
+                 "\t" +   "            I______I" + "\n" +
+                 "\t" +   "            I      I" + "\n" +
+                 "\t" +   " SIT DOWN!  I______I" + "\n" +
+                 "\t" +   "           /      /I" + "\n" +
+                 "\t" +   "          (______( I" + "\n" +
+                 "\t" +   "          I I    I I" + "\n" +
+                 "\t" +   "          I      I  ");
                 break;
             case ("GET READY"):
-                System.out.println("\n" + "The music is playing..." + "\n" + 
+                System.out.println("\n" + 
                 
-                "┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n" +
-                "┈┣━┫┈┈┈┈┈┣╯┈┈┈┈┣╯┈" + "\n" +
-                "╭┫╭┫┈┈┃┈╭┫┈┈┃┈╭┫┈┈" + "\n" +
-                "╰╯╰╯┈╭┫┈╰╯┈╭┫┈╰╯┈┈" + "\n" +
-                "┈┈┈┈┈╰╯┈┈┈┈╰╯┈┈┈┈┈");
+                "                            ┈┏━┓┈┈┈┈┈┏╯┈┈┈┈┏╯┈" + "\n" +
+                " The music is playing...    ┈┣━┫┈┈┈┈┈┣╯┈┈┈┈┣╯┈" + "\n" +
+                "                            ╭┫╭┫┈┈┃┈╭┫┈┈┃┈╭┫┈┈" + "\n" +
+                "                            ╰╯╰╯┈╭┫┈╰╯┈╭┫┈╰╯┈┈" + "\n" +
+                "                            ┈┈┈┈┈╰╯┈┈┈┈╰╯┈┈┈┈┈");
                 
                 break;
             case ("You wanna play a game?"):
