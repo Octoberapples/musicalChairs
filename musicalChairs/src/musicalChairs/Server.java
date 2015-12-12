@@ -18,10 +18,37 @@ public class Server {
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
     static int MAX_AMOUNT_OF_PLAYERS = 0; //här skriver vi hur många spelare som är max
 
+        //Klass som tar bort döda trådar
+       private static class ServerPlayerList extends Thread {
+
+        public void run() {
+            while (true) {
+                setPlayerList();
+            }
+        }
+
+        private static void setPlayerList() {
+
+            for (int i = 0; i < PLAYER_LIST.size(); i++) {
+
+                if (!PLAYER_LIST.get(i).isAlive()) {
+                    PLAYER_LIST.remove(i);
+                }
+            }
+        }
+    }  
+       
+       
+    
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
         ServerPlayerList playerList = new ServerPlayerList();
+<<<<<<< HEAD
+=======
+        playerList.start();
+        
+>>>>>>> Linneas-kvist-från-Markus
         //The appplication main method, which just listens on a port and
         //spawns ServerClientThread threads.
         try {
@@ -51,23 +78,5 @@ public class Server {
                 + clientThread.getClientIP() + " : Portnumber - " + clientThread.getClientPort());
     }
 
-   private static class ServerPlayerList extends Thread {
-
-        public void run() {
-            while (true) {
-                setPlayerList();
-            }
-        }
-
-        private static void setPlayerList() {
-
-            for (int i = 0; i < PLAYER_LIST.size(); i++) {
-
-                if (!PLAYER_LIST.get(i).isAlive()) {
-                    PLAYER_LIST.remove(i);
-                }
-            }
-        }
-    }   
-
 }
+  
