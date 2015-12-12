@@ -21,8 +21,8 @@ public class Server {
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
-        ServerPlayerList playerList = new ServerPlayerList();
-        playerList.
+      //  ServerPlayerList playerList = new ServerPlayerList();
+       // playerList.
         //The appplication main method, which just listens on a port and
         //spawns ServerClientThread threads.
         try {
