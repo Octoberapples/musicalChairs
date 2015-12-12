@@ -44,7 +44,7 @@ public class Server {
         return serverSocket.accept();
     }
 
-    //Startat en tråd i ServerClientThread samt lägger till spelaren i PLAYER_LIST
+    //Startat en tråd för varje spelare i ServerClientThread samt lägger till spelaren i PLAYER_LIST
     private static void setUpConnectionWithClient(Socket newclient, int id) throws IOException {
         ServerClientThread clientThread = new ServerClientThread(newclient, id);
         clientThread.start();

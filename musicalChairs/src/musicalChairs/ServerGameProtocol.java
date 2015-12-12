@@ -14,7 +14,7 @@ class ServerGameProtocol {
                     serverResponse = "GET READY";
                     return serverResponse;
                 case "HEJ":
-                    System.out.println("A client wants to play");
+                    System.out.println("A client wants to say hello (Adele-stye)");
                     serverResponse = "SIT DOWN";
                     return serverResponse;
                 default:
