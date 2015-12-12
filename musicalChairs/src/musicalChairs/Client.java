@@ -28,9 +28,6 @@ public class Client {
    
     // run är funktionen som connectar till servern  och sedan går den in i en 
     // loop där den processeserar meddelanden från servern
-    // Ett problem med den här klassen är att om man startar två klienter, 
-    // och sedan skriver HEJ i den ena, sedan HEJ i den andra och sedan
-    // HEJ i den första igen så funkar det inte längre 
     private void run() throws IOException, ClassNotFoundException {
         
          // Skapar en socket
@@ -59,15 +56,15 @@ public class Client {
             CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs"); 
             STREAM_TO_SERVER.writeObject(CLIENT_ACTION);
             SERVER_RESPONSE =  STREAM_FROM_SERVER.readObject();
-            System.out.println("This is what the client sends: " + CLIENT_ACTION);
+            System.out.println("This is what the client sent: " + CLIENT_ACTION);
             System.out.println("This is the server response: " + SERVER_RESPONSE);
                 if (!"".equals(SERVER_RESPONSE)){
                     ClientInterface.processMessageFromServer(SERVER_RESPONSE);
                 }
-                if (SERVER_RESPONSE.equals("")){
+                if ("".equals(SERVER_RESPONSE)){
                     System.out.println("Unfortunetly the response from the server was empty");
                 }
-                if (SERVER_RESPONSE.equals("EXIT")) {
+                if ("EXIT".equals(SERVER_RESPONSE)) {
                  STREAM_TO_SERVER.close();
             } 
         }

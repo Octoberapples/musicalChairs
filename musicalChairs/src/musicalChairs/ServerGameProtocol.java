@@ -5,27 +5,20 @@ package musicalChairs;
 class ServerGameProtocol {
 
     public static Object handleClientInput(Object clientResponse) {
-        String serverResponse;
-        if (clientResponse instanceof String) {
-
-            switch ((String) clientResponse) {
-                case "PLAY":
-                    System.out.println("A client wants to play");
-                    serverResponse = "GET READY";
-                    return serverResponse;
-                case "HEJ":
-                    System.out.println("A client wants to say hello (Adele-stye)");
-                    serverResponse = "SIT DOWN";
-                    return serverResponse;
-                default:
-                    System.out.println("You sent something random");
-                    serverResponse = "SENT RANDOM";
-                    return serverResponse;
+        Object serverResponse = null;
+            if("PLAY".equals(clientResponse)) {
+                System.out.println("What the server does with the clientResponse:" +
+                            "\n" +  "'A client wants to play'");
+                serverResponse = "GET READY";
+                       
+            }if("HEJ".equals(clientResponse)) {
+                System.out.println("What the server does with the clientResponse:" +
+                            "\n" +  "'A client wants to play'");
+                serverResponse = "SIT DOWN";
+                       
             }
-
-        } else {
-            return "CLIENT_CORRUPTED";
-        }
-    }
+            
+            return serverResponse;
+    }   
 
 }

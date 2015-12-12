@@ -59,12 +59,12 @@ public class ServerClientThread extends Thread {
             //Create streams for each player
             STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
             STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
+            STREAM_OUT_TO_CLIENT.flush(); 
 
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
             while (true) {
                 whatTheClientSent();
-                System.out.println("Client: " + CLIENT_ID + " says :" + WHAT_THE_CLIENT_SENT);
                 if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
