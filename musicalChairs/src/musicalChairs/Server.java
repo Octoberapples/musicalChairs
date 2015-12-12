@@ -44,20 +44,17 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
         ServerPlayerList playerList = new ServerPlayerList();
-<<<<<<< HEAD
-        //playerList.
-=======
-        playerList.start();
-        
->>>>>>> refs/remotes/origin/Linneas-kvist-från-Markus
-        //The appplication main method, which just listens on a port and
+
+        //The application main method, which just listens on a port and
         //spawns ServerClientThread threads.
         try {
             while (true) {
                 newClient = waitForConnection(serverSocket);
+                System.out.println("new client är" + newClient);
                 setUpConnectionWithClient(newClient, id++);
             }
         } finally {
+            System.out.println("Stängs nåt?");
             newClient.close();
         } 
        
