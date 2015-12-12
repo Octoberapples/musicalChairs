@@ -35,6 +35,19 @@ public class ServerClientThread extends Thread {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
+    
+     private Object howManyPlayers(){
+            return Server.PLAYER_LIST.size();
+        }
+    
+     private synchronized void sendToAllPlayers(Object obj) throws IOException {
+                   
+            for (int i = 0; i < Server.PLAYER_LIST.size(); i++) {
+                Server.PLAYER_LIST.get(i).sendToClient(obj);
+            }
+          return;
+            
+    }
 
     //Skriver till klienten via en ström
     public void sendToClient(Object obj) throws IOException {
@@ -44,7 +57,9 @@ public class ServerClientThread extends Thread {
         STREAM_OUT_TO_CLIENT.flush();
        } catch (EOFException e) {
            System.out.println("\n" + "This client: " + CLIENT_ID + "is disconnected");
-       }
+       }catch (IOException ex) {
+                System.out.println("IO broadcast: " +ex);
+            }
     }
 
     //Läser in från strömmen från klienten för att se vad klienten skicka
@@ -56,9 +71,7 @@ public class ServerClientThread extends Thread {
         
        } catch (EOFException e) {
            System.out.println("\n" + "This client is disconnected: " + CLIENT_ID);
-       }/*catch (StreamCorruptedException ex){
-           System.out.println("Invalid type code!");
-       }*/
+       }
         
     }
 
@@ -70,9 +83,13 @@ public class ServerClientThread extends Thread {
     public void run() {
         try {
             //Create streams for each player
-            STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
+           
             STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
-            STREAM_OUT_TO_CLIENT.flush(); 
+            STREAM_OUT_TO_CLIENT.flush();
+             STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
+            System.out.println("[Server] <---> [Client]" + "\n" +
+                    "Successfully created streams to and from the client with id: " + CLIENT_ID);
+           
 
             // Accept messages from this client and broadcast them.
             // Ignore other clients that cannot be broadcasted to.
@@ -81,12 +98,16 @@ public class ServerClientThread extends Thread {
                 if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
-                    return;
-                }if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
+                    return; }
+                if (WHAT_THE_CLIENT_SENT.equals("HEJ")) {
+                     Object o = howManyPlayers();
+                    sendToAllPlayers(o);
+                
+                }/*if(WHAT_THE_CLIENT_SENT.equals("PLAY")) { //måste fixa if-satsen här
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                     System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
-                }
+                }*/
 
             }
 

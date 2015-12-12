@@ -28,6 +28,7 @@ public class Client {
     static final int DEFAULT_SOCKET_PORT = 8080; 
    
    
+    
     // run är funktionen som connectar till servern  och sedan går den in i en 
     // loop där den processeserar meddelanden från servern
     private void run() throws IOException, ClassNotFoundException {

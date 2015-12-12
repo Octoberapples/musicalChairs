@@ -48,16 +48,16 @@ public class Server {
         
         //The appplication main method, which just listens on a port and
         //spawns ServerClientThread threads.
-        try {
+        //try {
             while (true) {
                 newClient = waitForConnection(serverSocket);
                 setUpConnectionWithClient(newClient, id++);
             }
-        } finally {
-            newClient.close();
-        } 
+        } //finally {
+           // newClient.close();
+       // } 
        
-    }
+    
       
    //Gör som funktionen säger, väntar på en connection och
    //accepter sedan serverSocket 
