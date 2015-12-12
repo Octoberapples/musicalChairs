@@ -11,7 +11,7 @@ public class ServerClientThread extends Thread {
     Object WHAT_THE_CLIENT_SENT;
     static public ObjectOutputStream STREAM_OUT_TO_CLIENT;
     static public ObjectInputStream STREAM_IN_FROM_CLIENT;
-    String SERVER_RESPONSE;
+    Object SERVER_RESPONSE;
     Socket CLIENTSOCKET;
     boolean RUNNING = true;
     int CLIENT_ID = -1;
@@ -65,13 +65,13 @@ public class ServerClientThread extends Thread {
             while (true) {
                 whatTheClientSent();
                 System.out.println("Client: " + CLIENT_ID + " says :" + WHAT_THE_CLIENT_SENT);
-                if (!WHAT_THE_CLIENT_SENT.equals("")) {
-                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
-                    sendToClient(toSendTheClient);
-                }
                 if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
+                    System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
+                } if(!WHAT_THE_CLIENT_SENT.equals("")) { //måste fixa if-satsen här
+                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
+                    sendToClient(toSendTheClient);
                 }
 
             }

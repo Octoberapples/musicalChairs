@@ -18,8 +18,8 @@ class ServerGameProtocol {
                     serverResponse = "SIT DOWN";
                     return serverResponse;
                 default:
-                    System.out.println("A client joined the game");
-                    serverResponse = "FORCE START";
+                    System.out.println("You sent something random");
+                    serverResponse = "SENT RANDOM";
                     return serverResponse;
             }
 

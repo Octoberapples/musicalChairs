@@ -11,7 +11,7 @@ public class Client {
 
     static Socket SOCKET;
     static final String SERVER = "localhost";
-    static String SERVER_RESPONSE = "";
+    static Object SERVER_RESPONSE;
     static Object CLIENT_ACTION = "";
     public static ObjectOutputStream STREAM_TO_SERVER;
     public static ObjectInputStream STREAM_FROM_SERVER;
@@ -20,6 +20,9 @@ public class Client {
    
     // run är funktionen som connectar till servern  och sedan går den in i en 
     // loop där den processeserar meddelanden från servern
+    // Ett problem med den här klassen är att om man startar två klienter, 
+    // och sedan skriver HEJ i den ena, sedan HEJ i den andra och sedan
+    // HEJ i den första igen så funkar det inte längre 
     private void run() throws IOException, ClassNotFoundException {
         
          // Skapar en socket
@@ -47,16 +50,16 @@ public class Client {
         while (true) {
             CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs"); 
             STREAM_TO_SERVER.writeObject(CLIENT_ACTION);
-            SERVER_RESPONSE = (String) STREAM_FROM_SERVER.readObject();
+            SERVER_RESPONSE =  STREAM_FROM_SERVER.readObject();
             System.out.println("This is what the client sends: " + CLIENT_ACTION);
             System.out.println("This is the server response: " + SERVER_RESPONSE);
-                if (!SERVER_RESPONSE.isEmpty()){
-                    ClientInterface.processMessageFromServer();
+                if (!"".equals(SERVER_RESPONSE)){
+                    ClientInterface.processMessageFromServer(SERVER_RESPONSE);
                 }
-                if (SERVER_RESPONSE.isEmpty()){
+                if (SERVER_RESPONSE.equals("")){
                     System.out.println("Unfortunetly the response from the server was empty");
                 }
-                else if (SERVER_RESPONSE.equalsIgnoreCase("EXIT")) {
+                if (SERVER_RESPONSE.equals("EXIT")) {
                  STREAM_TO_SERVER.close();
             } 
         }

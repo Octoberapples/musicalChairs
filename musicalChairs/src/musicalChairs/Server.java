@@ -13,12 +13,10 @@ import java.util.List;
 public class Server {
     //The port the server is listening to
     private static final int PORT = 8080;
-    
     static Socket newClient;
-    
     //The list containing all of the players
     static List<ServerClientThread> PLAYER_LIST = Collections.synchronizedList(new ArrayList<ServerClientThread>());
-    
+    static int MAX_AMOUNT_OF_PLAYERS = 0; //här skriver vi hur många spelare som är max
 
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(PORT);
