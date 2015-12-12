@@ -5,6 +5,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/*
+TODO-list
+1. Se till att servern inte crashar när en client disconnectar
+2. Gör så man kan skriva i alla klienterna utan att de hakar upp sig
+3. Fixa så att globala tillstånd uppdateras i realtid 
+*/
+
+
 //Client är klassen som kör klienten och processerar meddelandena från servern
 //mha ClientinterFace där funktionen processMessageFromServer finns
 public class Client {
