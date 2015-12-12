@@ -84,13 +84,10 @@ public class ServerClientThread extends Thread {
                     System.out.println("The client socket is closing");
                     CLIENTSOCKET.close();
                     return;
-<<<<<<< HEAD
-                }if(!WHAT_THE_CLIENT_SENT.equals("")) { 
-                    Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
-=======
+
                 } else if (WHAT_THE_CLIENT_SENT instanceof Long) { //måste fixa if-satsen här
                     Object toSendTheClient = "Hej";//ServerGameMaster.compareTime()
->>>>>>> Albins-kvist
+                    
                     System.out.println("After the handleClientInput: " + toSendTheClient);
                     sendToClient(toSendTheClient);
                 }

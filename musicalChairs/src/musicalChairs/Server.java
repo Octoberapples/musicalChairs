@@ -52,6 +52,9 @@ public class Server {
                 newClient = waitForConnection(serverSocket);
                 System.out.println("new client är" + newClient);
                 setUpConnectionWithClient(newClient, id++);
+                for(int i=0; i<PLAYER_LIST.size(); i++){
+                    System.out.println("TITTA HÄR, ALLA THREADS SKA SKRIVAS  " + PLAYER_LIST.get(i));
+                }
             }
         } finally {
             System.out.println("Stängs nåt?");
