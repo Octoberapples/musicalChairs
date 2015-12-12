@@ -22,7 +22,7 @@ public class Server {
         ServerSocket serverSocket = new ServerSocket(PORT);
         int id = 0;
         ServerPlayerList playerList = new ServerPlayerList();
-        playerList.
+        //playerList.
         //The appplication main method, which just listens on a port and
         //spawns ServerClientThread threads.
         try {
