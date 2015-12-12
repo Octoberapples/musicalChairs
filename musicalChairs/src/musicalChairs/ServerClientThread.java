@@ -5,7 +5,6 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 //Klass som håller koll på varje enskild tråd 
 public class ServerClientThread extends Thread {
 
@@ -16,40 +15,38 @@ public class ServerClientThread extends Thread {
     Socket CLIENTSOCKET;
     boolean RUNNING = true;
     int CLIENT_ID = -1;
-    
-    
+
     //Konstruerar en ServerCLientThread tråd
     public ServerClientThread(Socket CLIENTSOCKET, int clientIndex) {
-            this.CLIENTSOCKET = CLIENTSOCKET;
-            this.CLIENT_ID = clientIndex;
-        }
-  
-    
+        this.CLIENTSOCKET = CLIENTSOCKET;
+        this.CLIENT_ID = clientIndex;
+    }
+
     public int getClientPort() {
         int clientPort = CLIENTSOCKET.getPort();
         return clientPort;
     }
-    
+
     int getClientID() {
         return CLIENT_ID;
     }
 
- 
     public InetAddress getClientIP() {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
+
     //Skriver till klienten via en ström
     public void sendToClient(Object obj) throws IOException {
-            System.out.println("Sending this: "+obj+ " to Client: "+ CLIENT_ID);
-            STREAM_OUT_TO_CLIENT.writeObject(obj);
-            STREAM_OUT_TO_CLIENT.flush();
+        System.out.println("Sending this: " + obj + " to Client: " + CLIENT_ID);
+        STREAM_OUT_TO_CLIENT.writeObject(obj);
+        STREAM_OUT_TO_CLIENT.flush();
     }
-    
+
     //Läser in från strömmen från klienten för att se vad klienten skicka
     public void whatTheClientSent() throws IOException, ClassNotFoundException {
-     WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
-     System.out.println("Got this: "+WHAT_THE_CLIENT_SENT+ " from Client: "+ CLIENT_ID);
+        WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
+        System.out.println("Got this: " + WHAT_THE_CLIENT_SENT + " from Client: " + CLIENT_ID);
     }
 
     //TODO Fixa så man inte crashar servern om någon dcar 
@@ -58,36 +55,29 @@ public class ServerClientThread extends Thread {
     //det inte är tomt så går den in i klassen ServerGameProtocol och hämtar
     //vad den ska göra med objektet från handleClientInput
     public void run() {
-                try {
-                    //Create streams for each player
-                    STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
-                    STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
-                    
-    
-                // Accept messages from this client and broadcast them.
-                // Ignore other clients that cannot be broadcasted to.
-                while(true) {    
+        try {
+            //Create streams for each player
+            STREAM_IN_FROM_CLIENT = new ObjectInputStream(CLIENTSOCKET.getInputStream());
+            STREAM_OUT_TO_CLIENT = new ObjectOutputStream(CLIENTSOCKET.getOutputStream());
+
+            // Accept messages from this client and broadcast them.
+            // Ignore other clients that cannot be broadcasted to.
+            while (true) {
                 whatTheClientSent();
                 System.out.println("Client: " + CLIENT_ID + " says :" + WHAT_THE_CLIENT_SENT);
                 if (!WHAT_THE_CLIENT_SENT.equals("")) {
                     Object toSendTheClient = ServerGameProtocol.handleClientInput(WHAT_THE_CLIENT_SENT);
                     sendToClient(toSendTheClient);
-                    } 
                 }
-                
-                } catch (IOException | ClassNotFoundException ex) {
-            Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
-             }finally {
-                // This client is going down!  Remove it and close its socket.
-                //remove it from the list
-                try {
+                if ((WHAT_THE_CLIENT_SENT == null) || WHAT_THE_CLIENT_SENT.equals("EXIT")) {
                     CLIENTSOCKET.close();
-                } catch (IOException e) {
+                    return;
                 }
-                        
-               }
+
+            }
+
+        } catch (IOException | ClassNotFoundException ex) {
+            Logger.getLogger(ServerClientThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-     }    
-
-
-
+    }
+}
