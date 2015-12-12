@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+//Client är klassen som kör klienten och processerar meddelandena från servern
+//mha ClientinterFace där funktionen processMessageFromServer finns
 public class Client {
 
     static Socket SOCKET;
@@ -16,15 +18,16 @@ public class Client {
     static final int DEFAULT_SOCKET_PORT = 8080; 
    
    
-    
+    // run är funktionen som connectar till servern  och sedan går den in i en 
+    // loop där den processeserar meddelanden från servern
     private void run() throws IOException, ClassNotFoundException {
         
-         // Make connection and initialize streams
+         // Skapar en socket
         System.out.println("\n" + "Trying to create a socket");
         SOCKET = new Socket(SERVER, DEFAULT_SOCKET_PORT);
         System.out.println("Successfully created a socket");
         
-        
+        // Initialiserar en ström mellan klienten och servern
         System.out.println("\n" + "Trying to create InputStream...");
         STREAM_TO_SERVER = new ObjectOutputStream(SOCKET.getOutputStream());
         STREAM_TO_SERVER.flush();
@@ -32,6 +35,7 @@ public class Client {
                 "[CLIENT] ----> [SERVER]" + "\n" +
                 "Successfully created a stream to the server");
         
+        // Intitialiserar en ström mellan servern och klienten
         System.out.println("\n" + "Trying to create OutputStream...");
         STREAM_FROM_SERVER = new ObjectInputStream(SOCKET.getInputStream());
         System.out.println(
@@ -39,7 +43,7 @@ public class Client {
                 "Successfully created a stream from the server");
         
         
-        // Process all messages from server
+        // Processerar meddelandena från servern
         while (true) {
             CLIENT_ACTION = ClientInterface.getRequest("Musical Chairs"); 
             STREAM_TO_SERVER.writeObject(CLIENT_ACTION);
@@ -58,7 +62,7 @@ public class Client {
         }
     }
     
-    
+        // main funktionen kör klienten
       public static void main(String[] args) throws Exception {
         Client client = new Client();
         client.run();

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
+// Behöver göra så att en client kan disconnecta på ett fint sät utan servern
+// dör. 
+// Den här klassen intisierar alla trådar, servern lyssnar på porten angiven.
 public class Server {
     //The port the server is listening to
     private static final int PORT = 8080;
@@ -27,32 +29,22 @@ public class Server {
         try {
             while (true) {
                 newClient = waitForConnection(serverSocket);
-                setUpConnectionWithClient(newClient, id);
+                setUpConnectionWithClient(newClient, id++);
             }
         } finally {
             newClient.close();
         } 
        
     }
-        /*
-        int id = 0;
-
-        while (id < 2) { //ökar den här om man vill ha mer spelare just nu är det två stycken
-            newClient = waitForConnection(serverSocket);
-            setUpConnectionWithClient(newClient, id++);
-            
-            System.out.println("The size of the list of players: " + PLAYER_LIST.size());         
-          
-        }       
-    }*/
-    
- 
-   
+      
+   //Gör som funktionen säger, väntar på en connection och
+   //accepter sedan serverSocket 
     private static Socket waitForConnection(ServerSocket serverSocket) throws IOException {
         System.out.println("\n" + "Waiting for the players to connect.");
         return serverSocket.accept();
     }
 
+    //Startat en tråd i ServerClientThread samt lägger till spelaren i PLAYER_LIST
     private static void setUpConnectionWithClient(Socket newclient, int id) throws IOException {
         ServerClientThread clientThread = new ServerClientThread(newclient, id);
         clientThread.start();

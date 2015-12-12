@@ -18,7 +18,7 @@ public class ServerClientThread extends Thread {
     int CLIENT_ID = -1;
     
     
-    //Constructs a ServerCLientThread thread
+    //Konstruerar en ServerCLientThread tråd
     public ServerClientThread(Socket CLIENTSOCKET, int clientIndex) {
             this.CLIENTSOCKET = CLIENTSOCKET;
             this.CLIENT_ID = clientIndex;
@@ -39,19 +39,24 @@ public class ServerClientThread extends Thread {
         InetAddress clientIP = CLIENTSOCKET.getInetAddress();
         return clientIP;
     }
-
+    //Skriver till klienten via en ström
     public void sendToClient(Object obj) throws IOException {
             System.out.println("Sending this: "+obj+ " to Client: "+ CLIENT_ID);
             STREAM_OUT_TO_CLIENT.writeObject(obj);
             STREAM_OUT_TO_CLIENT.flush();
     }
     
+    //Läser in från strömmen från klienten för att se vad klienten skicka
     public void whatTheClientSent() throws IOException, ClassNotFoundException {
      WHAT_THE_CLIENT_SENT = STREAM_IN_FROM_CLIENT.readObject();
      System.out.println("Got this: "+WHAT_THE_CLIENT_SENT+ " from Client: "+ CLIENT_ID);
     }
 
     //TODO Fixa så man inte crashar servern om någon dcar 
+    //run skriver ut vad klienten skrev och vilken klient det var som skickade
+    //Sedan kollar den så att objektet klienten skicka inte var tom, och om 
+    //det inte är tomt så går den in i klassen ServerGameProtocol och hämtar
+    //vad den ska göra med objektet från handleClientInput
     public void run() {
                 try {
                     //Create streams for each player

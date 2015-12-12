@@ -1,6 +1,7 @@
 package musicalChairs;
 
-
+//Klassen där vi hanterar det vi får från klienten och skickar tillbaka
+//ett serverResponse
 class ServerGameProtocol {
 
     public static Object handleClientInput(Object clientResponse) {

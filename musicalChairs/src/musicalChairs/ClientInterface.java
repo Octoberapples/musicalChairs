@@ -8,17 +8,20 @@ import static musicalChairs.Client.SERVER_RESPONSE;
 public class ClientInterface {
 
     
+    // Just nu gör den här funktionen att den skriver ut en rad när man har blivit connectad
+    // Skriv HEJ eller PLAY för att få ett svar från servern som sedan processeras av funktionen
+    // nedanför
     public static Object getRequest(String stringFromClient) {
       
                 System.out.println( "\n" + "Welcome to a game of " + stringFromClient + ". Please wait until all of the" +
-                        " players have arrived." + "\n" +" Meanwhile write PLAY in the terminal.");             
+                        " players have arrived." + "\n" +" Meanwhile write PLAY or HEJ in the terminal.");             
                 Scanner sc = new Scanner(System.in);
                 String PLAY = sc.nextLine();
                
         return PLAY;
     }
     
-    
+    //Processerar server response
     public static void processMessageFromServer() throws IOException {
         switch (SERVER_RESPONSE) {
             case ("WINNER"):
